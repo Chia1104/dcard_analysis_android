@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">dcardtry</string>
+    <string name="loginMarginVertical">100dp</string>
+</resources>

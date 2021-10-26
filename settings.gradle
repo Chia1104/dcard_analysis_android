@@ -1,0 +1,4 @@
+include ':blurlockview'
+include ':app'
+project(':blurlockview').projectDir = new File(rootDir, 'BlurLockView-master/blurlockview/')
+rootProject.name = "dcardtry"

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawerlayout"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ArticlePage">
+
+    <!--ArticlePage主畫面開始-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+    <include layout="@layout/main_toolbar"/>
+    <!--HeaderBar_End-->
+<androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/ArticlePage_RecyclerView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+    <!--ArticlePage主畫面結束-->
+
+    <!--ArticlePage側邊選單開始-->
+    <RelativeLayout
+        android:id="@+id/SiderNavView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@color/white">
+
+        <include layout="@layout/drawer_menu" />
+
+    </RelativeLayout>
+    <!--ArticlePage側邊選單結束-->
+
+</androidx.drawerlayout.widget.DrawerLayout>

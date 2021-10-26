@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="name">
+    <item name="name01">吳文宏 組長</item>
+    <item name="name02">朱展龍 教官</item>
+    <item name="name03">劉玉崴 教官</item>
+    <item name="name04">林靜宜 教官</item>
+    <item name="name05">周佳玲 教官</item>
+    <item name="name06">林智勇 教官</item>
+    <item name="name07">胡正申 學務長</item>
+    <item name="name08">蔡福源 秘書</item>
+    <item name="name09">郭子平 助理</item>
+    </string-array>
+    <string-array name="account">
+        <item name="account01">poa</item>
+        <item name="account02">low</item>
+        <item name="account03">lhsd</item>
+        <item name="account04">jingyi</item>
+        <item name="account05">clc</item>
+        <item name="account06">d000013192</item>
+        <item name="account07">hjs74709</item>
+        <item name="account08">joseph</item>
+        <item name="account09">kuo2003</item>
+    </string-array>
+    <string-array name="password">
+        <item name="password01">2051</item>
+        <item name="password02">2000</item>
+        <item name="password03">2012</item>
+        <item name="password04">2000</item>
+        <item name="password05">2052</item>
+        <item name="password06">2056</item>
+        <item name="password07">2001</item>
+        <item name="password08">2002</item>
+        <item name="password09">2003</item>
+
+    </string-array>
+</resources>

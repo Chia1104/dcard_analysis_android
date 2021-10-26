@@ -1,0 +1,396 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawerLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HomePage">
+
+<!--HomePage主畫面開始-->
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <include layout="@layout/main_toolbar"/>
+    <!--HeaderBar_End-->
+
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbarStyle="insideOverlay">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        tools:context=".HomePage">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
+            <!--Banner_Start-->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                tools:context=".MainActivity">
+
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/view_pager2"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:layout_marginTop="0sp">
+
+                </androidx.viewpager2.widget.ViewPager2>
+
+                <LinearLayout
+                    android:id="@+id/dots_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="280dp"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal"></LinearLayout>
+
+                <Button
+                    android:id="@+id/buttonToLeft"
+                    android:layout_width="40dp"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="125dp"
+                    android:gravity="center"
+                    android:onClick="BannerBntToLeft"
+                    android:outlineProvider="none"
+                    android:text="\u003C"
+                    android:textSize="20sp"
+                    app:backgroundTint="@color/btnGray"
+                    app:cornerRadius="100dp" />
+
+                <Button
+                    android:id="@+id/buttonToRight"
+                    android:layout_width="40dp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="125dp"
+                    android:layout_marginRight="10dp"
+                    android:onClick="BannerBntToRight"
+                    android:outlineProvider="none"
+                    android:text="\u003E"
+                    android:textSize="20sp"
+                    app:backgroundTint="@color/btnGray"
+                    app:cornerRadius="100dp" />
+            </RelativeLayout>
+            <!--Banner_End-->
+
+            <!--Weekly-Monthly_Summary_Start-->
+            <LinearLayout
+                android:id="@+id/HomePage_Weekly_MonthlySummary"
+                android:layout_width="380dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/article_summary_border"
+                android:orientation="vertical"
+                android:paddingTop="5dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="0dp"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:layout_width="50dp"
+                        android:layout_height="45dp"
+                        android:layout_marginRight="10dp"
+                        android:backgroundTint="@color/BtnBackgroundColor"
+                        android:paddingLeft="1dp"
+                        android:paddingTop="1dp"
+                        android:paddingRight="1dp"
+                        android:paddingBottom="1dp"
+                        android:text="本週"
+                        android:textSize="18dp">
+
+                    </Button>
+
+                    <Button
+                        android:layout_width="50dp"
+                        android:layout_height="45dp"
+                        android:layout_marginRight="10dp"
+                        android:backgroundTint="@color/BtnBackgroundColor"
+                        android:paddingLeft="1dp"
+                        android:paddingTop="1dp"
+                        android:paddingRight="1dp"
+                        android:paddingBottom="1dp"
+                        android:text="本月"
+                        android:textSize="18dp">
+
+                    </Button>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/articleAmountBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="文章數"
+                            android:textColor="@color/black"
+                            android:textSize="15dp" />
+
+                        <TextView
+                            android:id="@+id/articleAmount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:textColor="@color/black"
+                            android:textSize="45dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/averagePointBack"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="平均情緒分數"
+                            android:textColor="@color/black"
+                            android:textSize="15dp" />
+
+                        <TextView
+                            android:id="@+id/averagePoint"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:textColor="@color/black"
+                            android:textSize="45dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/keyword_Match_Amount_Box"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="關鍵詞文章數"
+                            android:textColor="@color/black"
+                            android:textSize="15dp" />
+
+                        <TextView
+                            android:id="@+id/keyword_Match_Amount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:textColor="@color/black"
+                            android:textSize="45dp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+            <!--Weekly-Monthly_Summary_End-->
+
+            <!--ArticleSummary_Start-->
+            <LinearLayout
+                android:id="@+id/HomePage_ArticleSummary"
+                android:layout_width="350dp"
+                android:layout_height="420dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/article_summary_border"
+                android:orientation="vertical"
+                android:paddingTop="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+                <!--高度先調好420dp，避免剛跑進去時資料還沒抓到此格高度很小，觀感問題。資料跑出來時，420dp Height 也適當-->
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:paddingLeft="10dp"
+                            android:paddingTop="5dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="left|center_vertical"
+                                android:text="文章"
+                                android:textColor="#000000"
+                                android:textSize="28dp"
+                                app:layout_constraintStart_toStartOf="parent">
+
+                            </TextView>
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:paddingRight="10dp">
+
+                            <Button
+                                android:id="@+id/gotoArticleBtn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="right"
+                                android:backgroundTint="@color/BtnBackgroundColor"
+                                android:onClick="ClickArticle"
+                                android:text="more" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+                    <!--標題、內容分隔底線可以放這-->
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/Article_Summary_RecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white" />
+
+            </LinearLayout>
+            <!--ArticleSummary_End-->
+
+            <!--ChartSummary_Start-->
+            <LinearLayout
+                android:id="@+id/HomePage_ChartSummary"
+                android:layout_width="350dp"
+                android:layout_height="400dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="40dp"
+                android:background="@drawable/article_summary_border"
+                android:orientation="vertical"
+                android:paddingTop="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:paddingLeft="10dp"
+                            android:paddingTop="5dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="left|center_vertical"
+                                android:text="分析"
+                                android:textColor="#000000"
+                                android:textSize="28dp"
+                                app:layout_constraintStart_toStartOf="parent">
+
+                            </TextView>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:paddingRight="10dp">
+
+                            <Button
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="right"
+                                android:backgroundTint="@color/BtnBackgroundColor"
+                                android:text="more" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+                    <!--標題、內容分隔底線可以放這-->
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ChartSummaruAndEntrance"
+                    android:textColor="@color/black"
+                    android:textSize="20dp"></TextView>
+
+            </LinearLayout>
+            <!--ChartSummary_End-->
+
+
+        </LinearLayout>
+    </RelativeLayout>
+</ScrollView>
+
+
+</LinearLayout>
+<!--HomePage主畫面結束-->
+
+<!--HomePage側邊選單開始-->
+    <RelativeLayout
+        android:id="@+id/SiderNavView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@color/white">
+
+        <include layout="@layout/drawer_menu" />
+
+    </RelativeLayout>
+<!--HomePage側邊選單結束-->
+
+</androidx.drawerlayout.widget.DrawerLayout>
