@@ -19,6 +19,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.dcardtry.SQLconnect.MysqlCon;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,12 +41,10 @@ public class MainActivity extends AppCompatActivity{
     String name, account, password, jobTitle;
     TextView result;
     private List<GetAccountInfo> LoginAccountList;
-    private static final String ACCOUNT_URL = "http://192.168.56.1:13306/Account_infoTable.php";
+    private static final String ACCOUNT_URL = "https://cguimfinalproject-test.herokuapp.com/Account_infoTable.php";//http://cgudcard.neocities.org/Account_infoTable.php
 
     EditText accountInput, passwordInput;
     String[]NameList,AccountList,JobList,PasswordList;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +68,9 @@ public class MainActivity extends AppCompatActivity{
         startActivity(registeredPage);
     }
 
+
     private void loadAccount(){
+        HttpsTrustManager.allowAllSSL();
         RequestQueue accountqueue = Volley.newRequestQueue(this);
         JsonArrayRequest accountJsonArray = new JsonArrayRequest( Request.Method.GET, ACCOUNT_URL, null, new Response.Listener<JSONArray>() {
             @Override
@@ -101,17 +102,93 @@ public class MainActivity extends AppCompatActivity{
 
     }
 
+
+
+
+    public void getAccountInfo(View view){
+            accountInput = findViewById(R.id.accountInput);
+            String acc = accountInput.getText().toString();
+            passwordInput = findViewById(R.id.passwordInput);
+            String pass = passwordInput.getText().toString();
+            result = findViewById(R.id.loginresult);
+            String v;
+
+
+
+                MysqlCon getaccount = new MysqlCon();
+            // 讀取資料
+             int  accountlist = getaccount.getData();
+             String q=Integer.toString( accountlist );
+             result.setText(q);
+            /*
+            if(accountlist!=null){
+
+                String accounts[]=accountlist.split( "," );
+                int size=accounts.length;//總共有幾筆資料 (帳號、密碼、姓名、職稱全部加起來)
+                int count=size/4;//總共有多少筆帳號
+                for(int i=0;i<=count;i++){
+                    for(int k=0;k<=size;k+=4){
+                        AccountList[i]=accounts[k];
+                        JobList[i]=accounts[k+1];
+                        NameList[i]=accounts[k+2];
+                        PasswordList[i]=accounts[k+3];
+                    }
+                }
+
+                for(int f=0;f<=count;f++) {
+                    account = AccountList[f];
+                    password = PasswordList[f];
+                    name=NameList[f];
+                    jobTitle=JobList[f];
+                    if(acc.equals( "" )){result.setText( "請輸入帳號" ); break;}
+                    else{
+
+                        if (acc.equals(account)){
+                            if(pass.equals( "" )){result.setText( "請輸入密碼" );break;}
+                            else {
+                                if (pass.equals( password )) {
+                                    result.setText( name +  "\t\t" +jobTitle + "\t\t\t" + "您好" );
+                                    //跳轉到首頁
+                                    Intent registeredPage = new Intent(MainActivity.this,HomePage.class);
+                                    registeredPage.putExtra( "name",name );
+                                    registeredPage.putExtra( "job",jobTitle );
+                                    registeredPage.putExtra( "account",account );
+                                    registeredPage.putExtra( "password",password );
+                                    startActivity(registeredPage);
+                                    break;
+                                }
+                                else {
+                                    result.setText( "密碼錯誤" );
+                                    break;
+                                }}
+                        }
+                        else {result.setText( "查無此帳號" );}
+                    }
+                }
+
+            }else  result.setText("沒抓到資料");
+
+             */
+            Log.v("OK","v");
+
+            //result.post(() -> result.setText(v));
+            //String accountlists1 = accountlists;
+            //return accountlists1;
+
+    }
+
     public void login(View view) {
         accountInput = findViewById(R.id.accountInput);
-        String acc = " "+accountInput.getText().toString();
+        String acc = accountInput.getText().toString();
         passwordInput = findViewById(R.id.passwordInput);
-        String pass = " "+passwordInput.getText().toString();
+        String pass = passwordInput.getText().toString();
         result = findViewById(R.id.loginresult);
 
+//        String accounts[]=accountlist.split( "," );
+//        int size=accounts.length;//總共有幾筆資料 (帳號、密碼、姓名、職稱全部加起來)
+//        int count=size/4;//總共有多少筆帳號
 
         int k=LoginAccountList.size();
-        String s=Integer.toString( k );
-        result.setText( s );
         NameList = new String[k];
         AccountList = new String[k];
         PasswordList = new String[k];
@@ -124,28 +201,36 @@ public class MainActivity extends AppCompatActivity{
             JobList[a]=LoginAccountList.get(a).getjobTitle();
         }
 
-        for(int f=0;f<k;f++) {
+        for(int f=0;f<k;f++) { //10原本是count原本是count
             account = AccountList[f];
             password = PasswordList[f];
             name=NameList[f];
             jobTitle=JobList[f];
+          if(acc.equals( "" )){result.setText( "請輸入帳號" ); break;}
+          else{
 
-            if (acc.equals( account )) {
-                if (pass.equals( password )) {
-                    result.setText( name +  "\t\t" +jobTitle + "\t\t\t" + "您好" );
-                    //跳轉到首頁
-                    Intent registeredPage = new Intent(MainActivity.this,HomePage.class);
-                    registeredPage.putExtra( "name",name );
-                    registeredPage.putExtra( "job",jobTitle );
-                    registeredPage.putExtra( "account",account );
-                    registeredPage.putExtra( "password",password );
-                    startActivity(registeredPage);
-                    break;
-                } else {
-                    result.setText( "密碼錯誤" );
-                    break;
+                     if (acc.equals(account)){
+                         if(pass.equals( "" )){result.setText( "請輸入密碼" );break;}
+                         else {
+                            if (pass.equals( password )) {
+                                result.setText( name +  "\t\t" +jobTitle + "\t\t\t" + "您好" );
+                                   //跳轉到首頁
+                                Intent registeredPage = new Intent(MainActivity.this,HomePage.class);
+                                registeredPage.putExtra( "name",name );
+                                registeredPage.putExtra( "job",jobTitle );
+                                registeredPage.putExtra( "account",account );
+                                registeredPage.putExtra( "password",password );
+                                startActivity(registeredPage);
+                                break;
+                            }
+                            else {
+                                result.setText( "密碼錯誤" );
+                                break;
+                            }}
+                     }
+                     else {result.setText( "查無此帳號" );}
                 }
-            } else {result.setText( "沒有此帳號" ); }
         }
     }
-}
+
+        }

@@ -32,7 +32,7 @@ public class Manager_entry extends AppCompatActivity {
      private String account, password,name,jobTitle,administrator;
      private boolean x;
 
-    private static final String ACCOUNT_URL = "http://192.168.56.1:13306/Account_infoTable.php";
+    private static final String ACCOUNT_URL = "https://cguimfinalproject-test.herokuapp.com/Account_infoTable.php";
     private List<GetAccountInfo> MLoginAccountList;
 
     @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
@@ -55,6 +55,7 @@ public class Manager_entry extends AppCompatActivity {
     }
 
     private void loadAccount(){
+        HttpsTrustManager.allowAllSSL();
         RequestQueue accountqueue = Volley.newRequestQueue(this);
         JsonArrayRequest accountJsonArray = new JsonArrayRequest( Request.Method.GET, ACCOUNT_URL, null, new Response.Listener<JSONArray>() {
             @Override
@@ -89,16 +90,8 @@ public class Manager_entry extends AppCompatActivity {
 
 
     public  void mlb(View view){
-         /*
-        accountInput = findViewById(R.id.accountInput);
-        String acc = " "+accountInput.getText().toString();
-        passwordInput = findViewById(R.id.passwordInput);
-        String pass = " "+passwordInput.getText().toString();
-        result = findViewById(R.id.loginresult);
-        */
-
-        String ac=" "+MAInput.getText().toString();
-        String ps=" "+MPInput.getText().toString();
+        String ac=MAInput.getText().toString();
+        String ps=MPInput.getText().toString();
 
         int k=MLoginAccountList.size();
         AccountList = new String[k];
@@ -125,8 +118,11 @@ public class Manager_entry extends AppCompatActivity {
             jobTitle = JobList[f];
 
 
-
+if(ac.equals( "" )){MLR.setText( "請輸入帳號" );break;}
+else{
                     if (ac.equals( account )) {
+                        if (ps.equals( "" )){MLR.setText( "請輸入密碼" );break;}
+                        else{
                         if (ps.equals( password )) {
 
                                 if(administrator.equals( "1" )){
@@ -144,9 +140,14 @@ public class Manager_entry extends AppCompatActivity {
 
                             }
                             else { MLR.setText( "密碼錯誤" );break;}
-
-                    } else {MLR.setText( "沒有此帳號" );}
+                        }
+                    } else {MLR.setText( "查無此帳號" );}}
 
         }
+    }
+
+    public void gotoUentry(View view){
+        Intent gouser=new Intent(this,MainActivity.class);
+        startActivity( gouser );
     }
 }

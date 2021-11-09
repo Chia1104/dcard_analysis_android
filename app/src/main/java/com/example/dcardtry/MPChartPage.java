@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -18,43 +19,56 @@ import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
-public class ArticlePage extends AppCompatActivity {
-    private  List<Dcard> dcardList;
-    RecyclerView ArticleRecyclerview;
+public class MPChartPage extends AppCompatActivity {
+
+    PieChart pieChart;
+    private static final String DCARD_URL = "https://cguimfinalproject-test.herokuapp.com/GetData5.php";
+    private static final String elementToFound_pos = "Positive";
+    private static final String elementToFound_neu = "Neutral";
+    private static final String elementToFound_neg = "Negative";
+    private static final String posColor = "#33FFAA";
+    private static final String neuColor = "#FFDD55";
+    private static final String negColor = "#FFA488";
+    List<Dcard> dcardList;
+    List<String> chartValue;
+    Integer neg, neu, pos;
+    RecyclerView mRecyclerView;
     Adapter adapter;
-    private static final String DCARD_URL = "https://cguimfinalproject-test.herokuapp.com/getAllDcard.php";
-    private DrawerLayout drawerLayout;
-    String Name,Job,Account,Password;//接收帳號相關資料
-    TextView DM_Tilte;//側邊選單標題 : 姓名+職稱
+    RecyclerView.LayoutManager mLayoutManager;
     ProgressBar progressBar;
+    String Name,Job,Account,Password;//接收登入頁面傳過來的資料
+    TextView DM_Tilte;//側邊選單標題 : 姓名+職稱
+    private DrawerLayout drawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate( savedInstanceState );
-        setContentView( R.layout.activity_article_page );
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_mpchart_page);
+
         //設定隱藏標題
         getSupportActionBar().hide();
         //設定隱藏狀態
-        getWindow().getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_FULLSCREEN);
-
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawerlayout);
-
-        ArticleRecyclerview = findViewById(R.id.ArticlePage_RecyclerView);
-        dcardList = new ArrayList<>();
-        AP_LoadDcard();
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
 
         //取得傳遞過來的資料
         Intent intent = this.getIntent();
@@ -66,10 +80,33 @@ public class ArticlePage extends AppCompatActivity {
         //加上側邊選單姓名、職稱
         DM_Tilte=findViewById( R.id.drawer_menu_title );
         DM_Tilte.setText( "\t"+Name+"\n"+Job+"\t\t 您好" );
+
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+
         progressBar = findViewById(R.id.progressBar);
+        mRecyclerView = findViewById(R.id.recyclerView);
+        mRecyclerView.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        dcardList = new ArrayList<>();
+        chartValue = new ArrayList<>();
+
+        loadDcardWithVolley();
     }
 
-    private void AP_LoadDcard(){
+    private void filter1(String text) {
+        ArrayList<Dcard> filteredList1 = new ArrayList<>();
+
+        for (Dcard item : dcardList) {
+            if (item.getSaclassnum().toLowerCase().contains(text.toLowerCase())) {
+                filteredList1.add(item);
+            }
+        }
+        adapter.filterList1(filteredList1);
+    }
+
+    public void loadDcardWithVolley(){
         HttpsTrustManager.allowAllSSL();
         RequestQueue queue = Volley.newRequestQueue(this);
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, DCARD_URL, null, response -> {
@@ -98,20 +135,87 @@ public class ArticlePage extends AppCompatActivity {
                             break;
                     }
                     dcardList.add(dcard);
+                    chartValue.add(dcardObject.getString("SA_Class"));
                 }
-                ArticleRecyclerview.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                 adapter = new Adapter(getApplicationContext(), dcardList);
-                ArticleRecyclerview.setAdapter(adapter);
+                mRecyclerView.setAdapter(adapter);
+                int posCount = Collections.frequency(chartValue, elementToFound_pos);
+                int neuCount = Collections.frequency(chartValue, elementToFound_neu);
+                int negCount = Collections.frequency(chartValue, elementToFound_neg);
+
+                pos = posCount;
+                neu = neuCount;
+                neg = negCount;
+
+                showPieChart();
                 progressBar.setVisibility(View.GONE);
             } catch (JSONException e) {
-                Toast.makeText(ArticlePage.this, e.getMessage(),Toast.LENGTH_LONG).show();
+                Toast.makeText(MPChartPage.this, e.getMessage(),Toast.LENGTH_LONG).show();
                 e.printStackTrace();
             }
         }, error -> {
-            Toast.makeText(ArticlePage.this, error.getMessage(),Toast.LENGTH_LONG).show();
+            Toast.makeText(MPChartPage.this, error.getMessage(),Toast.LENGTH_LONG).show();
             error.printStackTrace();
         });
         queue.add(jsonArrayRequest);
+    }
+
+    public void showPieChart(){
+        pieChart = findViewById(R.id.pieChart_view);
+        pieChart.getDescription().setEnabled(false);
+
+        ArrayList<PieEntry> pieEntries = new ArrayList<>();
+        String label = "type";
+
+        //initializing data
+        Map<String, Integer> typeAmountMap = new HashMap<>();
+        typeAmountMap.put(elementToFound_pos,pos);
+        typeAmountMap.put(elementToFound_neu,neu);
+        typeAmountMap.put(elementToFound_neg,neg);
+
+        //initializing colors for the entries
+        ArrayList<Integer> colors = new ArrayList<>();
+        colors.add(Color.parseColor(neuColor));
+        colors.add(Color.parseColor(negColor));
+        colors.add(Color.parseColor(posColor));
+
+        //input data and fit data into pie chart entry
+        for(String type: typeAmountMap.keySet()){
+            pieEntries.add(new PieEntry(Objects.requireNonNull(typeAmountMap.get(type)).floatValue(), type));
+        }
+
+        //collecting the entries with label name
+        PieDataSet pieDataSet = new PieDataSet(pieEntries,label);
+        //setting text size of the value
+        pieDataSet.setValueTextSize(12f);
+        //providing color list for coloring different entries
+        pieDataSet.setColors(colors);
+        //grouping the data set from entry to chart
+        PieData pieData = new PieData(pieDataSet);
+        //showing the value of the entries, default true if not set
+        pieData.setDrawValues(true);
+
+//        pieChart.setDrawSliceText(false);
+        pieChart.setData(pieData);
+        pieChart.notifyDataSetChanged();
+        pieChart.invalidate();
+
+        pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry e, Highlight h) {
+                e.getData();
+                String txt = String.valueOf(h.getX());
+                filter1(txt);
+            }
+
+            @Override
+            public void onNothingSelected() {
+                mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                adapter = new Adapter(getApplicationContext(), dcardList);
+                mRecyclerView.setAdapter(adapter);
+            }
+        });
     }
 
     //側邊選單code Strat
@@ -209,5 +313,4 @@ public class ArticlePage extends AppCompatActivity {
         closeDrawer(drawerLayout);
     }
     //側邊選單code End
-
 }

@@ -12,6 +12,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -29,11 +30,13 @@ import java.util.List;
 
 public class ManagerPage extends AppCompatActivity {
 
-    private static final String ACCOUNT_URL = "http://192.168.56.1:13306/Account_infoTable.php";
+    private static final String ACCOUNT_URL = "https://cguimfinalproject-test.herokuapp.com/Account_infoTable.php";
     private List<GetAccountInfo> accountList;
     RecyclerView accountRecyclerView;
     AccountAdapter accountAdapter;
     private DrawerLayout drawerLayout;
+    String Name,Job,Account,Password;//接收登入頁面傳過來的資料
+    TextView MDM_Tilte;//側邊選單標題 : 姓名+職稱
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,9 +53,20 @@ public class ManagerPage extends AppCompatActivity {
         loadAccount();
 
         drawerLayout = (DrawerLayout) findViewById(R.id.managerDrawerLayout);
+
+        //取得傳遞過來的資料
+        Intent intent = this.getIntent();
+        Name = intent.getStringExtra("name");
+        Job = intent.getStringExtra( "job" );
+        Account = intent.getStringExtra( "account" );
+        Password = intent.getStringExtra("password");
+
+        MDM_Tilte=findViewById( R.id.manager_drawer_menu_title );
+        MDM_Tilte.setText( "\t"+Name+"\n"+Job+"\t\t 您好" );
     }
 
     private void loadAccount(){
+        HttpsTrustManager.allowAllSSL();
         RequestQueue accountqueue = Volley.newRequestQueue(this);
         JsonArrayRequest accountJsonArray = new JsonArrayRequest( Request.Method.GET, ACCOUNT_URL, null, new Response.Listener<JSONArray>() {
             @Override
@@ -114,9 +128,7 @@ public class ManagerPage extends AppCompatActivity {
         redirectActivity( this,ManagerPage.class );
     }
 
-    public void ClickAccountInfo(View view){
-
-    }
+    public void Click_M_ChangePassword(View view){ redirectActivity( this,ManagerChangePassword.class ); }
 
     public void ClickLogout(View view){
         //回到登入頁面
@@ -127,8 +139,10 @@ public class ManagerPage extends AppCompatActivity {
         //導到其他頁面
         //Initialize intent
         Intent intent=new Intent(activity,aClass);
-        //set flag
-        //intent.setFlags( Intent.FLAG_ACTIVITY_NEW_TASK );
+        intent.putExtra( "name",Name );
+        intent.putExtra( "job",Job );
+        intent.putExtra( "account",Account );
+        intent.putExtra( "password",Password );
         //start activity
         activity.startActivity(intent);
     }

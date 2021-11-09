@@ -12,50 +12,31 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public  class ArticleSummaryAdapter extends RecyclerView.Adapter<ArticleSummaryAdapter.ViewHolder>{
+public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     LayoutInflater inflater;
     List<Dcard> dcards;
     private Context mContext;
-    private  int size;
 
-    public ArticleSummaryAdapter(Context context, List<Dcard> dcards, int size) {
+    public Adapter(Context context, List<Dcard> dcards) {
         this.mContext = context;
         this.inflater = LayoutInflater.from(context);
         this.dcards = dcards;
-        this.size=size;
-
     }
 
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view= inflater.inflate(R.layout.article_summary_list_item,parent,false);
-        return new ViewHolder( view);
+        View view = inflater.inflate(R.layout.article_list_item, parent, false);
+        return new ViewHolder(view);
+
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-//        String ShortTitle,ShortContent;
-//        if(dcards.get(position).getTitle().length()>9){
-//            ShortTitle=dcards.get(position).getTitle().substring(0,8)+"...";
-//        }else{
-//            ShortTitle=dcards.get(position).getTitle();
-//        }
-//
-//        if(dcards.get(position).getContent().length()>20){
-//            ShortContent=dcards.get(position).getContent().substring(0,20)+"...";
-//        }
-//        else{
-//            ShortContent=dcards.get(position).getContent()+"...";
-//        }
-//
-//        holder.mTitle.setText(ShortTitle);
-//        holder.mContent.setText(ShortContent);
-//        holder.mDate.setText(dcards.get(position).getDate());
-
         holder.mTitle.setText(dcards.get(position).getTitle());
         holder.mDate.setText(dcards.get(position).getDate());
         holder.mContent.setText(dcards.get(position).getContent());
@@ -83,7 +64,7 @@ public  class ArticleSummaryAdapter extends RecyclerView.Adapter<ArticleSummaryA
 
     @Override
     public int getItemCount() {
-     return size;
+        return dcards.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
@@ -123,5 +104,15 @@ public  class ArticleSummaryAdapter extends RecyclerView.Adapter<ArticleSummaryA
             });
 
         }
+    }
+
+    public void filterList(ArrayList<Dcard> filteredList) {
+        dcards = filteredList;
+        notifyDataSetChanged();
+    }
+
+    public void filterList1(ArrayList<Dcard> filteredList1) {
+        dcards = filteredList1;
+        notifyDataSetChanged();
     }
 }

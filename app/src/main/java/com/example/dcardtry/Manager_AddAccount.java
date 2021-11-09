@@ -28,9 +28,10 @@ public class Manager_AddAccount extends AppCompatActivity{
     private EditText addJobTitleInput;
     private boolean addAdministratorInput;
     private String Mtxt;
-
     private TextView result;
     private RadioButton managerbtn;
+    String Name,Job,Account,Password;//接收登入頁面傳過來的資料
+    TextView MDM_Tilte;//側邊選單標題 : 姓名+職稱
 
 
 
@@ -46,6 +47,16 @@ public class Manager_AddAccount extends AppCompatActivity{
 
         drawerLayout=findViewById( R.id.managerDrawerLayout );
         result=findViewById( R.id.addresult );
+
+        //取得傳遞過來的資料
+        Intent intent = this.getIntent();
+        Name = intent.getStringExtra("name");
+        Job = intent.getStringExtra( "job" );
+        Account = intent.getStringExtra( "account" );
+        Password = intent.getStringExtra("password");
+
+        MDM_Tilte=findViewById( R.id.manager_drawer_menu_title );
+        MDM_Tilte.setText( "\t"+Name+"\n"+Job+"\t\t 您好" );
 
     }
 
@@ -87,12 +98,6 @@ public class Manager_AddAccount extends AppCompatActivity{
                     // 將資料寫入資料庫
                     MysqlCon con = new MysqlCon();
                     con.insertData(addAccount,addPassword,addName,addJobTitle,addAdministratorInput);
-                    /*
-                    if(Mtxt=="管理者"){
-                        con.insertData(addAccount,addPassword,addName,addJobTitle,true);
-                    }
-                    else if(Mtxt=="非管理者"){ con.insertData(addAccount,addPassword,addName,addJobTitle,false); }
-                    */
 
                     // 清空 EditText
                     addAccountInput.post(() -> addAccountInput.setText(""));
@@ -102,9 +107,10 @@ public class Manager_AddAccount extends AppCompatActivity{
                     managerbtn.setChecked( false );
 
                     // 讀取更新後的資料
-                    final String updata = con.getData();
-                    Log.v("OK", updata);
-                    result.post(() -> result.setText(updata));
+                    //final String updata = con.getData();
+
+                    //Log.v("OK", updata);
+                    //result.post(() -> result.setText(updata));
 
                 }).start();
             }
@@ -150,9 +156,7 @@ public class Manager_AddAccount extends AppCompatActivity{
         redirectActivity( this,ManagerPage.class );
     }
 
-    public void ClickAccountInfo(View view){
-
-    }
+    public void Click_M_ChangePassword(View view){ redirectActivity( this,ManagerChangePassword.class ); }
 
     public void ClickLogout(View view){
         //回到登入頁面
@@ -163,8 +167,10 @@ public class Manager_AddAccount extends AppCompatActivity{
         //導到其他頁面
         //Initialize intent
         Intent intent=new Intent(activity,aClass);
-        //set flag
-        //intent.setFlags( Intent.FLAG_ACTIVITY_NEW_TASK );
+        intent.putExtra( "name",Name );
+        intent.putExtra( "job",Job );
+        intent.putExtra( "account",Account );
+        intent.putExtra( "password",Password );
         //start activity
         activity.startActivity(intent);
     }

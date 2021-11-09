@@ -9,14 +9,22 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
+
+import com.example.dcardtry.SQLconnect.MysqlCon;
 
 public class UserChangePassword extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
     String Name,Job,Account,Password;//接收帳號相關資料
     TextView DM_Tilte;//側邊選單標題 : 姓名+職稱
+    TextView Title;//此頁面標題
+    EditText in_oldpassword,in_newpassword,in_newpcheck;
+    String oldpassword,newpassword,newpcheck;
+    TextView changeresult;//更改結果
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
@@ -39,6 +47,46 @@ public class UserChangePassword extends AppCompatActivity {
         //加上側邊選單姓名、職稱
         DM_Tilte=findViewById( R.id.drawer_menu_title );
         DM_Tilte.setText( Name+"\n"+Job+"\t\t 您好" );
+
+        //最上面顯示目前帳號
+        Title=findViewById( R.id.UCP_Title );
+        Title.setText( "帳號 : "+Account );
+
+        changeresult=(TextView)findViewById( R.id.UCP_Result );
+    }
+
+    public void ChangeBtn(View view){
+        //重這裡更改密碼後，密碼會變空格。但是從php檔不會
+        Intent intent = this.getIntent();
+        Password = intent.getStringExtra("password");
+        in_oldpassword=(EditText)findViewById( R.id.UCP_Page_OldPasswordInput );
+        in_newpassword=(EditText)findViewById( R.id.UCP_Page_NewPasswordInput );
+        in_newpcheck=(EditText)findViewById( R.id.UCP_Page_NewPasswordCheckInput );
+
+        oldpassword=in_oldpassword.getText().toString();
+        newpassword=in_newpassword.getText().toString();
+        newpcheck=in_newpcheck.getText().toString();
+
+        //進資料庫更改 開始
+        if(oldpassword.equals(Password) ){
+            if(newpassword.equals( newpcheck )){
+                new Thread(() -> {
+                    String v;
+                    MysqlCon UCPassword = new MysqlCon();
+                    // 讀取資料
+                    final String changedone = UCPassword.UserChangedPassword(Account,newpassword);
+                    if(changedone!=null){
+                        v="更改成功";
+                    }
+                    else v="更改失敗";
+
+                    Log.v("OK",v);
+                    changeresult.post(() -> changeresult.setText(v));
+                }).start();
+            }else{changeresult.setText( "新密碼兩次輸入不同" );}
+        }
+        else{changeresult.setText( "舊密碼錯誤" );}
+        //進資料庫更改 結束
     }
 
     //側邊選單code Strat

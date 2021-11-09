@@ -105,33 +105,14 @@
                     android:layout_margin="0dp"
                     android:orientation="horizontal">
 
-                    <Button
-                        android:layout_width="50dp"
-                        android:layout_height="45dp"
-                        android:layout_marginRight="10dp"
-                        android:backgroundTint="@color/BtnBackgroundColor"
-                        android:paddingLeft="1dp"
-                        android:paddingTop="1dp"
-                        android:paddingRight="1dp"
-                        android:paddingBottom="1dp"
-                        android:text="本週"
-                        android:textSize="18dp">
+                    <TextView
+                        android:id="@+id/month_static_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="本月概覽"
+                        android:textColor="@color/black"
+                        android:textSize="20dp" />
 
-                    </Button>
-
-                    <Button
-                        android:layout_width="50dp"
-                        android:layout_height="45dp"
-                        android:layout_marginRight="10dp"
-                        android:backgroundTint="@color/BtnBackgroundColor"
-                        android:paddingLeft="1dp"
-                        android:paddingTop="1dp"
-                        android:paddingRight="1dp"
-                        android:paddingBottom="1dp"
-                        android:text="本月"
-                        android:textSize="18dp">
-
-                    </Button>
                 </LinearLayout>
 
                 <LinearLayout
@@ -183,9 +164,10 @@
                             android:id="@+id/averagePoint"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
                             android:text="0"
                             android:textColor="@color/black"
-                            android:textSize="45dp" />
+                            android:textSize="40dp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -292,6 +274,19 @@
                     android:layout_height="wrap_content"
                     android:background="@color/white" />
 
+                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:tools="http://schemas.android.com/tools"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ProgressBar
+                        android:id="@+id/progressBar1"
+                        style="?android:attr/progressBarStyleLarge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true" />
+                </RelativeLayout>
+
             </LinearLayout>
             <!--ArticleSummary_End-->
 
@@ -353,6 +348,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="right"
                                 android:backgroundTint="@color/BtnBackgroundColor"
+                                android:onClick="ClickChart"
                                 android:text="more" />
 
                         </LinearLayout>
@@ -361,12 +357,12 @@
                     <!--標題、內容分隔底線可以放這-->
                 </LinearLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="ChartSummaruAndEntrance"
-                    android:textColor="@color/black"
-                    android:textSize="20dp"></TextView>
+                <com.github.mikephil.charting.charts.PieChart
+                    android:id="@+id/pieChart_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="150pt">
+
+                </com.github.mikephil.charting.charts.PieChart>
 
             </LinearLayout>
             <!--ChartSummary_End-->

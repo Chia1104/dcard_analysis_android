@@ -18,6 +18,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Dcardtry">
         <activity
+            android:name=".MPChartPage"
+            android:exported="false" />
+        <activity
+            android:name=".DcardDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".ManagerChangePassword"
             android:exported="true" />
         <activity
