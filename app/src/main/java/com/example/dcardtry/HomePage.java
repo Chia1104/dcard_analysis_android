@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -61,6 +62,9 @@ public class HomePage extends AppCompatActivity {
     private static final String DCARD_URL = "https://cguimfinalproject-test.herokuapp.com/GetData5.php"
             ,SCORE_URL = "http://192.168.56.1:13306/Amount_Score.php"
             ,DATE_URL = "http://192.168.56.1:13306/Amount_Date.php";
+    private static final String TODAY_DCARD_URL = "https://cguimfinalproject-test.herokuapp.com/getTodayDcard.php";
+    private static final String MONTH_DCARD_URL = "https://cguimfinalproject-test.herokuapp.com/getMonthDcard.php";
+    private static final String WEEK_DCARD_URL = "https://cguimfinalproject-test.herokuapp.com/getWeekDcard.php";
     private static final String elementToFound_pos = "Positive";
     private static final String elementToFound_neu = "Neutral";
     private static final String elementToFound_neg = "Negative";
@@ -80,6 +84,9 @@ public class HomePage extends AppCompatActivity {
     TextView DM_Tilte;//側邊選單標題 : 姓名+職稱
     TextView MSTitle,MSAccount,MSAverage,MSKey;//本月統計用
     ProgressBar progressBar1, progressBar2;
+    Button getToday_btn, getWeek_btn, getMonth_btn;
+    int articleCount = 0;
+    int year,month;
 
 
     @Override
@@ -87,6 +94,12 @@ public class HomePage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
         progressBar1 = findViewById(R.id.progressBar1);
+        progressBar2 = findViewById(R.id.progressBar2);
+
+        MSTitle=findViewById( R.id.month_static_title );
+        MSAccount=findViewById( R.id.articleAmount );
+        MSAverage=findViewById( R.id.averagePoint );
+        MSKey=findViewById( R.id.keyword_Match_Amount );
 
         //設定隱藏標題
         getSupportActionBar().hide();
@@ -156,15 +169,10 @@ public class HomePage extends AppCompatActivity {
             }
         };
         BannerTimer.schedule(timerTask, 0,20000);
-
     }
 
     //本月概覽 開始
     private void monthStatic(){
-      MSTitle=findViewById( R.id.month_static_title );
-      MSAccount=findViewById( R.id.articleAmount );
-      MSAverage=findViewById( R.id.averagePoint );
-      MSKey=findViewById( R.id.keyword_Match_Amount );
 
       int year,month;
 
@@ -240,11 +248,15 @@ public class HomePage extends AppCompatActivity {
     public void BannerBntToLeft(View view){pager2.setCurrentItem(pager2.getCurrentItem()-1);}
 
 
-    private void loadDcard(){
+    public void loadDcard(){
+        progressBar1.setVisibility(View.VISIBLE);
+        progressBar2.setVisibility(View.VISIBLE);
         HttpsTrustManager.allowAllSSL();
         RequestQueue queue = Volley.newRequestQueue(this);
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, DCARD_URL, null, response -> {
             try {
+                dcardList.clear();
+                chartValue.clear();
                 for (int i = 0; i < response.length(); i++) {
                     JSONObject dcardObject = response.getJSONObject(i);
                     Dcard dcard = new Dcard();
@@ -284,12 +296,206 @@ public class HomePage extends AppCompatActivity {
 
                 showPieChart();
                 progressBar1.setVisibility(View.GONE);
+                progressBar2.setVisibility(View.GONE);
             } catch (JSONException e) {
-                Toast.makeText(HomePage.this, e.getMessage(),Toast.LENGTH_LONG).show();
+                progressBar1.setVisibility(View.GONE);
+                progressBar2.setVisibility(View.GONE);
+                Toast.makeText(HomePage.this, "文章未更新",Toast.LENGTH_LONG).show();
                 e.printStackTrace();
             }
         }, error -> {
+            progressBar1.setVisibility(View.GONE);
+            progressBar2.setVisibility(View.GONE);
+            Toast.makeText(HomePage.this, "文章未更新",Toast.LENGTH_LONG).show();
+        });
+        queue.add(jsonArrayRequest);
+    }
 
+    public void loadTodayDcardWithVolley(){
+        progressBar1.setVisibility(View.VISIBLE);
+        progressBar2.setVisibility(View.VISIBLE);
+        HttpsTrustManager.allowAllSSL();
+        RequestQueue queue = Volley.newRequestQueue(this);
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, TODAY_DCARD_URL, null, response -> {
+            try {
+                dcardList.clear();
+                chartValue.clear();
+                for (int i = 0; i < response.length(); i++) {
+                    JSONObject dcardObject = response.getJSONObject(i);
+                    Dcard dcard = new Dcard();
+                    dcard.setSascore(dcardObject.getString("SA_Score"));
+                    dcard.setSaclass(dcardObject.getString("SA_Class"));
+                    dcard.setTitle(dcardObject.getString("Title"));
+                    dcard.setDate(dcardObject.getString("CreatedAt"));
+                    dcard.setContent(dcardObject.getString("Content"));
+                    dcard.setId(dcardObject.getString("Id"));
+                    dcard.setLv1(dcardObject.getString("KeywordLevel1"));
+                    dcard.setLv2(dcardObject.getString("KeywordLevel2"));
+                    dcard.setLv3(dcardObject.getString("KeywordLevel3"));
+                    switch (dcardObject.getString("SA_Class")){
+                        case "Positive":
+                            dcard.setSaclassnum("2.0");
+                            break;
+                        case "Neutral":
+                            dcard.setSaclassnum("0.0");
+                            break;
+                        case "Negative":
+                            dcard.setSaclassnum("1.0");
+                            break;
+                    }
+                    dcardList.add(dcard);
+                    chartValue.add(dcardObject.getString("SA_Class"));
+                }
+                Article_Summary.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                AS_Adapter = new  ArticleSummaryAdapter(getApplicationContext(), dcardList,5);
+                Article_Summary.setAdapter(AS_Adapter);
+                int posCount = Collections.frequency(chartValue, elementToFound_pos);
+                int neuCount = Collections.frequency(chartValue, elementToFound_neu);
+                int negCount = Collections.frequency(chartValue, elementToFound_neg);
+
+                pos = posCount;
+                neu = neuCount;
+                neg = negCount;
+
+                showPieChart();
+                progressBar1.setVisibility(View.GONE);
+                progressBar2.setVisibility(View.GONE);
+            } catch (JSONException e) {
+                progressBar1.setVisibility(View.GONE);
+                progressBar2.setVisibility(View.GONE);
+                Toast.makeText(HomePage.this, "文章未更新",Toast.LENGTH_LONG).show();
+                e.printStackTrace();
+            }
+        }, error -> {
+            progressBar1.setVisibility(View.GONE);
+            progressBar2.setVisibility(View.GONE);
+            Toast.makeText(HomePage.this, "文章未更新",Toast.LENGTH_LONG).show();
+        });
+        queue.add(jsonArrayRequest);
+    }
+
+    public void loadWeekDcardWithVolley(){
+        progressBar1.setVisibility(View.VISIBLE);
+        progressBar2.setVisibility(View.VISIBLE);
+        HttpsTrustManager.allowAllSSL();
+        RequestQueue queue = Volley.newRequestQueue(this);
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, WEEK_DCARD_URL, null, response -> {
+            try {
+                dcardList.clear();
+                chartValue.clear();
+                for (int i = 0; i < response.length(); i++) {
+                    JSONObject dcardObject = response.getJSONObject(i);
+                    Dcard dcard = new Dcard();
+                    dcard.setSascore(dcardObject.getString("SA_Score"));
+                    dcard.setSaclass(dcardObject.getString("SA_Class"));
+                    dcard.setTitle(dcardObject.getString("Title"));
+                    dcard.setDate(dcardObject.getString("CreatedAt"));
+                    dcard.setContent(dcardObject.getString("Content"));
+                    dcard.setId(dcardObject.getString("Id"));
+                    dcard.setLv1(dcardObject.getString("KeywordLevel1"));
+                    dcard.setLv2(dcardObject.getString("KeywordLevel2"));
+                    dcard.setLv3(dcardObject.getString("KeywordLevel3"));
+                    switch (dcardObject.getString("SA_Class")){
+                        case "Positive":
+                            dcard.setSaclassnum("2.0");
+                            break;
+                        case "Neutral":
+                            dcard.setSaclassnum("0.0");
+                            break;
+                        case "Negative":
+                            dcard.setSaclassnum("1.0");
+                            break;
+                    }
+                    dcardList.add(dcard);
+                    chartValue.add(dcardObject.getString("SA_Class"));
+                }
+                Article_Summary.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                AS_Adapter = new  ArticleSummaryAdapter(getApplicationContext(), dcardList,5);
+                Article_Summary.setAdapter(AS_Adapter);
+                int posCount = Collections.frequency(chartValue, elementToFound_pos);
+                int neuCount = Collections.frequency(chartValue, elementToFound_neu);
+                int negCount = Collections.frequency(chartValue, elementToFound_neg);
+
+                pos = posCount;
+                neu = neuCount;
+                neg = negCount;
+
+                showPieChart();
+                progressBar1.setVisibility(View.GONE);
+                progressBar2.setVisibility(View.GONE);
+            } catch (JSONException e) {
+                progressBar1.setVisibility(View.GONE);
+                progressBar2.setVisibility(View.GONE);
+                Toast.makeText(HomePage.this, "文章未更新",Toast.LENGTH_LONG).show();
+                e.printStackTrace();
+            }
+        }, error -> {
+            progressBar1.setVisibility(View.GONE);
+            progressBar2.setVisibility(View.GONE);
+            Toast.makeText(HomePage.this, "文章未更新",Toast.LENGTH_LONG).show();
+        });
+        queue.add(jsonArrayRequest);
+    }
+
+    public void loadMonthDcardWithVolley(){
+        progressBar1.setVisibility(View.VISIBLE);
+        progressBar2.setVisibility(View.VISIBLE);
+        HttpsTrustManager.allowAllSSL();
+        RequestQueue queue = Volley.newRequestQueue(this);
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, MONTH_DCARD_URL, null, response -> {
+            try {
+                dcardList.clear();
+                chartValue.clear();
+                for (int i = 0; i < response.length(); i++) {
+                    JSONObject dcardObject = response.getJSONObject(i);
+                    Dcard dcard = new Dcard();
+                    dcard.setSascore(dcardObject.getString("SA_Score"));
+                    dcard.setSaclass(dcardObject.getString("SA_Class"));
+                    dcard.setTitle(dcardObject.getString("Title"));
+                    dcard.setDate(dcardObject.getString("CreatedAt"));
+                    dcard.setContent(dcardObject.getString("Content"));
+                    dcard.setId(dcardObject.getString("Id"));
+                    dcard.setLv1(dcardObject.getString("KeywordLevel1"));
+                    dcard.setLv2(dcardObject.getString("KeywordLevel2"));
+                    dcard.setLv3(dcardObject.getString("KeywordLevel3"));
+                    switch (dcardObject.getString("SA_Class")){
+                        case "Positive":
+                            dcard.setSaclassnum("2.0");
+                            break;
+                        case "Neutral":
+                            dcard.setSaclassnum("0.0");
+                            break;
+                        case "Negative":
+                            dcard.setSaclassnum("1.0");
+                            break;
+                    }
+                    dcardList.add(dcard);
+                    chartValue.add(dcardObject.getString("SA_Class"));
+                }
+                Article_Summary.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                AS_Adapter = new  ArticleSummaryAdapter(getApplicationContext(), dcardList,5);
+                Article_Summary.setAdapter(AS_Adapter);
+                int posCount = Collections.frequency(chartValue, elementToFound_pos);
+                int neuCount = Collections.frequency(chartValue, elementToFound_neu);
+                int negCount = Collections.frequency(chartValue, elementToFound_neg);
+
+                pos = posCount;
+                neu = neuCount;
+                neg = negCount;
+
+                showPieChart();
+                progressBar1.setVisibility(View.GONE);
+                progressBar2.setVisibility(View.GONE);
+            } catch (JSONException e) {
+                progressBar1.setVisibility(View.GONE);
+                progressBar2.setVisibility(View.GONE);
+                Toast.makeText(HomePage.this, "文章未更新",Toast.LENGTH_LONG).show();
+                e.printStackTrace();
+            }
+        }, error -> {
+            progressBar1.setVisibility(View.GONE);
+            progressBar2.setVisibility(View.GONE);
+            Toast.makeText(HomePage.this, "文章未更新",Toast.LENGTH_LONG).show();
         });
         queue.add(jsonArrayRequest);
     }
@@ -364,6 +570,18 @@ public class HomePage extends AppCompatActivity {
     public void ClickArticle(View view){
         //Redirect(重定向) activity to articlePage
         redirectActivity(this,ArticlePage.class);
+    }
+
+    public void ClickToday(View view){
+        loadTodayDcardWithVolley();
+    }
+
+    public void ClickWeek(View view){
+        loadWeekDcardWithVolley();
+    }
+
+    public void ClickMonth(View view){
+        loadMonthDcardWithVolley();
     }
 
     public void ClickChart(View view){

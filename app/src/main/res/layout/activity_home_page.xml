@@ -113,6 +113,34 @@
                         android:textColor="@color/black"
                         android:textSize="20dp" />
 
+                    <Button
+                        android:id="@+id/getToday_btn"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:backgroundTint="@color/BtnBackgroundColor"
+                        android:onClick="ClickToday"
+                        android:text="本日" />
+
+                    <Button
+                        android:id="@+id/getWeek_btn"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:backgroundTint="@color/BtnBackgroundColor"
+                        android:onClick="ClickWeek"
+                        android:text="本週" />
+
+                    <Button
+                        android:id="@+id/getMonth_btn"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:backgroundTint="@color/BtnBackgroundColor"
+                        android:onClick="ClickMonth"
+                        android:text="本月" />
+
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -267,17 +295,15 @@
                     </LinearLayout>
                     <!--標題、內容分隔底線可以放這-->
                 </LinearLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/Article_Summary_RecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white" />
-
-                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    xmlns:tools="http://schemas.android.com/tools"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
 
                     <ProgressBar
                         android:id="@+id/progressBar1"
@@ -357,12 +383,23 @@
                     <!--標題、內容分隔底線可以放這-->
                 </LinearLayout>
 
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
                 <com.github.mikephil.charting.charts.PieChart
                     android:id="@+id/pieChart_view"
                     android:layout_width="match_parent"
                     android:layout_height="150pt">
 
                 </com.github.mikephil.charting.charts.PieChart>
+                    <ProgressBar
+                        android:id="@+id/progressBar2"
+                        style="?android:attr/progressBarStyleLarge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true" />
+                </RelativeLayout>
 
             </LinearLayout>
             <!--ChartSummary_End-->

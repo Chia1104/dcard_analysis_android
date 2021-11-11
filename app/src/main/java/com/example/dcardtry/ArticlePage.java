@@ -11,7 +11,10 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,6 +43,7 @@ public class ArticlePage extends AppCompatActivity {
     String Name,Job,Account,Password;//接收帳號相關資料
     TextView DM_Tilte;//側邊選單標題 : 姓名+職稱
     ProgressBar progressBar;
+    EditText edtxt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +55,24 @@ public class ArticlePage extends AppCompatActivity {
         getWindow().getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_FULLSCREEN);
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerlayout);
+
+        edtxt = findViewById(R.id.search_EdText);
+        edtxt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                filter(s.toString());
+            }
+        });
 
         ArticleRecyclerview = findViewById(R.id.ArticlePage_RecyclerView);
         dcardList = new ArrayList<>();
@@ -67,6 +89,19 @@ public class ArticlePage extends AppCompatActivity {
         DM_Tilte=findViewById( R.id.drawer_menu_title );
         DM_Tilte.setText( "\t"+Name+"\n"+Job+"\t\t 您好" );
         progressBar = findViewById(R.id.progressBar);
+    }
+
+    private void filter(String text) {
+        ArrayList<Dcard> filteredList = new ArrayList<>();
+
+        for (Dcard item : dcardList) {
+            if (item.getTitle().toLowerCase().contains(text.toLowerCase())) {
+                filteredList.add(item);
+            } else if (item.getContent().toLowerCase().contains(text.toLowerCase())) {
+                filteredList.add(item);
+            }
+        }
+        adapter.filterList(filteredList);
     }
 
     private void AP_LoadDcard(){

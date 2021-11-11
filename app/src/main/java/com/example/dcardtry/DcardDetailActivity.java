@@ -40,10 +40,13 @@ public class DcardDetailActivity extends AppCompatActivity {
         tvsaclass.setText(saclass);
         tvlv1 = findViewById(R.id.lv1_tv);
         tvlv1.setText(lv1);
+        tvlv1.setTextColor(Color.parseColor("#FFDD55"));
         tvlv2 = findViewById(R.id.lv2_tv);
         tvlv2.setText(lv2);
+        tvlv2.setTextColor(Color.parseColor("#FFBB66"));
         tvlv3 = findViewById(R.id.lv3_tv);
         tvlv3.setText(lv3);
+        tvlv3.setTextColor(Color.parseColor("#FFA488"));
 
         btnURL = findViewById(R.id.urlButton);
         btnURL.setOnClickListener(btnURLListener);
@@ -62,10 +65,6 @@ public class DcardDetailActivity extends AppCompatActivity {
                 tvsascore.setTextColor(Color.parseColor("#FFA488"));
                 break;
         }
-
-        tvlv1.setTextColor(Color.parseColor("#FFDD55"));
-        tvlv2.setTextColor(Color.parseColor("#FFBB66"));
-        tvlv3.setTextColor(Color.parseColor("#FFA488"));
 
     }
     private Button.OnClickListener btnURLListener = v -> {

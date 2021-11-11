@@ -14,6 +14,9 @@
 <color name="mainbg">#FFEBC9</color>
 <color name="BtnOrange1">#FFC074</color>
 <color name="BtnBackgroundColor">#035397</color>
+    <color name="posColor">#33FFAA</color>
+    <color name="neuColor">#FFDD55</color>
+    <color name="negColor">#FFA488</color>
 
 
 </resources>
