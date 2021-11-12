@@ -59,7 +59,8 @@ public class HomePage extends AppCompatActivity {
     ArticleSummaryAdapter AS_Adapter;
     ViewPager2 pager2;
     PieChart pieChart;
-    private static final String DCARD_URL = "https://cguimfinalproject-test.herokuapp.com/GetData5.php"
+    String DCARD_URL;
+    private static final String FEB_DCARD_URL = "https://cguimfinalproject-test.herokuapp.com/GetData5.php"
             ,SCORE_URL = "http://192.168.56.1:13306/Amount_Score.php"
             ,DATE_URL = "http://192.168.56.1:13306/Amount_Date.php";
     private static final String ALL_DCARD_URL = "https://cguimfinalproject-test.herokuapp.com/getAllDcard.php";
@@ -257,7 +258,7 @@ public class HomePage extends AppCompatActivity {
         progressBar2.setVisibility(View.VISIBLE);
         HttpsTrustManager.allowAllSSL();
         RequestQueue queue = Volley.newRequestQueue(this);
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, DCARD_URL, null, response -> {
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, FEB_DCARD_URL, null, response -> {
             try {
                 dcardList.clear();
                 chartValue.clear();
