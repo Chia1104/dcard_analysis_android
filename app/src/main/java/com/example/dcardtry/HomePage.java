@@ -62,6 +62,7 @@ public class HomePage extends AppCompatActivity {
     private static final String DCARD_URL = "https://cguimfinalproject-test.herokuapp.com/GetData5.php"
             ,SCORE_URL = "http://192.168.56.1:13306/Amount_Score.php"
             ,DATE_URL = "http://192.168.56.1:13306/Amount_Date.php";
+    private static final String ALL_DCARD_URL = "https://cguimfinalproject-test.herokuapp.com/getAllDcard.php";
     private static final String TODAY_DCARD_URL = "https://cguimfinalproject-test.herokuapp.com/getTodayDcard.php";
     private static final String MONTH_DCARD_URL = "https://cguimfinalproject-test.herokuapp.com/getMonthDcard.php";
     private static final String WEEK_DCARD_URL = "https://cguimfinalproject-test.herokuapp.com/getWeekDcard.php";
@@ -85,8 +86,10 @@ public class HomePage extends AppCompatActivity {
     TextView MSTitle,MSAccount,MSAverage,MSKey;//本月統計用
     ProgressBar progressBar1, progressBar2;
     Button getToday_btn, getWeek_btn, getMonth_btn;
-    int articleCount = 0;
+    int articleCount, keywordCount;
+    float scoreSum, avgScore;
     int year,month;
+    TextView twm_txt;
 
 
     @Override
@@ -100,6 +103,7 @@ public class HomePage extends AppCompatActivity {
         MSAccount=findViewById( R.id.articleAmount );
         MSAverage=findViewById( R.id.averagePoint );
         MSKey=findViewById( R.id.keyword_Match_Amount );
+        twm_txt = findViewById(R.id.twm_txt);
 
         //設定隱藏標題
         getSupportActionBar().hide();
@@ -185,36 +189,36 @@ public class HomePage extends AppCompatActivity {
       MSTitle.setText( "本月概覽 ( "+year+" 年 "+month+" 月 )");
 
         //本月概覽 - 文章數 開始
-        new Thread(() -> {
-            MysqlCon getamount = new MysqlCon();
-            // 讀取資料
-            final int count = getamount.HomeAmount(year,month);
-            String v=Integer.toString( count );
-            Log.v("OK",v);
-            MSAccount.post(() -> MSAccount.setText(v));
-        }).start();
+//        new Thread(() -> {
+//            MysqlCon getamount = new MysqlCon();
+//            // 讀取資料
+//            final int count = getamount.HomeAmount(year,month);
+//            String v=Integer.toString( count );
+//            Log.v("OK",v);
+//            MSAccount.post(() -> MSAccount.setText(v));
+//        }).start();
         //本月概覽 - 文章數 結束
 
         //本月概覽 - 平均情緒分析 開始
-        new Thread(() -> {
-            MysqlCon getscore = new MysqlCon();
-            // 讀取資料
-            final float AvgScore = getscore.ScoreAnalysis(year,month);
-            String v=Float.toString( AvgScore );
-            Log.v("OK",v);
-            MSAverage.post(() -> MSAverage.setText(v));
-        }).start();
+//        new Thread(() -> {
+//            MysqlCon getscore = new MysqlCon();
+//            // 讀取資料
+//            final float AvgScore = getscore.ScoreAnalysis(year,month);
+//            String v=Float.toString( AvgScore );
+//            Log.v("OK",v);
+//            MSAverage.post(() -> MSAverage.setText(v));
+//        }).start();
         //本月概覽 - 平均情緒分析 結束
 
         //本月概覽 - 關鍵詞文章數 開始
-        new Thread(() -> {
-            MysqlCon getkey = new MysqlCon();
-            // 讀取資料
-            final int keywordcount = getkey.KeywordCount(year,month);
-            String v=Integer.toString( keywordcount );
-            Log.v("OK",v);
-            MSKey.post(() -> MSKey.setText(v));
-        }).start();
+//        new Thread(() -> {
+//            MysqlCon getkey = new MysqlCon();
+//            // 讀取資料
+//            final int keywordcount = getkey.KeywordCount(year,month);
+//            String v=Integer.toString( keywordcount );
+//            Log.v("OK",v);
+//            MSKey.post(() -> MSKey.setText(v));
+//        }).start();
         //本月概覽 - 關鍵詞文章數 結束
 
     }
@@ -282,7 +286,23 @@ public class HomePage extends AppCompatActivity {
                     }
                     dcardList.add(dcard);
                     chartValue.add(dcardObject.getString("SA_Class"));
+                    scoreSum += Float.parseFloat(dcardObject.getString("SA_Score"));
+                    if (dcardObject.getString("Level") != "null") {
+                        keywordCount += 1;
+                    }
                 }
+                articleCount = response.length();
+                MSAccount.setText(articleCount + "");
+                avgScore = (float) (Math.round((scoreSum/articleCount) * 100.0) / 100.0);
+                if (avgScore <= 0.45) {
+                    MSAverage.setTextColor(Color.parseColor(negColor));
+                } else if (avgScore >= 0.46 || avgScore <= 0.54 ) {
+                    MSAverage.setTextColor(Color.parseColor(neuColor));
+                } if (avgScore >= 0.55) {
+                    MSAverage.setTextColor(Color.parseColor(posColor));
+                }
+                MSAverage.setText(avgScore + "");
+                MSKey.setText(keywordCount + "");
                 Article_Summary.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                 AS_Adapter = new  ArticleSummaryAdapter(getApplicationContext(), dcardList,5);
                 Article_Summary.setAdapter(AS_Adapter);
@@ -318,6 +338,7 @@ public class HomePage extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(this);
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, TODAY_DCARD_URL, null, response -> {
             try {
+                twm_txt.setText("today");
                 dcardList.clear();
                 chartValue.clear();
                 for (int i = 0; i < response.length(); i++) {
@@ -345,7 +366,23 @@ public class HomePage extends AppCompatActivity {
                     }
                     dcardList.add(dcard);
                     chartValue.add(dcardObject.getString("SA_Class"));
+                    scoreSum += Float.parseFloat(dcardObject.getString("SA_Score"));
+                    if (dcardObject.getString("Level") != "null") {
+                        keywordCount += 1;
+                    }
                 }
+                articleCount = response.length();
+                MSAccount.setText(articleCount + "");
+                avgScore = (float) (Math.round((scoreSum/articleCount) * 100.0) / 100.0);
+                if (avgScore <= 0.45) {
+                    MSAverage.setTextColor(Color.parseColor(negColor));
+                } else if (avgScore >= 0.46 || avgScore <= 0.54 ) {
+                    MSAverage.setTextColor(Color.parseColor(neuColor));
+                } if (avgScore >= 0.55) {
+                    MSAverage.setTextColor(Color.parseColor(posColor));
+                }
+                MSAverage.setText(avgScore + "");
+                MSKey.setText(keywordCount + "");
                 Article_Summary.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                 AS_Adapter = new  ArticleSummaryAdapter(getApplicationContext(), dcardList,5);
                 Article_Summary.setAdapter(AS_Adapter);
@@ -381,6 +418,7 @@ public class HomePage extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(this);
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, WEEK_DCARD_URL, null, response -> {
             try {
+                twm_txt.setText("week");
                 dcardList.clear();
                 chartValue.clear();
                 for (int i = 0; i < response.length(); i++) {
@@ -408,7 +446,23 @@ public class HomePage extends AppCompatActivity {
                     }
                     dcardList.add(dcard);
                     chartValue.add(dcardObject.getString("SA_Class"));
+                    scoreSum += Float.parseFloat(dcardObject.getString("SA_Score"));
+                    if (dcardObject.getString("Level") != "null") {
+                        keywordCount += 1;
+                    }
                 }
+                articleCount = response.length();
+                MSAccount.setText(articleCount + "");
+                avgScore = (float) (Math.round((scoreSum/articleCount) * 100.0) / 100.0);
+                if (avgScore <= 0.45) {
+                    MSAverage.setTextColor(Color.parseColor(negColor));
+                } else if (avgScore >= 0.46 || avgScore <= 0.54 ) {
+                    MSAverage.setTextColor(Color.parseColor(neuColor));
+                } if (avgScore >= 0.55) {
+                    MSAverage.setTextColor(Color.parseColor(posColor));
+                }
+                MSAverage.setText(avgScore + "");
+                MSKey.setText(keywordCount + "");
                 Article_Summary.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                 AS_Adapter = new  ArticleSummaryAdapter(getApplicationContext(), dcardList,5);
                 Article_Summary.setAdapter(AS_Adapter);
@@ -444,6 +498,7 @@ public class HomePage extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(this);
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, MONTH_DCARD_URL, null, response -> {
             try {
+                twm_txt.setText("month");
                 dcardList.clear();
                 chartValue.clear();
                 for (int i = 0; i < response.length(); i++) {
@@ -471,7 +526,23 @@ public class HomePage extends AppCompatActivity {
                     }
                     dcardList.add(dcard);
                     chartValue.add(dcardObject.getString("SA_Class"));
+                    scoreSum += Float.parseFloat(dcardObject.getString("SA_Score"));
+                    if (dcardObject.getString("Level") != "null") {
+                        keywordCount += 1;
+                    }
                 }
+                articleCount = response.length();
+                MSAccount.setText(articleCount + "");
+                avgScore = (float) (Math.round((scoreSum/articleCount) * 100.0) / 100.0);
+                if (avgScore <= 0.45) {
+                    MSAverage.setTextColor(Color.parseColor(negColor));
+                } else if (avgScore >= 0.46 || avgScore <= 0.54 ) {
+                    MSAverage.setTextColor(Color.parseColor(neuColor));
+                } if (avgScore >= 0.55) {
+                    MSAverage.setTextColor(Color.parseColor(posColor));
+                }
+                MSAverage.setText(avgScore + "");
+                MSKey.setText(keywordCount + "");
                 Article_Summary.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                 AS_Adapter = new  ArticleSummaryAdapter(getApplicationContext(), dcardList,5);
                 Article_Summary.setAdapter(AS_Adapter);
@@ -586,6 +657,15 @@ public class HomePage extends AppCompatActivity {
 
     public void ClickChart(View view){
         //Redirect(重定向) activity to chartPage
+//        try {
+//            Intent intent_twm_txt = new Intent(getApplicationContext(), DcardDetailActivity.class);
+//            intent_twm_txt.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//            intent_twm_txt.putExtra("twm", twm_txt.getText().toString());
+//            getApplicationContext().startActivity(intent_twm_txt);
+//        } catch (Exception e) {
+//            Toast.makeText(HomePage.this, e.getMessage(),Toast.LENGTH_LONG).show();
+//        }
+
         redirectActivity(this, MPChartPage.class);
     }
 

@@ -42,7 +42,11 @@ import java.util.Objects;
 public class MPChartPage extends AppCompatActivity {
 
     PieChart pieChart;
-    private static final String DCARD_URL = "https://cguimfinalproject-test.herokuapp.com/GetData5.php";
+    String DCARD_URL;
+    private static final String FEB_DCARD_URL = "https://cguimfinalproject-test.herokuapp.com/GetData5.php";
+    private static final String TODAY_DCARD_URL = "https://cguimfinalproject-test.herokuapp.com/getTodayDcard.php";
+    private static final String MONTH_DCARD_URL = "https://cguimfinalproject-test.herokuapp.com/getMonthDcard.php";
+    private static final String WEEK_DCARD_URL = "https://cguimfinalproject-test.herokuapp.com/getWeekDcard.php";
     private static final String elementToFound_pos = "Positive";
     private static final String elementToFound_neu = "Neutral";
     private static final String elementToFound_neg = "Negative";
@@ -59,6 +63,7 @@ public class MPChartPage extends AppCompatActivity {
     String Name,Job,Account,Password;//接收登入頁面傳過來的資料
     TextView DM_Tilte;//側邊選單標題 : 姓名+職稱
     private DrawerLayout drawerLayout;
+    String twm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +97,20 @@ public class MPChartPage extends AppCompatActivity {
         dcardList = new ArrayList<>();
         chartValue = new ArrayList<>();
 
-        loadDcardWithVolley();
+        twm = getIntent().getStringExtra("twm");
+        if (twm == "today") {
+            DCARD_URL = TODAY_DCARD_URL;
+            loadDcardWithVolley();
+        } else if (twm == "week") {
+            DCARD_URL = WEEK_DCARD_URL;
+            loadDcardWithVolley();
+        } else if (twm == "month") {
+            DCARD_URL = MONTH_DCARD_URL;
+            loadDcardWithVolley();
+        } else {
+            DCARD_URL = FEB_DCARD_URL;
+            loadDcardWithVolley();
+        }
     }
 
     private void filter1(String text) {
