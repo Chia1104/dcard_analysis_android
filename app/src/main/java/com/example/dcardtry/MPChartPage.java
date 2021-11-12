@@ -50,9 +50,6 @@ public class MPChartPage extends AppCompatActivity {
     private static final String elementToFound_pos = "Positive";
     private static final String elementToFound_neu = "Neutral";
     private static final String elementToFound_neg = "Negative";
-    private static final String posColor = "#33FFAA";
-    private static final String neuColor = "#FFDD55";
-    private static final String negColor = "#FFA488";
     List<Dcard> dcardList;
     List<String> chartValue;
     Integer neg, neu, pos;
@@ -194,9 +191,9 @@ public class MPChartPage extends AppCompatActivity {
 
         //initializing colors for the entries
         ArrayList<Integer> colors = new ArrayList<>();
-        colors.add(Color.parseColor(neuColor));
-        colors.add(Color.parseColor(negColor));
-        colors.add(Color.parseColor(posColor));
+        colors.add(getResources().getColor(R.color.neuColor));
+        colors.add(getResources().getColor(R.color.negColor));
+        colors.add(getResources().getColor(R.color.posColor));
 
         //input data and fit data into pie chart entry
         for(String type: typeAmountMap.keySet()){

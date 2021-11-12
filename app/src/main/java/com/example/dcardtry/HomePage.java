@@ -70,9 +70,6 @@ public class HomePage extends AppCompatActivity {
     private static final String elementToFound_pos = "Positive";
     private static final String elementToFound_neu = "Neutral";
     private static final String elementToFound_neg = "Negative";
-    private static final String posColor = "#33FFAA";
-    private static final String neuColor = "#FFDD55";
-    private static final String negColor = "#FFA488";
     Integer neg, neu, pos;
     int list[],bannerpic[];
     TextView[] dots;
@@ -296,11 +293,11 @@ public class HomePage extends AppCompatActivity {
                 MSAccount.setText(articleCount + "");
                 avgScore = (float) (Math.round((scoreSum/articleCount) * 100.0) / 100.0);
                 if (avgScore <= 0.45) {
-                    MSAverage.setTextColor(Color.parseColor(negColor));
+                    MSAverage.setTextColor(getResources().getColor(R.color.negColor));
                 } else if (avgScore >= 0.46 || avgScore <= 0.54 ) {
-                    MSAverage.setTextColor(Color.parseColor(neuColor));
+                    MSAverage.setTextColor(getResources().getColor(R.color.neuColor));
                 } if (avgScore >= 0.55) {
-                    MSAverage.setTextColor(Color.parseColor(posColor));
+                    MSAverage.setTextColor(getResources().getColor(R.color.posColor));
                 }
                 MSAverage.setText(avgScore + "");
                 MSKey.setText(keywordCount + "");
@@ -376,11 +373,11 @@ public class HomePage extends AppCompatActivity {
                 MSAccount.setText(articleCount + "");
                 avgScore = (float) (Math.round((scoreSum/articleCount) * 100.0) / 100.0);
                 if (avgScore <= 0.45) {
-                    MSAverage.setTextColor(Color.parseColor(negColor));
+                    MSAverage.setTextColor(getResources().getColor(R.color.negColor));
                 } else if (avgScore >= 0.46 || avgScore <= 0.54 ) {
-                    MSAverage.setTextColor(Color.parseColor(neuColor));
+                    MSAverage.setTextColor(getResources().getColor(R.color.neuColor));
                 } if (avgScore >= 0.55) {
-                    MSAverage.setTextColor(Color.parseColor(posColor));
+                    MSAverage.setTextColor(getResources().getColor(R.color.posColor));
                 }
                 MSAverage.setText(avgScore + "");
                 MSKey.setText(keywordCount + "");
@@ -456,11 +453,11 @@ public class HomePage extends AppCompatActivity {
                 MSAccount.setText(articleCount + "");
                 avgScore = (float) (Math.round((scoreSum/articleCount) * 100.0) / 100.0);
                 if (avgScore <= 0.45) {
-                    MSAverage.setTextColor(Color.parseColor(negColor));
+                    MSAverage.setTextColor(getResources().getColor(R.color.negColor));
                 } else if (avgScore >= 0.46 || avgScore <= 0.54 ) {
-                    MSAverage.setTextColor(Color.parseColor(neuColor));
+                    MSAverage.setTextColor(getResources().getColor(R.color.neuColor));
                 } if (avgScore >= 0.55) {
-                    MSAverage.setTextColor(Color.parseColor(posColor));
+                    MSAverage.setTextColor(getResources().getColor(R.color.posColor));
                 }
                 MSAverage.setText(avgScore + "");
                 MSKey.setText(keywordCount + "");
@@ -536,11 +533,11 @@ public class HomePage extends AppCompatActivity {
                 MSAccount.setText(articleCount + "");
                 avgScore = (float) (Math.round((scoreSum/articleCount) * 100.0) / 100.0);
                 if (avgScore <= 0.45) {
-                    MSAverage.setTextColor(Color.parseColor(negColor));
+                    MSAverage.setTextColor(getResources().getColor(R.color.negColor));
                 } else if (avgScore >= 0.46 || avgScore <= 0.54 ) {
-                    MSAverage.setTextColor(Color.parseColor(neuColor));
+                    MSAverage.setTextColor(getResources().getColor(R.color.neuColor));
                 } if (avgScore >= 0.55) {
-                    MSAverage.setTextColor(Color.parseColor(posColor));
+                    MSAverage.setTextColor(getResources().getColor(R.color.posColor));
                 }
                 MSAverage.setText(avgScore + "");
                 MSKey.setText(keywordCount + "");
@@ -587,9 +584,9 @@ public class HomePage extends AppCompatActivity {
 
         //initializing colors for the entries
         ArrayList<Integer> colors = new ArrayList<>();
-        colors.add(Color.parseColor(neuColor));
-        colors.add(Color.parseColor(negColor));
-        colors.add(Color.parseColor(posColor));
+        colors.add(getResources().getColor(R.color.neuColor));
+        colors.add(getResources().getColor(R.color.negColor));
+        colors.add(getResources().getColor(R.color.posColor));
 
         //input data and fit data into pie chart entry
         for(String type: typeAmountMap.keySet()){

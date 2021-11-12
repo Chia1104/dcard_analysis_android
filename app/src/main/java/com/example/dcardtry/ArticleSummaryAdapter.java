@@ -67,16 +67,16 @@ public  class ArticleSummaryAdapter extends RecyclerView.Adapter<ArticleSummaryA
         holder.mId.setText(dcards.get(position).getId());
         switch (holder.mClass.getText().toString()){
             case "Positive":
-                holder.mScore.setTextColor(Color.parseColor("#33FFAA"));
-                holder.mClass.setTextColor(Color.parseColor("#33FFAA"));
+                holder.mScore.setTextColor(mContext.getResources().getColor(R.color.posColor));
+                holder.mClass.setTextColor(mContext.getResources().getColor(R.color.posColor));
                 break;
             case "Neutral":
-                holder.mScore.setTextColor(Color.parseColor("#FFDD55"));
-                holder.mClass.setTextColor(Color.parseColor("#FFDD55"));
+                holder.mScore.setTextColor(mContext.getResources().getColor(R.color.neuColor));
+                holder.mClass.setTextColor(mContext.getResources().getColor(R.color.neuColor));
                 break;
             case "Negative":
-                holder.mScore.setTextColor(Color.parseColor("#FFA488"));
-                holder.mClass.setTextColor(Color.parseColor("#FFA488"));
+                holder.mScore.setTextColor(mContext.getResources().getColor(R.color.negColor));
+                holder.mClass.setTextColor(mContext.getResources().getColor(R.color.negColor));
                 break;
         }
     }

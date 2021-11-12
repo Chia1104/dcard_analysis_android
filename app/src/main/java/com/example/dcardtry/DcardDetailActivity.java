@@ -53,16 +53,16 @@ public class DcardDetailActivity extends AppCompatActivity {
 
         switch (saclass){
             case "Positive":
-                tvsaclass.setTextColor(Color.parseColor("#33FFAA"));
-                tvsascore.setTextColor(Color.parseColor("#33FFAA"));
+                tvsaclass.setTextColor(getResources().getColor(R.color.posColor));
+                tvsascore.setTextColor(getResources().getColor(R.color.posColor));
                 break;
             case "Neutral":
-                tvsaclass.setTextColor(Color.parseColor("#FFDD55"));
-                tvsascore.setTextColor(Color.parseColor("#FFDD55"));
+                tvsaclass.setTextColor(getResources().getColor(R.color.neuColor));
+                tvsascore.setTextColor(getResources().getColor(R.color.neuColor));
                 break;
             case "Negative":
-                tvsaclass.setTextColor(Color.parseColor("#FFA488"));
-                tvsascore.setTextColor(Color.parseColor("#FFA488"));
+                tvsaclass.setTextColor(getResources().getColor(R.color.negColor));
+                tvsascore.setTextColor(getResources().getColor(R.color.negColor));
                 break;
         }
 
