@@ -64,6 +64,9 @@ public class DcardDetailActivity extends AppCompatActivity {
                 tvsaclass.setTextColor(getResources().getColor(R.color.negColor));
                 tvsascore.setTextColor(getResources().getColor(R.color.negColor));
                 break;
+            case "null":
+                tvsaclass.setTextColor(getResources().getColor(R.color.gray));
+                tvsascore.setTextColor(getResources().getColor(R.color.gray));
         }
 
     }

@@ -78,6 +78,9 @@ public  class ArticleSummaryAdapter extends RecyclerView.Adapter<ArticleSummaryA
                 holder.mScore.setTextColor(mContext.getResources().getColor(R.color.negColor));
                 holder.mClass.setTextColor(mContext.getResources().getColor(R.color.negColor));
                 break;
+            case "null":
+                holder.mScore.setTextColor(mContext.getResources().getColor(R.color.gray));
+                holder.mClass.setTextColor(mContext.getResources().getColor(R.color.gray));
         }
     }
 
