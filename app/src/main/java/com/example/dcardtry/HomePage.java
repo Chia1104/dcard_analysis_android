@@ -85,7 +85,6 @@ public class HomePage extends AppCompatActivity {
     Button getToday_btn, getWeek_btn, getMonth_btn;
     int articleCount = 0, keywordCount = 0;
     float scoreSum = 0, avgScore = 0;
-    int year,month;
     TextView twm_txt;
 
 
