@@ -7,6 +7,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -60,9 +61,7 @@ public class HomePage extends AppCompatActivity {
     ViewPager2 pager2;
     PieChart pieChart;
     String DCARD_URL;
-    private static final String FEB_DCARD_URL = "https://cguimfinalproject-test.herokuapp.com/GetData5.php"
-            ,SCORE_URL = "http://192.168.56.1:13306/Amount_Score.php"
-            ,DATE_URL = "http://192.168.56.1:13306/Amount_Date.php";
+    private static final String APR_DCARD_URL = "https://cguimfinalproject-test.herokuapp.com/GetData5.php";
     private static final String ALL_DCARD_URL = "https://cguimfinalproject-test.herokuapp.com/getAllDcard.php";
     private static final String TODAY_DCARD_URL = "https://cguimfinalproject-test.herokuapp.com/getTodayDcard.php";
     private static final String MONTH_DCARD_URL = "https://cguimfinalproject-test.herokuapp.com/getMonthDcard.php";
@@ -84,8 +83,8 @@ public class HomePage extends AppCompatActivity {
     TextView MSTitle,MSAccount,MSAverage,MSKey;//本月統計用
     ProgressBar progressBar1, progressBar2;
     Button getToday_btn, getWeek_btn, getMonth_btn;
-    int articleCount, keywordCount;
-    float scoreSum, avgScore;
+    int articleCount = 0, keywordCount = 0;
+    float scoreSum = 0, avgScore = 0;
     int year,month;
     TextView twm_txt;
 
@@ -146,6 +145,7 @@ public class HomePage extends AppCompatActivity {
         dcardList = new ArrayList<>();
         chartValue = new ArrayList<>();
 
+        DCARD_URL = APR_DCARD_URL;
         loadDcard();
         monthStatic(); //本月概覽
 
@@ -182,7 +182,7 @@ public class HomePage extends AppCompatActivity {
       getmonth.setTime( new Date() );
       year=getmonth.get(Calendar.YEAR);
       //month=getmonth.get(Calendar.MONTH)+1;
-      month=2;
+      month=4;
 
       MSTitle.setText( "本月概覽 ( "+year+" 年 "+month+" 月 )");
 
@@ -255,7 +255,7 @@ public class HomePage extends AppCompatActivity {
         progressBar2.setVisibility(View.VISIBLE);
         HttpsTrustManager.allowAllSSL();
         RequestQueue queue = Volley.newRequestQueue(this);
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, FEB_DCARD_URL, null, response -> {
+        @SuppressLint("SetTextI18n") JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, DCARD_URL, null, response -> {
             try {
                 dcardList.clear();
                 chartValue.clear();
@@ -271,260 +271,13 @@ public class HomePage extends AppCompatActivity {
                     dcard.setLv1(dcardObject.getString("KeywordLevel1"));
                     dcard.setLv2(dcardObject.getString("KeywordLevel2"));
                     dcard.setLv3(dcardObject.getString("KeywordLevel3"));
-                    switch (dcardObject.getString("SA_Class")){
-                        case "Positive":
-                            dcard.setSaclassnum("2.0");
-                            break;
-                        case "Neutral":
-                            dcard.setSaclassnum("0.0");
-                            break;
-                        case "Negative":
-                            dcard.setSaclassnum("1.0");
-                            break;
-                    }
                     dcardList.add(dcard);
                     chartValue.add(dcardObject.getString("SA_Class"));
-                    scoreSum += Float.parseFloat(dcardObject.getString("SA_Score"));
-                    if (dcardObject.getString("Level") != "null") {
-                        keywordCount += 1;
+                    if (dcardObject.getString("SA_Score") != "null") {
+                        scoreSum += Float.parseFloat(dcardObject.getString("SA_Score"));
+                    } else {
+                        scoreSum = 0;
                     }
-                }
-                articleCount = response.length();
-                MSAccount.setText(articleCount + "");
-                avgScore = (float) (Math.round((scoreSum/articleCount) * 100.0) / 100.0);
-                if (avgScore <= 0.45) {
-                    MSAverage.setTextColor(getResources().getColor(R.color.negColor));
-                } else if (avgScore >= 0.46 || avgScore <= 0.54 ) {
-                    MSAverage.setTextColor(getResources().getColor(R.color.neuColor));
-                } if (avgScore >= 0.55) {
-                    MSAverage.setTextColor(getResources().getColor(R.color.posColor));
-                }
-                MSAverage.setText(avgScore + "");
-                MSKey.setText(keywordCount + "");
-                Article_Summary.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                AS_Adapter = new  ArticleSummaryAdapter(getApplicationContext(), dcardList,5);
-                Article_Summary.setAdapter(AS_Adapter);
-                int posCount = Collections.frequency(chartValue, elementToFound_pos);
-                int neuCount = Collections.frequency(chartValue, elementToFound_neu);
-                int negCount = Collections.frequency(chartValue, elementToFound_neg);
-
-                pos = posCount;
-                neu = neuCount;
-                neg = negCount;
-
-                showPieChart();
-                progressBar1.setVisibility(View.GONE);
-                progressBar2.setVisibility(View.GONE);
-            } catch (JSONException e) {
-                progressBar1.setVisibility(View.GONE);
-                progressBar2.setVisibility(View.GONE);
-                Toast.makeText(HomePage.this, "文章未更新",Toast.LENGTH_LONG).show();
-                e.printStackTrace();
-            }
-        }, error -> {
-            progressBar1.setVisibility(View.GONE);
-            progressBar2.setVisibility(View.GONE);
-            Toast.makeText(HomePage.this, "文章未更新",Toast.LENGTH_LONG).show();
-        });
-        queue.add(jsonArrayRequest);
-    }
-
-    public void loadTodayDcardWithVolley(){
-        progressBar1.setVisibility(View.VISIBLE);
-        progressBar2.setVisibility(View.VISIBLE);
-        HttpsTrustManager.allowAllSSL();
-        RequestQueue queue = Volley.newRequestQueue(this);
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, TODAY_DCARD_URL, null, response -> {
-            try {
-                twm_txt.setText("today");
-                dcardList.clear();
-                chartValue.clear();
-                for (int i = 0; i < response.length(); i++) {
-                    JSONObject dcardObject = response.getJSONObject(i);
-                    Dcard dcard = new Dcard();
-                    dcard.setSascore(dcardObject.getString("SA_Score"));
-                    dcard.setSaclass(dcardObject.getString("SA_Class"));
-                    dcard.setTitle(dcardObject.getString("Title"));
-                    dcard.setDate(dcardObject.getString("CreatedAt"));
-                    dcard.setContent(dcardObject.getString("Content"));
-                    dcard.setId(dcardObject.getString("Id"));
-                    dcard.setLv1(dcardObject.getString("KeywordLevel1"));
-                    dcard.setLv2(dcardObject.getString("KeywordLevel2"));
-                    dcard.setLv3(dcardObject.getString("KeywordLevel3"));
-                    switch (dcardObject.getString("SA_Class")){
-                        case "Positive":
-                            dcard.setSaclassnum("2.0");
-                            break;
-                        case "Neutral":
-                            dcard.setSaclassnum("0.0");
-                            break;
-                        case "Negative":
-                            dcard.setSaclassnum("1.0");
-                            break;
-                    }
-                    dcardList.add(dcard);
-                    chartValue.add(dcardObject.getString("SA_Class"));
-                    scoreSum += Float.parseFloat(dcardObject.getString("SA_Score"));
-                    if (dcardObject.getString("Level") != "null") {
-                        keywordCount += 1;
-                    }
-                }
-                articleCount = response.length();
-                MSAccount.setText(articleCount + "");
-                avgScore = (float) (Math.round((scoreSum/articleCount) * 100.0) / 100.0);
-                if (avgScore <= 0.45) {
-                    MSAverage.setTextColor(getResources().getColor(R.color.negColor));
-                } else if (avgScore >= 0.46 || avgScore <= 0.54 ) {
-                    MSAverage.setTextColor(getResources().getColor(R.color.neuColor));
-                } if (avgScore >= 0.55) {
-                    MSAverage.setTextColor(getResources().getColor(R.color.posColor));
-                }
-                MSAverage.setText(avgScore + "");
-                MSKey.setText(keywordCount + "");
-                Article_Summary.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                AS_Adapter = new  ArticleSummaryAdapter(getApplicationContext(), dcardList,5);
-                Article_Summary.setAdapter(AS_Adapter);
-                int posCount = Collections.frequency(chartValue, elementToFound_pos);
-                int neuCount = Collections.frequency(chartValue, elementToFound_neu);
-                int negCount = Collections.frequency(chartValue, elementToFound_neg);
-
-                pos = posCount;
-                neu = neuCount;
-                neg = negCount;
-
-                showPieChart();
-                progressBar1.setVisibility(View.GONE);
-                progressBar2.setVisibility(View.GONE);
-            } catch (JSONException e) {
-                progressBar1.setVisibility(View.GONE);
-                progressBar2.setVisibility(View.GONE);
-                Toast.makeText(HomePage.this, "文章未更新",Toast.LENGTH_LONG).show();
-                e.printStackTrace();
-            }
-        }, error -> {
-            progressBar1.setVisibility(View.GONE);
-            progressBar2.setVisibility(View.GONE);
-            Toast.makeText(HomePage.this, "文章未更新",Toast.LENGTH_LONG).show();
-        });
-        queue.add(jsonArrayRequest);
-    }
-
-    public void loadWeekDcardWithVolley(){
-        progressBar1.setVisibility(View.VISIBLE);
-        progressBar2.setVisibility(View.VISIBLE);
-        HttpsTrustManager.allowAllSSL();
-        RequestQueue queue = Volley.newRequestQueue(this);
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, WEEK_DCARD_URL, null, response -> {
-            try {
-                twm_txt.setText("week");
-                dcardList.clear();
-                chartValue.clear();
-                for (int i = 0; i < response.length(); i++) {
-                    JSONObject dcardObject = response.getJSONObject(i);
-                    Dcard dcard = new Dcard();
-                    dcard.setSascore(dcardObject.getString("SA_Score"));
-                    dcard.setSaclass(dcardObject.getString("SA_Class"));
-                    dcard.setTitle(dcardObject.getString("Title"));
-                    dcard.setDate(dcardObject.getString("CreatedAt"));
-                    dcard.setContent(dcardObject.getString("Content"));
-                    dcard.setId(dcardObject.getString("Id"));
-                    dcard.setLv1(dcardObject.getString("KeywordLevel1"));
-                    dcard.setLv2(dcardObject.getString("KeywordLevel2"));
-                    dcard.setLv3(dcardObject.getString("KeywordLevel3"));
-                    switch (dcardObject.getString("SA_Class")){
-                        case "Positive":
-                            dcard.setSaclassnum("2.0");
-                            break;
-                        case "Neutral":
-                            dcard.setSaclassnum("0.0");
-                            break;
-                        case "Negative":
-                            dcard.setSaclassnum("1.0");
-                            break;
-                    }
-                    dcardList.add(dcard);
-                    chartValue.add(dcardObject.getString("SA_Class"));
-                    scoreSum += Float.parseFloat(dcardObject.getString("SA_Score"));
-                    if (dcardObject.getString("Level") != "null") {
-                        keywordCount += 1;
-                    }
-                }
-                articleCount = response.length();
-                MSAccount.setText(articleCount + "");
-                avgScore = (float) (Math.round((scoreSum/articleCount) * 100.0) / 100.0);
-                if (avgScore <= 0.45) {
-                    MSAverage.setTextColor(getResources().getColor(R.color.negColor));
-                } else if (avgScore >= 0.46 || avgScore <= 0.54 ) {
-                    MSAverage.setTextColor(getResources().getColor(R.color.neuColor));
-                } if (avgScore >= 0.55) {
-                    MSAverage.setTextColor(getResources().getColor(R.color.posColor));
-                }
-                MSAverage.setText(avgScore + "");
-                MSKey.setText(keywordCount + "");
-                Article_Summary.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                AS_Adapter = new  ArticleSummaryAdapter(getApplicationContext(), dcardList,5);
-                Article_Summary.setAdapter(AS_Adapter);
-                int posCount = Collections.frequency(chartValue, elementToFound_pos);
-                int neuCount = Collections.frequency(chartValue, elementToFound_neu);
-                int negCount = Collections.frequency(chartValue, elementToFound_neg);
-
-                pos = posCount;
-                neu = neuCount;
-                neg = negCount;
-
-                showPieChart();
-                progressBar1.setVisibility(View.GONE);
-                progressBar2.setVisibility(View.GONE);
-            } catch (JSONException e) {
-                progressBar1.setVisibility(View.GONE);
-                progressBar2.setVisibility(View.GONE);
-                Toast.makeText(HomePage.this, "文章未更新",Toast.LENGTH_LONG).show();
-                e.printStackTrace();
-            }
-        }, error -> {
-            progressBar1.setVisibility(View.GONE);
-            progressBar2.setVisibility(View.GONE);
-            Toast.makeText(HomePage.this, "文章未更新",Toast.LENGTH_LONG).show();
-        });
-        queue.add(jsonArrayRequest);
-    }
-
-    public void loadMonthDcardWithVolley(){
-        progressBar1.setVisibility(View.VISIBLE);
-        progressBar2.setVisibility(View.VISIBLE);
-        HttpsTrustManager.allowAllSSL();
-        RequestQueue queue = Volley.newRequestQueue(this);
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, MONTH_DCARD_URL, null, response -> {
-            try {
-                twm_txt.setText("month");
-                dcardList.clear();
-                chartValue.clear();
-                for (int i = 0; i < response.length(); i++) {
-                    JSONObject dcardObject = response.getJSONObject(i);
-                    Dcard dcard = new Dcard();
-                    dcard.setSascore(dcardObject.getString("SA_Score"));
-                    dcard.setSaclass(dcardObject.getString("SA_Class"));
-                    dcard.setTitle(dcardObject.getString("Title"));
-                    dcard.setDate(dcardObject.getString("CreatedAt"));
-                    dcard.setContent(dcardObject.getString("Content"));
-                    dcard.setId(dcardObject.getString("Id"));
-                    dcard.setLv1(dcardObject.getString("KeywordLevel1"));
-                    dcard.setLv2(dcardObject.getString("KeywordLevel2"));
-                    dcard.setLv3(dcardObject.getString("KeywordLevel3"));
-                    switch (dcardObject.getString("SA_Class")){
-                        case "Positive":
-                            dcard.setSaclassnum("2.0");
-                            break;
-                        case "Neutral":
-                            dcard.setSaclassnum("0.0");
-                            break;
-                        case "Negative":
-                            dcard.setSaclassnum("1.0");
-                            break;
-                    }
-                    dcardList.add(dcard);
-                    chartValue.add(dcardObject.getString("SA_Class"));
-                    scoreSum += Float.parseFloat(dcardObject.getString("SA_Score"));
                     if (dcardObject.getString("Level") != "null") {
                         keywordCount += 1;
                     }
@@ -642,15 +395,18 @@ public class HomePage extends AppCompatActivity {
     }
 
     public void ClickToday(View view){
-        loadTodayDcardWithVolley();
+        DCARD_URL = TODAY_DCARD_URL;
+        loadDcard();
     }
 
     public void ClickWeek(View view){
-        loadWeekDcardWithVolley();
+        DCARD_URL = WEEK_DCARD_URL;
+        loadDcard();
     }
 
     public void ClickMonth(View view){
-        loadMonthDcardWithVolley();
+        DCARD_URL = MONTH_DCARD_URL;
+        loadDcard();
     }
 
     public void ClickChart(View view){
