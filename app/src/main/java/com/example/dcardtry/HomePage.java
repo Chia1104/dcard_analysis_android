@@ -394,16 +394,19 @@ public class HomePage extends AppCompatActivity {
     }
 
     public void ClickToday(View view){
+//        twm_txt.setText("today");
         DCARD_URL = TODAY_DCARD_URL;
         loadDcard();
     }
 
     public void ClickWeek(View view){
+//        twm_txt.setText("week");
         DCARD_URL = WEEK_DCARD_URL;
         loadDcard();
     }
 
     public void ClickMonth(View view){
+//        twm_txt.setText("month");
         DCARD_URL = MONTH_DCARD_URL;
         loadDcard();
     }
@@ -418,7 +421,7 @@ public class HomePage extends AppCompatActivity {
 //        } catch (Exception e) {
 //            Toast.makeText(HomePage.this, e.getMessage(),Toast.LENGTH_LONG).show();
 //        }
-
+//        itntTWM(this, MPChartPage.class);
         redirectActivity(this, MPChartPage.class);
     }
 
@@ -442,6 +445,14 @@ public class HomePage extends AppCompatActivity {
          intent.putExtra( "password",Password );
          //start activity
          activity.startActivity(intent);
+    }
+    public void itntTWM(Activity activity,Class aClass){
+        //導到其他頁面
+        //Initialize intent
+        Intent intent_twm_txt=new Intent(activity,aClass);
+        intent_twm_txt.putExtra("twm", twm_txt.getText().toString());
+        //start activity
+        activity.startActivity(intent_twm_txt);
     }
 
     public static void logout(Activity activity){

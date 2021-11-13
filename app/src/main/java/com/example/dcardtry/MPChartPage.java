@@ -43,7 +43,7 @@ public class MPChartPage extends AppCompatActivity {
 
     PieChart pieChart;
     String DCARD_URL;
-    private static final String FEB_DCARD_URL = "https://cguimfinalproject-test.herokuapp.com/GetData5.php";
+    private static final String APR_DCARD_URL = "https://cguimfinalproject-test.herokuapp.com/GetData5.php";
     private static final String TODAY_DCARD_URL = "https://cguimfinalproject-test.herokuapp.com/getTodayDcard.php";
     private static final String MONTH_DCARD_URL = "https://cguimfinalproject-test.herokuapp.com/getMonthDcard.php";
     private static final String WEEK_DCARD_URL = "https://cguimfinalproject-test.herokuapp.com/getWeekDcard.php";
@@ -105,7 +105,7 @@ public class MPChartPage extends AppCompatActivity {
             DCARD_URL = MONTH_DCARD_URL;
             loadDcardWithVolley();
         } else {
-            DCARD_URL = FEB_DCARD_URL;
+            DCARD_URL = APR_DCARD_URL;
             loadDcardWithVolley();
         }
     }
