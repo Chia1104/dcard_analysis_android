@@ -324,7 +324,6 @@
                 android:layout_height="400dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="30dp"
-                android:layout_marginBottom="40dp"
                 android:background="@drawable/article_summary_border"
                 android:orientation="vertical"
                 android:paddingTop="10dp"
