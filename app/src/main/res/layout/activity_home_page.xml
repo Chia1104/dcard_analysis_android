@@ -471,7 +471,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="right"
                                 android:backgroundTint="@color/BtnBackgroundColor"
-                                android:onClick="ClickChart"
+                                android:onClick="ClickBarChart"
                                 android:text="more" />
 
                         </LinearLayout>

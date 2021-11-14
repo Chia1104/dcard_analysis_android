@@ -18,6 +18,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Dcardtry">
         <activity
+            android:name=".MoreBarChart"
+            android:exported="false" />
+        <activity
             android:name=".MPChartPage"
             android:exported="false" />
         <activity

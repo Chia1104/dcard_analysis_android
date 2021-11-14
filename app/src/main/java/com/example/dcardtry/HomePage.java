@@ -606,6 +606,11 @@ public class HomePage extends AppCompatActivity {
         redirectActivity(this, MPChartPage.class);
     }
 
+    public void ClickBarChart(View view){
+        //Redirect(重定向) activity to chartPage
+        redirectActivity(this, MoreBarChart.class);
+    }
+
     public void ClickAccountInfo(View view){
         //Redirect(重定向) activity to accountPage(帳號管理頁面)
         redirectActivity(this,UserChangePassword.class);
