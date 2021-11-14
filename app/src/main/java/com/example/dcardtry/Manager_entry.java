@@ -57,35 +57,26 @@ public class Manager_entry extends AppCompatActivity {
     private void loadAccount(){
         HttpsTrustManager.allowAllSSL();
         RequestQueue accountqueue = Volley.newRequestQueue(this);
-        JsonArrayRequest accountJsonArray = new JsonArrayRequest( Request.Method.GET, ACCOUNT_URL, null, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
+        JsonArrayRequest accountJsonArray = new JsonArrayRequest( Request.Method.GET, ACCOUNT_URL, null, response -> {
 
-                for (int i = 0; i < response.length(); i++) {
-                    try {
-                        JSONObject accountObject = response.getJSONObject(i);
-                        GetAccountInfo account = new GetAccountInfo();
-                        account.setName(accountObject.getString("Name"));
-                        account.setPassword(accountObject.getString("Password"));
-                        account.setjobTitle(accountObject.getString("Job"));
-                        account.setMail(accountObject.getString("Mail"));
-                        account.setAdministrator( accountObject.getString("Administrator") );// 此處有問題
-                        MLoginAccountList.add(account);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+            for (int i = 0; i < response.length(); i++) {
+                try {
+                    JSONObject accountObject = response.getJSONObject(i);
+                    GetAccountInfo account = new GetAccountInfo();
+                    account.setName(accountObject.getString("Name"));
+                    account.setPassword(accountObject.getString("Password"));
+                    account.setjobTitle(accountObject.getString("Job"));
+                    account.setMail(accountObject.getString("Mail"));
+                    account.setAdministrator( accountObject.getString("Administrator") );// 此處有問題
+                    MLoginAccountList.add(account);
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-
             }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
+        }, error -> {
 
-            }
         });
-
         accountqueue.add(accountJsonArray);
-
     }
 
 
@@ -100,16 +91,16 @@ public class Manager_entry extends AppCompatActivity {
         NameList = new String[k];
         JobList = new String[k];
 
-        for(int a=0;a<k;a++){
-            AccountList[a]=MLoginAccountList.get(a).getMail();
-            PasswordList[a]=MLoginAccountList.get(a).getPassword();
-            AdministratorList[a]=MLoginAccountList.get(a).getAdministrator();
-            NameList[a]=MLoginAccountList.get(a).getName();
-            JobList[a]=MLoginAccountList.get(a).getjobTitle();
+        for(int a = 0; a < k; a++){
+            AccountList[a] = MLoginAccountList.get(a).getMail();
+            PasswordList[a] = MLoginAccountList.get(a).getPassword();
+            AdministratorList[a] = MLoginAccountList.get(a).getAdministrator();
+            NameList[a] = MLoginAccountList.get(a).getName();
+            JobList[a] = MLoginAccountList.get(a).getjobTitle();
         }
         String s=Integer.toString( k );
         MLR.setText( s );
-        for(int f=0;f<k;f++) {
+        for(int f = 0; f < k; f++) {
 
             account = AccountList[f];
             password = PasswordList[f];
@@ -117,15 +108,18 @@ public class Manager_entry extends AppCompatActivity {
             name = NameList[f];
             jobTitle = JobList[f];
 
-
-if(ac.equals( "" )){MLR.setText( "請輸入帳號" );break;}
-else{
-                    if (ac.equals( account )) {
-                        if (ps.equals( "" )){MLR.setText( "請輸入密碼" );break;}
-                        else{
+            if(ac.equals( "" )){
+                MLR.setText( "請輸入帳號" );
+                break;
+            } else {
+                if (ac.equals( account )) {
+                    if (ps.equals( "" )){
+                        MLR.setText( "請輸入密碼" );
+                        break;
+                    } else {
                         if (ps.equals( password )) {
 
-                                if(administrator.equals( "1" )){
+                            if(administrator.equals( "1" )){
                                 MLR.setText( name +  "\t\t" +jobTitle + "\t\t\t" + "您好" );
                                 //跳轉到管理者首頁
                                 Intent registeredPage = new Intent(Manager_entry.this,ManagerPage.class);
@@ -135,14 +129,19 @@ else{
                                 registeredPage.putExtra( "password",password );
                                 startActivity(registeredPage);
                                 break;
-                                }
-                                else{ MLR.setText( "非管理者" );break;}
-
+                            } else {
+                                MLR.setText( "非管理者" );
+                                break;
                             }
-                            else { MLR.setText( "密碼錯誤" );break;}
+                        } else {
+                            MLR.setText( "密碼錯誤" );
+                            break;
                         }
-                    } else {MLR.setText( "查無此帳號" );}}
-
+                    }
+                } else {
+                    MLR.setText( "查無此帳號" );
+                }
+            }
         }
     }
 

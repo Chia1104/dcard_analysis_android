@@ -149,24 +149,18 @@ public class ManagerChangePassword extends AppCompatActivity {
         //set message
         builder.setMessage( "確定要登出嗎?" );
         //Positive yes button
-        builder.setPositiveButton( "是", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                //Finish activity
-                activity.finishAffinity();
-                //回到登入頁面
-                Intent intent=new Intent(activity,MainActivity.class);
-                activity.startActivity( intent );
-            }
-        } );
+        builder.setPositiveButton( "是", (dialog, which) -> {
+            //Finish activity
+            activity.finishAffinity();
+            //回到登入頁面
+            Intent intent=new Intent(activity,MainActivity.class);
+            activity.startActivity( intent );
+        });
         //Negative no button
-        builder.setNegativeButton( "否", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                //Dismiss dialog
-                dialog.dismiss();
-            }
-        } );
+        builder.setNegativeButton( "否", (dialog, which) -> {
+            //Dismiss dialog
+            dialog.dismiss();
+        });
         builder.show();
     }
 

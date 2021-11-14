@@ -72,55 +72,40 @@ public class MainActivity extends AppCompatActivity{
     private void loadAccount(){
         HttpsTrustManager.allowAllSSL();
         RequestQueue accountqueue = Volley.newRequestQueue(this);
-        JsonArrayRequest accountJsonArray = new JsonArrayRequest( Request.Method.GET, ACCOUNT_URL, null, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
+        JsonArrayRequest accountJsonArray = new JsonArrayRequest( Request.Method.GET, ACCOUNT_URL, null, response -> {
 
-                for (int i = 0; i < response.length(); i++) {
-                    try {
-                        JSONObject accountObject = response.getJSONObject(i);
-                        GetAccountInfo account = new GetAccountInfo();
-                        account.setName(accountObject.getString("Name"));
-                        account.setPassword(accountObject.getString("Password"));
-                        account.setjobTitle(accountObject.getString("Job"));
-                        account.setMail(accountObject.getString("Mail"));
-                        LoginAccountList.add(account);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+            for (int i = 0; i < response.length(); i++) {
+                try {
+                    JSONObject accountObject = response.getJSONObject(i);
+                    GetAccountInfo account = new GetAccountInfo();
+                    account.setName(accountObject.getString("Name"));
+                    account.setPassword(accountObject.getString("Password"));
+                    account.setjobTitle(accountObject.getString("Job"));
+                    account.setMail(accountObject.getString("Mail"));
+                    LoginAccountList.add(account);
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-
             }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
+        }, error -> {
 
-            }
         });
-
         accountqueue.add(accountJsonArray);
-
     }
 
-
-
-
     public void getAccountInfo(View view){
-            accountInput = findViewById(R.id.accountInput);
-            String acc = accountInput.getText().toString();
-            passwordInput = findViewById(R.id.passwordInput);
-            String pass = passwordInput.getText().toString();
-            result = findViewById(R.id.loginresult);
-            String v;
-
-
-
-                MysqlCon getaccount = new MysqlCon();
-            // 讀取資料
-             int  accountlist = getaccount.getData();
-             String q=Integer.toString( accountlist );
-             result.setText(q);
-            /*
+        accountInput = findViewById(R.id.accountInput);
+        String acc = accountInput.getText().toString();
+        passwordInput = findViewById(R.id.passwordInput);
+        String pass = passwordInput.getText().toString();
+        result = findViewById(R.id.loginresult);
+        String v;
+        MysqlCon getaccount = new MysqlCon();
+        // 讀取資料
+        int accountlist = getaccount.getData();
+        String q=Integer.toString( accountlist );
+        result.setText(q);
+        /*
             if(accountlist!=null){
 
                 String accounts[]=accountlist.split( "," );
@@ -194,43 +179,46 @@ public class MainActivity extends AppCompatActivity{
         PasswordList = new String[k];
         JobList = new String[k];
 
-        for(int a=0;a<k;a++){
-            NameList[a]=LoginAccountList.get(a).getName();
-            AccountList[a]=LoginAccountList.get(a).getMail();
-            PasswordList[a]=LoginAccountList.get(a).getPassword();
-            JobList[a]=LoginAccountList.get(a).getjobTitle();
+        for(int a = 0; a < k; a++){
+            NameList[a] = LoginAccountList.get(a).getName();
+            AccountList[a] = LoginAccountList.get(a).getMail();
+            PasswordList[a] = LoginAccountList.get(a).getPassword();
+            JobList[a] = LoginAccountList.get(a).getjobTitle();
         }
 
-        for(int f=0;f<k;f++) { //10原本是count原本是count
+        for(int f = 0; f < k; f++) { //10原本是count原本是count
             account = AccountList[f];
             password = PasswordList[f];
-            name=NameList[f];
-            jobTitle=JobList[f];
-          if(acc.equals( "" )){result.setText( "請輸入帳號" ); break;}
-          else{
-
-                     if (acc.equals(account)){
-                         if(pass.equals( "" )){result.setText( "請輸入密碼" );break;}
-                         else {
-                            if (pass.equals( password )) {
-                                result.setText( name +  "\t\t" +jobTitle + "\t\t\t" + "您好" );
-                                   //跳轉到首頁
-                                Intent registeredPage = new Intent(MainActivity.this,HomePage.class);
-                                registeredPage.putExtra( "name",name );
-                                registeredPage.putExtra( "job",jobTitle );
-                                registeredPage.putExtra( "account",account );
-                                registeredPage.putExtra( "password",password );
-                                startActivity(registeredPage);
-                                break;
-                            }
-                            else {
-                                result.setText( "密碼錯誤" );
-                                break;
-                            }}
-                     }
-                     else {result.setText( "查無此帳號" );}
+            name = NameList[f];
+            jobTitle = JobList[f];
+            if(acc.equals( "" )){
+                result.setText( "請輸入帳號" );
+                break;
+            } else {
+                if (acc.equals(account)){
+                    if(pass.equals( "" )){
+                        result.setText( "請輸入密碼" );
+                        break;
+                    } else {
+                        if (pass.equals( password )) {
+                            result.setText( name +  "\t\t" +jobTitle + "\t\t\t" + "您好" );
+                            //跳轉到首頁
+                            Intent registeredPage = new Intent(MainActivity.this,HomePage.class);
+                            registeredPage.putExtra( "name",name );
+                            registeredPage.putExtra( "job",jobTitle );
+                            registeredPage.putExtra( "account",account );
+                            registeredPage.putExtra( "password",password );
+                            startActivity(registeredPage);
+                            break;
+                        } else {
+                            result.setText( "密碼錯誤" );
+                            break;
+                        }
+                    }
+                } else {
+                    result.setText( "查無此帳號" );
                 }
+            }
         }
     }
-
-        }
+}

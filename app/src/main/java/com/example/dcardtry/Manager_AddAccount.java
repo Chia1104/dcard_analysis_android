@@ -30,6 +30,7 @@ public class Manager_AddAccount extends AppCompatActivity{
     private String Mtxt;
     private TextView result;
     private RadioButton managerbtn;
+    String REGISTER_URL = "http://localhost:13306/registration.php";
     String Name,Job,Account,Password;//接收登入頁面傳過來的資料
     TextView MDM_Tilte;//側邊選單標題 : 姓名+職稱
 
@@ -91,38 +92,30 @@ public class Manager_AddAccount extends AppCompatActivity{
         //set message
         builder.setMessage( "確定新增 : \n"+addAccount+"\n"+addPassword+"\n"+addName+"\n"+addJobTitle+"\n"+Mtxt+"\n"+"?" );
         //Positive yes button
-        builder.setPositiveButton( "確定", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                new Thread(() -> {
-                    // 將資料寫入資料庫
-                    MysqlCon con = new MysqlCon();
-                    con.insertData(addAccount,addPassword,addName,addJobTitle,addAdministratorInput);
+        builder.setPositiveButton( "確定", (dialog, which) -> new Thread(() -> {
+            // 將資料寫入資料庫
+            MysqlCon con = new MysqlCon();
+            con.insertData(addAccount,addPassword,addName,addJobTitle,addAdministratorInput);
 
-                    // 清空 EditText
-                    addAccountInput.post(() -> addAccountInput.setText(""));
-                    addPasswordInput.post(() -> addPasswordInput.setText(""));
-                    addNameInput.post(() -> addNameInput.setText(""));
-                    addJobTitleInput.post(() -> addJobTitleInput.setText(""));
-                    managerbtn.setChecked( false );
+            // 清空 EditText
+            addAccountInput.post(() -> addAccountInput.setText(""));
+            addPasswordInput.post(() -> addPasswordInput.setText(""));
+            addNameInput.post(() -> addNameInput.setText(""));
+            addJobTitleInput.post(() -> addJobTitleInput.setText(""));
+            managerbtn.setChecked( false );
 
-                    // 讀取更新後的資料
-                    //final String updata = con.getData();
+            // 讀取更新後的資料
+            //final String updata = con.getData();
 
-                    //Log.v("OK", updata);
-                    //result.post(() -> result.setText(updata));
+            //Log.v("OK", updata);
+            //result.post(() -> result.setText(updata));
 
-                }).start();
-            }
-        } );
+        }).start());
         //Negative no button
-        builder.setNegativeButton( "取消 ", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                //Dismiss dialog
-                dialog.dismiss();
-            }
-        } );
+        builder.setNegativeButton( "取消 ", (dialog, which) -> {
+            //Dismiss dialog
+            dialog.dismiss();
+        });
         builder.show();
 
     }
@@ -203,9 +196,5 @@ public class Manager_AddAccount extends AppCompatActivity{
         } );
         builder.show();
     }
-
-
-
-
     //側邊選單code End
 }

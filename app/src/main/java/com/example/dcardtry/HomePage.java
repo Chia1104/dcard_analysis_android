@@ -30,11 +30,17 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.dcardtry.SQLconnect.MysqlCon;
+import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
@@ -66,6 +72,7 @@ public class HomePage extends AppCompatActivity {
     private static final String TODAY_DCARD_URL = "https://cguimfinalproject-test.herokuapp.com/getTodayDcard.php";
     private static final String MONTH_DCARD_URL = "https://cguimfinalproject-test.herokuapp.com/getMonthDcard.php";
     private static final String WEEK_DCARD_URL = "https://cguimfinalproject-test.herokuapp.com/getWeekDcard.php";
+    private static final String BARCHART_URL = "https://cguimfinalproject-test.herokuapp.com/groupBarChartData.php";
     private static final String elementToFound_pos = "Positive";
     private static final String elementToFound_neu = "Neutral";
     private static final String elementToFound_neg = "Negative";
@@ -76,12 +83,16 @@ public class HomePage extends AppCompatActivity {
     RecyclerView Article_Summary;
     private  List<Dcard> dcardList;
     List<String> chartValue;
+    List<String> barChartValue;
+    BarChart barChart;
+    BarDataSet barDataSet1, barDataSet2, barDataSet3;
+    ArrayList barEntries;
     private DrawerLayout drawerLayout;
     Timer BannerTimer;
     String Name,Job,Account,Password;//接收登入頁面傳過來的資料
     TextView DM_Tilte;//側邊選單標題 : 姓名+職稱
     TextView MSTitle,MSAccount,MSAverage,MSKey;//本月統計用
-    ProgressBar progressBar1, progressBar2;
+    ProgressBar progressBar1, progressBar2, progressBar3;
     Button getToday_btn, getWeek_btn, getMonth_btn;
     int articleCount = 0, keywordCount = 0;
     float scoreSum = 0, avgScore = 0;
@@ -94,6 +105,7 @@ public class HomePage extends AppCompatActivity {
         setContentView(R.layout.activity_home_page);
         progressBar1 = findViewById(R.id.progressBar1);
         progressBar2 = findViewById(R.id.progressBar2);
+        progressBar3 = findViewById(R.id.progressBar3);
 
         MSTitle=findViewById( R.id.month_static_title );
         MSAccount=findViewById( R.id.articleAmount );
@@ -147,6 +159,8 @@ public class HomePage extends AppCompatActivity {
         DCARD_URL = APR_DCARD_URL;
         loadDcard();
         monthStatic(); //本月概覽
+        barChartValue = new ArrayList<>();
+        loadBarChartValue();
 
         pager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
@@ -360,6 +374,173 @@ public class HomePage extends AppCompatActivity {
         pieChart.setData(pieData);
         pieChart.notifyDataSetChanged();
         pieChart.invalidate();
+    }
+
+    public void loadBarChartValue() {
+        progressBar3.setVisibility(View.VISIBLE);
+        HttpsTrustManager.allowAllSSL();
+        RequestQueue queue = Volley.newRequestQueue(this);
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, BARCHART_URL, null, response -> {
+            try {
+                barChartValue.clear();
+                JSONObject dcardObject = response.getJSONObject(0);
+                barChartValue.add(dcardObject.getString("m0"));
+                barChartValue.add(dcardObject.getString("m0posCount"));
+                barChartValue.add(dcardObject.getString("m0neuCount"));
+                barChartValue.add(dcardObject.getString("m0negCount"));
+                barChartValue.add(dcardObject.getString("m1"));
+                barChartValue.add(dcardObject.getString("m1posCount"));
+                barChartValue.add(dcardObject.getString("m1neuCount"));
+                barChartValue.add(dcardObject.getString("m1negCount"));
+                barChartValue.add(dcardObject.getString("m2"));
+                barChartValue.add(dcardObject.getString("m2posCount"));
+                barChartValue.add(dcardObject.getString("m2neuCount"));
+                barChartValue.add(dcardObject.getString("m2negCount"));
+                barChartValue.add(dcardObject.getString("m3"));
+                barChartValue.add(dcardObject.getString("m3posCount"));
+                barChartValue.add(dcardObject.getString("m3neuCount"));
+                barChartValue.add(dcardObject.getString("m3negCount"));
+                ShowBarChart();
+                progressBar3.setVisibility(View.GONE);
+            } catch (JSONException e) {
+                progressBar3.setVisibility(View.GONE);
+                Toast.makeText(HomePage.this, "資料未更新",Toast.LENGTH_LONG).show();
+                e.printStackTrace();
+            }
+        }, error -> {
+            progressBar3.setVisibility(View.GONE);
+            Toast.makeText(HomePage.this, "資料未更新",Toast.LENGTH_LONG).show();
+            error.printStackTrace();
+        });
+        queue.add(jsonArrayRequest);
+    }
+
+    public void ShowBarChart() {
+        String[] month = new String[]{barChartValue.get(0), barChartValue.get(4), barChartValue.get(8), barChartValue.get(12)};
+        String[] days = new String[]{"4", "3", "2", "1"};
+
+        barChart = findViewById(R.id.bar_chart);
+
+        // creating a new bar data set.
+        barDataSet1 = new BarDataSet(getBarEntriesOne(), "Positive");
+        barDataSet1.setColor(getApplicationContext().getResources().getColor(R.color.posColor));
+        barDataSet2 = new BarDataSet(getBarEntriesTwo(), "Neutral");
+        barDataSet2.setColor(getApplicationContext().getResources().getColor(R.color.neuColor));
+        barDataSet3 = new BarDataSet(getBarEntriesThree(), "Negative");
+        barDataSet3.setColor(getApplicationContext().getResources().getColor(R.color.negColor));
+
+        // below line is to add bar data set to our bar data.
+        BarData data = new BarData(barDataSet1, barDataSet2, barDataSet3);
+
+        // after adding data to our bar data we
+        // are setting that data to our bar chart.
+        barChart.setData(data);
+
+        // below line is to remove description
+        // label of our bar chart.
+        barChart.getDescription().setEnabled(false);
+
+        // below line is to get x axis
+        // of our bar chart.
+        XAxis xAxis = barChart.getXAxis();
+
+        // below line is to set value formatter to our x-axis and
+        // we are adding our days to our x axis.
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(days));
+
+        // below line is to set center axis
+        // labels to our bar chart.
+        xAxis.setCenterAxisLabels(true);
+
+        // below line is to set position
+        // to our x-axis to bottom.
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+
+        // below line is to set granularity
+        // to our x axis labels.
+        xAxis.setGranularity(1);
+
+        // below line is to enable
+        // granularity to our x axis.
+        xAxis.setGranularityEnabled(true);
+
+        // below line is to make our
+        // bar chart as draggable.
+        barChart.setDragEnabled(true);
+
+        // below line is to make visible
+        // range for our bar chart.
+        barChart.setVisibleXRangeMaximum(3);
+
+        // below line is to add bar
+        // space to our chart.
+        float barSpace = 0.05f;
+
+        // below line is use to add group
+        // spacing to our bar chart.
+        float groupSpace = 0.55f;
+
+        // we are setting width of
+        // bar in below line.
+        data.setBarWidth(0.1f);
+
+        // below line is to set minimum
+        // axis to our chart.
+        barChart.getXAxis().setAxisMinimum(0);
+
+        // below line is to
+        // animate our chart.
+        barChart.animate();
+
+        // below line is to group bars
+        // and add spacing to it.
+        barChart.groupBars(0, groupSpace, barSpace);
+
+        // below line is to invalidate
+        // our bar chart.
+        barChart.invalidate();
+    }
+
+    private ArrayList<BarEntry> getBarEntriesOne() {
+
+        // creating a new array list
+        barEntries = new ArrayList<>();
+
+        // adding new entry to our array list with bar
+        // entry and passing x and y axis value to it.
+        barEntries.add(new BarEntry(1f, Float.parseFloat(barChartValue.get(1))));
+        barEntries.add(new BarEntry(2f, Float.parseFloat(barChartValue.get(5))));
+        barEntries.add(new BarEntry(3f, Float.parseFloat(barChartValue.get(9))));
+        barEntries.add(new BarEntry(4f, Float.parseFloat(barChartValue.get(13))));
+        return barEntries;
+    }
+
+    private ArrayList<BarEntry> getBarEntriesTwo() {
+
+        // creating a new array list
+        barEntries = new ArrayList<>();
+
+        // adding new entry to our array list with bar
+        // entry and passing x and y axis value to it.
+        barEntries.add(new BarEntry(1f, Float.parseFloat(barChartValue.get(2))));
+        barEntries.add(new BarEntry(2f, Float.parseFloat(barChartValue.get(6))));
+        barEntries.add(new BarEntry(3f, Float.parseFloat(barChartValue.get(10))));
+        barEntries.add(new BarEntry(4f, Float.parseFloat(barChartValue.get(14))));
+        return barEntries;
+    }
+
+    private ArrayList<BarEntry> getBarEntriesThree() {
+
+        // creating a new array list
+        barEntries = new ArrayList<>();
+
+        // adding new entry to our array list with bar
+        // entry and passing x and y axis value to it.
+        barEntries.add(new BarEntry(1f, Float.parseFloat(barChartValue.get(3))));
+        barEntries.add(new BarEntry(2f, Float.parseFloat(barChartValue.get(7))));
+        barEntries.add(new BarEntry(3f, Float.parseFloat(barChartValue.get(11))));
+        barEntries.add(new BarEntry(4f, Float.parseFloat(barChartValue.get(15))));
+        return barEntries;
     }
 
     //側邊選單code Strat

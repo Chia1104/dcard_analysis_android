@@ -231,7 +231,7 @@
             <LinearLayout
                 android:id="@+id/HomePage_ArticleSummary"
                 android:layout_width="350dp"
-                android:layout_height="420dp"
+                android:layout_height="447dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="30dp"
                 android:background="@drawable/article_summary_border"
@@ -295,15 +295,16 @@
                     </LinearLayout>
                     <!--標題、內容分隔底線可以放這-->
                 </LinearLayout>
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/Article_Summary_RecyclerView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/white" />
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/Article_Summary_RecyclerView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white" />
 
                     <ProgressBar
                         android:id="@+id/progressBar1"
@@ -395,12 +396,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                <com.github.mikephil.charting.charts.PieChart
-                    android:id="@+id/pieChart_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="150pt">
+                    <com.github.mikephil.charting.charts.PieChart
+                        android:id="@+id/pieChart_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="150pt">
 
-                </com.github.mikephil.charting.charts.PieChart>
+                    </com.github.mikephil.charting.charts.PieChart>
+
                     <ProgressBar
                         android:id="@+id/progressBar2"
                         style="?android:attr/progressBarStyleLarge"
@@ -412,6 +414,93 @@
             </LinearLayout>
             <!--ChartSummary_End-->
 
+            <!--BarChart_Start-->
+            <LinearLayout
+                android:id="@+id/HomePage_BarChart"
+                android:layout_width="350dp"
+                android:layout_height="400dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="40dp"
+                android:background="@drawable/article_summary_border"
+                android:orientation="vertical"
+                android:paddingTop="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="horizontal"
+                            android:paddingLeft="10dp"
+                            android:paddingTop="5dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="left|center_vertical"
+                                android:text="分析"
+                                android:textColor="#000000"
+                                android:textSize="28dp"
+                                app:layout_constraintStart_toStartOf="parent">
+
+                            </TextView>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:paddingRight="10dp">
+
+                            <Button
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="right"
+                                android:backgroundTint="@color/BtnBackgroundColor"
+                                android:onClick="ClickChart"
+                                android:text="more" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+                    <!--標題、內容分隔底線可以放這-->
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <com.github.mikephil.charting.charts.BarChart
+                        android:id="@+id/bar_chart"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1" />
+
+                    <ProgressBar
+                        android:id="@+id/progressBar3"
+                        style="?android:attr/progressBarStyleLarge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true" />
+                </RelativeLayout>
+
+            </LinearLayout>
+            <!--BarChart_End-->
 
         </LinearLayout>
     </RelativeLayout>
