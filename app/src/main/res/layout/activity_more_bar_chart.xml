@@ -25,10 +25,10 @@
             android:layout_width="match_parent"
             android:layout_height="150pt" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/bar_chart1"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="150pt" />
 
     </LinearLayout>
 

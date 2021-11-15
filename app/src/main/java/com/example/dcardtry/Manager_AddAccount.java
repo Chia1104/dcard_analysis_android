@@ -30,7 +30,6 @@ public class Manager_AddAccount extends AppCompatActivity{
     private String Mtxt;
     private TextView result;
     private RadioButton managerbtn;
-    String REGISTER_URL = "http://localhost:13306/registration.php";
     String Name,Job,Account,Password;//接收登入頁面傳過來的資料
     TextView MDM_Tilte;//側邊選單標題 : 姓名+職稱
 

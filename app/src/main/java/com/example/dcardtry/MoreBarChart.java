@@ -34,16 +34,11 @@ import java.util.Date;
 import java.util.List;
 
 public class MoreBarChart extends AppCompatActivity {
-    private static final String FULL_BARCHART_URL = "http://192.168.0.104:13306/GetData4.php";
-    private static final String P3M_DCARD_URL = "http://192.168.0.104:13306/p3mDcard.php";
-    List<Dcard> dcardList;
-    List<String> barChartValue;
-    BarChart barChart;
-    BarDataSet barDataSet1, barDataSet2, barDataSet3;
-    ArrayList barEntries;
-    RecyclerView mRecyclerView;
-    Adapter adapter;
-    RecyclerView.LayoutManager mLayoutManager;
+    private static final String FULL_BARCHART_URL = "https://cguimfinalproject-test.herokuapp.com/fullGBChartData.php";
+    List<String> barChartValue, barChartValue1;
+    BarChart barChart, barChart1;
+    BarDataSet barDataSet1, barDataSet2, barDataSet3, bar1DataSet1, bar1DataSet2, bar1DataSet3;
+    ArrayList barEntries, barEntries1;
     ProgressBar progressBar;
 
     @Override
@@ -51,12 +46,10 @@ public class MoreBarChart extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_more_bar_chart);
         progressBar = findViewById(R.id.progressBar);
-        mRecyclerView = findViewById(R.id.recyclerView);
-        dcardList = new ArrayList<>();
         barChartValue = new ArrayList<>();
+        barChartValue1 = new ArrayList<>();
 
         loadBarChartValue();
-        loadDcard();
     }
 
     public void loadBarChartValue() {
@@ -83,6 +76,38 @@ public class MoreBarChart extends AppCompatActivity {
                 barChartValue.add(dcardObject.getString("m3posCount"));
                 barChartValue.add(dcardObject.getString("m3neuCount"));
                 barChartValue.add(dcardObject.getString("m3negCount"));
+                barChartValue.add(dcardObject.getString("m4"));
+                barChartValue.add(dcardObject.getString("m4posCount"));
+                barChartValue.add(dcardObject.getString("m4neuCount"));
+                barChartValue.add(dcardObject.getString("m4negCount"));
+                barChartValue.add(dcardObject.getString("m5"));
+                barChartValue.add(dcardObject.getString("m5posCount"));
+                barChartValue.add(dcardObject.getString("m5neuCount"));
+                barChartValue.add(dcardObject.getString("m5negCount"));
+                barChartValue.add(dcardObject.getString("m6"));
+                barChartValue.add(dcardObject.getString("m6posCount"));
+                barChartValue.add(dcardObject.getString("m6neuCount"));
+                barChartValue.add(dcardObject.getString("m6negCount"));
+                barChartValue.add(dcardObject.getString("m7"));
+                barChartValue.add(dcardObject.getString("m7posCount"));
+                barChartValue.add(dcardObject.getString("m7neuCount"));
+                barChartValue.add(dcardObject.getString("m7negCount"));
+                barChartValue.add(dcardObject.getString("m8"));
+                barChartValue.add(dcardObject.getString("m8posCount"));
+                barChartValue.add(dcardObject.getString("m8neuCount"));
+                barChartValue.add(dcardObject.getString("m8negCount"));
+                barChartValue.add(dcardObject.getString("m9"));
+                barChartValue.add(dcardObject.getString("m9posCount"));
+                barChartValue.add(dcardObject.getString("m9neuCount"));
+                barChartValue.add(dcardObject.getString("m9negCount"));
+                barChartValue.add(dcardObject.getString("m10"));
+                barChartValue.add(dcardObject.getString("m10posCount"));
+                barChartValue.add(dcardObject.getString("m10neuCount"));
+                barChartValue.add(dcardObject.getString("m10negCount"));
+                barChartValue.add(dcardObject.getString("m11"));
+                barChartValue.add(dcardObject.getString("m11posCount"));
+                barChartValue.add(dcardObject.getString("m11neuCount"));
+                barChartValue.add(dcardObject.getString("m11negCount"));
                 ShowBarChart();
                 progressBar.setVisibility(View.GONE);
             } catch (JSONException e) {
@@ -99,7 +124,7 @@ public class MoreBarChart extends AppCompatActivity {
     }
 
     public void ShowBarChart() {
-        String[] month = new String[]{barChartValue.get(0), barChartValue.get(4), barChartValue.get(8), barChartValue.get(12)};
+        String[] month = new String[]{barChartValue.get(0), barChartValue.get(4), barChartValue.get(8), barChartValue.get(12), barChartValue.get(16), barChartValue.get(20), barChartValue.get(24), barChartValue.get(28), barChartValue.get(32), barChartValue.get(36), barChartValue.get(40), barChartValue.get(44)};
         String[] days = new String[]{"4", "3", "2", "1"};
 
         barChart = findViewById(R.id.bar_chart);
@@ -129,7 +154,7 @@ public class MoreBarChart extends AppCompatActivity {
 
         // below line is to set value formatter to our x-axis and
         // we are adding our days to our x axis.
-        xAxis.setValueFormatter(new IndexAxisValueFormatter(days));
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(month));
 
         // below line is to set center axis
         // labels to our bar chart.
@@ -182,23 +207,6 @@ public class MoreBarChart extends AppCompatActivity {
         // below line is to invalidate
         // our bar chart.
         barChart.invalidate();
-
-        barChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
-            @Override
-            public void onValueSelected(Entry e, Highlight h) {
-                e.getData();
-                float nh = (float) (Math.floor(h.getX() * 100.0) / 100.0);
-                String txt = String.valueOf(nh);
-                Toast.makeText(MoreBarChart.this, txt,Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void onNothingSelected() {
-                mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                adapter = new Adapter(getApplicationContext(), dcardList);
-                mRecyclerView.setAdapter(adapter);
-            }
-        });
     }
 
     // array list for first set
@@ -213,6 +221,14 @@ public class MoreBarChart extends AppCompatActivity {
         barEntries.add(new BarEntry(2f, Float.parseFloat(barChartValue.get(5))));
         barEntries.add(new BarEntry(3f, Float.parseFloat(barChartValue.get(9))));
         barEntries.add(new BarEntry(4f, Float.parseFloat(barChartValue.get(13))));
+        barEntries.add(new BarEntry(5f, Float.parseFloat(barChartValue.get(17))));
+        barEntries.add(new BarEntry(6f, Float.parseFloat(barChartValue.get(21))));
+        barEntries.add(new BarEntry(7f, Float.parseFloat(barChartValue.get(25))));
+        barEntries.add(new BarEntry(8f, Float.parseFloat(barChartValue.get(29))));
+        barEntries.add(new BarEntry(9f, Float.parseFloat(barChartValue.get(33))));
+        barEntries.add(new BarEntry(10f, Float.parseFloat(barChartValue.get(37))));
+        barEntries.add(new BarEntry(11f, Float.parseFloat(barChartValue.get(41))));
+        barEntries.add(new BarEntry(12f, Float.parseFloat(barChartValue.get(45))));
         return barEntries;
     }
 
@@ -228,6 +244,14 @@ public class MoreBarChart extends AppCompatActivity {
         barEntries.add(new BarEntry(2f, Float.parseFloat(barChartValue.get(6))));
         barEntries.add(new BarEntry(3f, Float.parseFloat(barChartValue.get(10))));
         barEntries.add(new BarEntry(4f, Float.parseFloat(barChartValue.get(14))));
+        barEntries.add(new BarEntry(5f, Float.parseFloat(barChartValue.get(18))));
+        barEntries.add(new BarEntry(6f, Float.parseFloat(barChartValue.get(22))));
+        barEntries.add(new BarEntry(7f, Float.parseFloat(barChartValue.get(26))));
+        barEntries.add(new BarEntry(8f, Float.parseFloat(barChartValue.get(30))));
+        barEntries.add(new BarEntry(9f, Float.parseFloat(barChartValue.get(34))));
+        barEntries.add(new BarEntry(10f, Float.parseFloat(barChartValue.get(38))));
+        barEntries.add(new BarEntry(11f, Float.parseFloat(barChartValue.get(42))));
+        barEntries.add(new BarEntry(12f, Float.parseFloat(barChartValue.get(46))));
         return barEntries;
     }
 
@@ -242,40 +266,14 @@ public class MoreBarChart extends AppCompatActivity {
         barEntries.add(new BarEntry(2f, Float.parseFloat(barChartValue.get(7))));
         barEntries.add(new BarEntry(3f, Float.parseFloat(barChartValue.get(11))));
         barEntries.add(new BarEntry(4f, Float.parseFloat(barChartValue.get(15))));
+        barEntries.add(new BarEntry(5f, Float.parseFloat(barChartValue.get(19))));
+        barEntries.add(new BarEntry(6f, Float.parseFloat(barChartValue.get(23))));
+        barEntries.add(new BarEntry(7f, Float.parseFloat(barChartValue.get(27))));
+        barEntries.add(new BarEntry(8f, Float.parseFloat(barChartValue.get(31))));
+        barEntries.add(new BarEntry(9f, Float.parseFloat(barChartValue.get(35))));
+        barEntries.add(new BarEntry(10f, Float.parseFloat(barChartValue.get(39))));
+        barEntries.add(new BarEntry(11f, Float.parseFloat(barChartValue.get(43))));
+        barEntries.add(new BarEntry(12f, Float.parseFloat(barChartValue.get(47))));
         return barEntries;
-    }
-
-    public void loadDcard() {
-        HttpsTrustManager.allowAllSSL();
-        RequestQueue queue = Volley.newRequestQueue(this);
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, P3M_DCARD_URL, null, response -> {
-            try {
-                dcardList.clear();
-                for (int i = 0; i < response.length(); i++) {
-                    JSONObject dcardObject = response.getJSONObject(i);
-                    Dcard dcard = new Dcard();
-                    dcard.setSascore(dcardObject.getString("SA_Score"));
-                    dcard.setSaclass(dcardObject.getString("SA_Class"));
-                    dcard.setTitle(dcardObject.getString("Title"));
-                    dcard.setDate(dcardObject.getString("CreatedAt"));
-                    dcard.setContent(dcardObject.getString("Content"));
-                    dcard.setId(dcardObject.getString("Id"));
-                    dcard.setLv1(dcardObject.getString("KeywordLevel1"));
-                    dcard.setLv2(dcardObject.getString("KeywordLevel2"));
-                    dcard.setLv3(dcardObject.getString("KeywordLevel3"));
-                    dcardList.add(dcard);
-                }
-                mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                adapter = new Adapter(getApplicationContext(), dcardList);
-                mRecyclerView.setAdapter(adapter);
-            } catch (JSONException e) {
-                Toast.makeText(MoreBarChart.this, e.getMessage(),Toast.LENGTH_LONG).show();
-                e.printStackTrace();
-            }
-        }, error -> {
-            Toast.makeText(MoreBarChart.this, error.getMessage(),Toast.LENGTH_LONG).show();
-            error.printStackTrace();
-        });
-        queue.add(jsonArrayRequest);
     }
 }

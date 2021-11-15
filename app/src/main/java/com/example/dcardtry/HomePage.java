@@ -68,7 +68,6 @@ public class HomePage extends AppCompatActivity {
     PieChart pieChart;
     String DCARD_URL;
     private static final String APR_DCARD_URL = "https://cguimfinalproject-test.herokuapp.com/GetData5.php";
-    private static final String ALL_DCARD_URL = "https://cguimfinalproject-test.herokuapp.com/getAllDcard.php";
     private static final String TODAY_DCARD_URL = "https://cguimfinalproject-test.herokuapp.com/getTodayDcard.php";
     private static final String MONTH_DCARD_URL = "https://cguimfinalproject-test.herokuapp.com/getMonthDcard.php";
     private static final String WEEK_DCARD_URL = "https://cguimfinalproject-test.herokuapp.com/getWeekDcard.php";
@@ -93,7 +92,6 @@ public class HomePage extends AppCompatActivity {
     TextView DM_Tilte;//側邊選單標題 : 姓名+職稱
     TextView MSTitle,MSAccount,MSAverage,MSKey;//本月統計用
     ProgressBar progressBar1, progressBar2, progressBar3;
-    Button getToday_btn, getWeek_btn, getMonth_btn;
     int articleCount = 0, keywordCount = 0;
     float scoreSum = 0, avgScore = 0;
     TextView twm_txt;
@@ -417,7 +415,7 @@ public class HomePage extends AppCompatActivity {
 
     public void ShowBarChart() {
         String[] month = new String[]{barChartValue.get(0), barChartValue.get(4), barChartValue.get(8), barChartValue.get(12)};
-        String[] days = new String[]{"4", "3", "2", "1"};
+        String[] days = new String[]{"2021-Apr", "2021-Mar", "2021-Feb", "2021-Jan"};
 
         barChart = findViewById(R.id.bar_chart);
 
@@ -575,19 +573,19 @@ public class HomePage extends AppCompatActivity {
     }
 
     public void ClickToday(View view){
-//        twm_txt.setText("today");
+        twm_txt.setText("today");
         DCARD_URL = TODAY_DCARD_URL;
         loadDcard();
     }
 
     public void ClickWeek(View view){
-//        twm_txt.setText("week");
+        twm_txt.setText("week");
         DCARD_URL = WEEK_DCARD_URL;
         loadDcard();
     }
 
     public void ClickMonth(View view){
-//        twm_txt.setText("month");
+        twm_txt.setText("month");
         DCARD_URL = MONTH_DCARD_URL;
         loadDcard();
     }
@@ -595,10 +593,14 @@ public class HomePage extends AppCompatActivity {
     public void ClickChart(View view){
         //Redirect(重定向) activity to chartPage
 //        try {
-//            Intent intent_twm_txt = new Intent(getApplicationContext(), DcardDetailActivity.class);
-//            intent_twm_txt.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//            intent_twm_txt.putExtra("twm", twm_txt.getText().toString());
-//            getApplicationContext().startActivity(intent_twm_txt);
+//            Intent intent = new Intent(getApplicationContext(), DcardDetailActivity.class);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//            intent.putExtra("twm", twm_txt.getText().toString());
+//            intent.putExtra( "name",Name );
+//            intent.putExtra( "job",Job );
+//            intent.putExtra( "account",Account );
+//            intent.putExtra( "password",Password );
+//            getApplicationContext().startActivity(intent);
 //        } catch (Exception e) {
 //            Toast.makeText(HomePage.this, e.getMessage(),Toast.LENGTH_LONG).show();
 //        }
