@@ -105,7 +105,6 @@ public class HomePage extends AppCompatActivity {
         progressBar2 = findViewById(R.id.progressBar2);
         progressBar3 = findViewById(R.id.progressBar3);
 
-        MSTitle=findViewById( R.id.month_static_title );
         MSAccount=findViewById( R.id.articleAmount );
         MSAverage=findViewById( R.id.averagePoint );
         MSKey=findViewById( R.id.keyword_Match_Amount );
@@ -154,9 +153,8 @@ public class HomePage extends AppCompatActivity {
         dcardList = new ArrayList<>();
         chartValue = new ArrayList<>();
 
-        DCARD_URL = APR_DCARD_URL;
+        DCARD_URL = MONTH_DCARD_URL;
         loadDcard();
-        monthStatic(); //本月概覽
         barChartValue = new ArrayList<>();
         loadBarChartValue();
 
@@ -183,55 +181,6 @@ public class HomePage extends AppCompatActivity {
         };
         BannerTimer.schedule(timerTask, 0,20000);
     }
-
-    //本月概覽 開始
-    private void monthStatic(){
-
-      int year,month;
-
-      Calendar getmonth=Calendar.getInstance();
-      getmonth.setTime( new Date() );
-      year=getmonth.get(Calendar.YEAR);
-      //month=getmonth.get(Calendar.MONTH)+1;
-      month=4;
-
-      MSTitle.setText( "本月概覽 ( "+year+" 年 "+month+" 月 )");
-
-        //本月概覽 - 文章數 開始
-//        new Thread(() -> {
-//            MysqlCon getamount = new MysqlCon();
-//            // 讀取資料
-//            final int count = getamount.HomeAmount(year,month);
-//            String v=Integer.toString( count );
-//            Log.v("OK",v);
-//            MSAccount.post(() -> MSAccount.setText(v));
-//        }).start();
-        //本月概覽 - 文章數 結束
-
-        //本月概覽 - 平均情緒分析 開始
-//        new Thread(() -> {
-//            MysqlCon getscore = new MysqlCon();
-//            // 讀取資料
-//            final float AvgScore = getscore.ScoreAnalysis(year,month);
-//            String v=Float.toString( AvgScore );
-//            Log.v("OK",v);
-//            MSAverage.post(() -> MSAverage.setText(v));
-//        }).start();
-        //本月概覽 - 平均情緒分析 結束
-
-        //本月概覽 - 關鍵詞文章數 開始
-//        new Thread(() -> {
-//            MysqlCon getkey = new MysqlCon();
-//            // 讀取資料
-//            final int keywordcount = getkey.KeywordCount(year,month);
-//            String v=Integer.toString( keywordcount );
-//            Log.v("OK",v);
-//            MSKey.post(() -> MSKey.setText(v));
-//        }).start();
-        //本月概覽 - 關鍵詞文章數 結束
-
-    }
-    //本月概覽 結束
 
     private void dotsIndicator() {
         for(int i=0;i<dots.length;i++){
@@ -415,7 +364,6 @@ public class HomePage extends AppCompatActivity {
 
     public void ShowBarChart() {
         String[] month = new String[]{barChartValue.get(0), barChartValue.get(4), barChartValue.get(8), barChartValue.get(12)};
-        String[] days = new String[]{"2021-Apr", "2021-Mar", "2021-Feb", "2021-Jan"};
 
         barChart = findViewById(R.id.bar_chart);
 
@@ -444,7 +392,7 @@ public class HomePage extends AppCompatActivity {
 
         // below line is to set value formatter to our x-axis and
         // we are adding our days to our x axis.
-        xAxis.setValueFormatter(new IndexAxisValueFormatter(days));
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(month));
 
         // below line is to set center axis
         // labels to our bar chart.
@@ -601,10 +549,11 @@ public class HomePage extends AppCompatActivity {
 //            intent.putExtra( "account",Account );
 //            intent.putExtra( "password",Password );
 //            getApplicationContext().startActivity(intent);
+//            itntTWM(this, MPChartPage.class);
 //        } catch (Exception e) {
 //            Toast.makeText(HomePage.this, e.getMessage(),Toast.LENGTH_LONG).show();
 //        }
-//        itntTWM(this, MPChartPage.class);
+
         redirectActivity(this, MPChartPage.class);
     }
 

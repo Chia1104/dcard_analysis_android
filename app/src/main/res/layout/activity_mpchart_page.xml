@@ -7,6 +7,12 @@
     android:layout_height="match_parent"
     tools:context=".MPChartPage">
 
+    <TextView
+        android:id="@+id/tv_twm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="tv_twm" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -14,10 +20,51 @@
         <include layout="@layout/main_toolbar"/>
         <!--HeaderBar_End-->
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/getToday_btn"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|right"
+                android:layout_margin="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
+                android:backgroundTint="@color/BtnBackgroundColor"
+                android:text="本日" />
+
+            <Button
+                android:id="@+id/getWeek_btn"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|right"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
+                android:backgroundTint="@color/BtnBackgroundColor"
+                android:text="本週" />
+
+            <Button
+                android:id="@+id/getMonth_btn"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|right"
+                android:backgroundTint="@color/BtnBackgroundColor"
+                android:text="本月" />
+
+            <Spinner
+                android:id="@+id/spinner1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
         <com.github.mikephil.charting.charts.PieChart
             android:id="@+id/pieChart_view"
             android:layout_width="match_parent"
-            android:layout_height="150pt">
+            android:layout_height="120pt">
 
         </com.github.mikephil.charting.charts.PieChart>
 

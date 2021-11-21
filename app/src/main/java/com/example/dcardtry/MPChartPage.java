@@ -13,7 +13,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,9 +60,10 @@ public class MPChartPage extends AppCompatActivity {
     RecyclerView.LayoutManager mLayoutManager;
     ProgressBar progressBar;
     String Name,Job,Account,Password;//接收登入頁面傳過來的資料
-    TextView DM_Tilte;//側邊選單標題 : 姓名+職稱
+    TextView DM_Tilte, tv_twm;//側邊選單標題 : 姓名+職稱
     private DrawerLayout drawerLayout;
-    String twm;
+    Button getToday_btn, getWeek_btn, getMonth_btn;
+    Spinner spinner1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,20 +97,25 @@ public class MPChartPage extends AppCompatActivity {
         dcardList = new ArrayList<>();
         chartValue = new ArrayList<>();
 
-        twm = getIntent().getStringExtra("twm");
-        if (twm == "today") {
+        DCARD_URL = MONTH_DCARD_URL;
+        loadDcardWithVolley();
+        getToday_btn = findViewById(R.id.getToday_btn);
+        getToday_btn.setOnClickListener(v -> {
             DCARD_URL = TODAY_DCARD_URL;
             loadDcardWithVolley();
-        } else if (twm == "week") {
+        });
+
+        getWeek_btn = findViewById(R.id.getWeek_btn);
+        getWeek_btn.setOnClickListener(v -> {
             DCARD_URL = WEEK_DCARD_URL;
             loadDcardWithVolley();
-        } else if (twm == "month") {
+        });
+
+        getMonth_btn = findViewById(R.id.getMonth_btn);
+        getMonth_btn.setOnClickListener(v -> {
             DCARD_URL = MONTH_DCARD_URL;
             loadDcardWithVolley();
-        } else {
-            DCARD_URL = APR_DCARD_URL;
-            loadDcardWithVolley();
-        }
+        });
     }
 
     private void filter1(String text) {
@@ -122,10 +130,13 @@ public class MPChartPage extends AppCompatActivity {
     }
 
     public void loadDcardWithVolley(){
+        progressBar.setVisibility(View.VISIBLE);
         HttpsTrustManager.allowAllSSL();
         RequestQueue queue = Volley.newRequestQueue(this);
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, DCARD_URL, null, response -> {
             try {
+                dcardList.clear();
+                chartValue.clear();
                 for (int i = 0; i < response.length(); i++) {
                     JSONObject dcardObject = response.getJSONObject(i);
                     Dcard dcard = new Dcard();
@@ -148,6 +159,9 @@ public class MPChartPage extends AppCompatActivity {
                         case "Negative":
                             dcard.setSaclassnum("1.0");
                             break;
+                        case "null":
+                            dcard.setSaclassnum("3.0");
+                            break;
                     }
                     dcardList.add(dcard);
                     chartValue.add(dcardObject.getString("SA_Class"));
@@ -166,11 +180,13 @@ public class MPChartPage extends AppCompatActivity {
                 showPieChart();
                 progressBar.setVisibility(View.GONE);
             } catch (JSONException e) {
-                Toast.makeText(MPChartPage.this, e.getMessage(),Toast.LENGTH_LONG).show();
+                progressBar.setVisibility(View.GONE);
+                Toast.makeText(MPChartPage.this, "文章未更新",Toast.LENGTH_LONG).show();
                 e.printStackTrace();
             }
         }, error -> {
-            Toast.makeText(MPChartPage.this, error.getMessage(),Toast.LENGTH_LONG).show();
+            progressBar.setVisibility(View.GONE);
+            Toast.makeText(MPChartPage.this, "文章未更新",Toast.LENGTH_LONG).show();
             error.printStackTrace();
         });
         queue.add(jsonArrayRequest);
@@ -266,7 +282,7 @@ public class MPChartPage extends AppCompatActivity {
 
     public void ClickChart(View view){
         //Redirect(重定向) activity to chartPage
-        //redirectActivity(this,);
+//        redirectActivity(this,);
     }
 
     public void ClickAccountInfo(View view){

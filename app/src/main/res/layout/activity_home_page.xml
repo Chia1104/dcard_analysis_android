@@ -105,35 +105,31 @@
                     android:layout_margin="0dp"
                     android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/month_static_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="本月概覽"
-                        android:textColor="@color/black"
-                        android:textSize="20dp" />
-
                     <Button
                         android:id="@+id/getToday_btn"
-                        android:layout_width="60dp"
+                        android:layout_width="70dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="right"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
                         android:backgroundTint="@color/BtnBackgroundColor"
                         android:onClick="ClickToday"
                         android:text="本日" />
 
                     <Button
                         android:id="@+id/getWeek_btn"
-                        android:layout_width="60dp"
+                        android:layout_width="70dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="right"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
                         android:backgroundTint="@color/BtnBackgroundColor"
                         android:onClick="ClickWeek"
                         android:text="本週" />
 
                     <Button
                         android:id="@+id/getMonth_btn"
-                        android:layout_width="60dp"
+                        android:layout_width="70dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="right"
                         android:backgroundTint="@color/BtnBackgroundColor"
@@ -170,7 +166,7 @@
                             android:layout_height="wrap_content"
                             android:text="0"
                             android:textColor="@color/black"
-                            android:textSize="45dp" />
+                            android:textSize="40dp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -192,7 +188,6 @@
                             android:id="@+id/averagePoint"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="5dp"
                             android:text="0"
                             android:textColor="@color/black"
                             android:textSize="40dp" />
@@ -219,7 +214,7 @@
                             android:layout_height="wrap_content"
                             android:text="0"
                             android:textColor="@color/black"
-                            android:textSize="45dp" />
+                            android:textSize="40dp" />
                     </LinearLayout>
 
                 </LinearLayout>

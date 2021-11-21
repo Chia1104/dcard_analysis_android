@@ -36,9 +36,9 @@ import java.util.List;
 public class MoreBarChart extends AppCompatActivity {
     private static final String FULL_BARCHART_URL = "https://cguimfinalproject-test.herokuapp.com/fullGBChartData.php";
     List<String> barChartValue, barChartValue1;
-    BarChart barChart, barChart1;
-    BarDataSet barDataSet1, barDataSet2, barDataSet3, bar1DataSet1, bar1DataSet2, bar1DataSet3;
-    ArrayList barEntries, barEntries1;
+    BarChart barChart;
+    BarDataSet barDataSet1, barDataSet2, barDataSet3;
+    ArrayList barEntries;
     ProgressBar progressBar;
 
     @Override
@@ -125,7 +125,6 @@ public class MoreBarChart extends AppCompatActivity {
 
     public void ShowBarChart() {
         String[] month = new String[]{barChartValue.get(0), barChartValue.get(4), barChartValue.get(8), barChartValue.get(12), barChartValue.get(16), barChartValue.get(20), barChartValue.get(24), barChartValue.get(28), barChartValue.get(32), barChartValue.get(36), barChartValue.get(40), barChartValue.get(44)};
-        String[] days = new String[]{"4", "3", "2", "1"};
 
         barChart = findViewById(R.id.bar_chart);
 
