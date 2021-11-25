@@ -17,6 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <include layout="@layout/main_toolbar"/>
         <!--HeaderBar_End-->
 
@@ -54,11 +55,32 @@
                 android:backgroundTint="@color/BtnBackgroundColor"
                 android:text="本月" />
 
-            <Spinner
-                android:id="@+id/spinner1"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
+            <TextView
+                android:id="@+id/date1_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="TextView" />
+
+            <TextView
+                android:id="@+id/date2_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="TextView" />
+
+            <Button
+                android:id="@+id/search_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="查詢" />
         </LinearLayout>
 
         <com.github.mikephil.charting.charts.PieChart
@@ -97,6 +119,7 @@
         <include layout="@layout/drawer_menu" />
 
     </RelativeLayout>
+
     <!--HomePage側邊選單結束-->
 
 </androidx.drawerlayout.widget.DrawerLayout>

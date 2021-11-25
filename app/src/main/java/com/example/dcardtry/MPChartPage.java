@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -34,7 +35,9 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -45,10 +48,10 @@ public class MPChartPage extends AppCompatActivity {
 
     PieChart pieChart;
     String DCARD_URL;
-    private static final String APR_DCARD_URL = "https://cguimfinalproject-test.herokuapp.com/GetData5.php";
-    private static final String TODAY_DCARD_URL = "https://cguimfinalproject-test.herokuapp.com/getTodayDcard.php";
-    private static final String MONTH_DCARD_URL = "https://cguimfinalproject-test.herokuapp.com/getMonthDcard.php";
-    private static final String WEEK_DCARD_URL = "https://cguimfinalproject-test.herokuapp.com/getWeekDcard.php";
+    private static final String UPDATE_DCARD_URL = "https://fathomless-fjord-03751.herokuapp.com/date/";
+    private static final String TODAY_DCARD_URL = "https://fathomless-fjord-03751.herokuapp.com/date/today";
+    private static final String MONTH_DCARD_URL = "https://fathomless-fjord-03751.herokuapp.com/date/month";
+    private static final String WEEK_DCARD_URL = "https://fathomless-fjord-03751.herokuapp.com/date/week";
     private static final String elementToFound_pos = "Positive";
     private static final String elementToFound_neu = "Neutral";
     private static final String elementToFound_neg = "Negative";
@@ -59,11 +62,10 @@ public class MPChartPage extends AppCompatActivity {
     Adapter adapter;
     RecyclerView.LayoutManager mLayoutManager;
     ProgressBar progressBar;
-    String Name,Job,Account,Password;//接收登入頁面傳過來的資料
-    TextView DM_Tilte, tv_twm;//側邊選單標題 : 姓名+職稱
+    String Name,Job,Account,Password, date1, date2;//接收登入頁面傳過來的資料
+    TextView DM_Tilte, tv_twm, date1_txt, date2_txt;//側邊選單標題 : 姓名+職稱
     private DrawerLayout drawerLayout;
-    Button getToday_btn, getWeek_btn, getMonth_btn;
-    Spinner spinner1;
+    Button getToday_btn, getWeek_btn, getMonth_btn, search_btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +95,20 @@ public class MPChartPage extends AppCompatActivity {
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
+
+        date1_txt = findViewById(R.id.date1_txt);
+        date1_txt.setOnClickListener(v -> {
+            date1Picker();
+        });
+        date2_txt = findViewById(R.id.date2_txt);
+        date2_txt.setOnClickListener(v -> {
+            date2Picker();
+        });
+        search_btn = findViewById(R.id.search_btn);
+        search_btn.setOnClickListener(v -> {
+            updateDcard();
+        });
+        nowMonth();
 
         dcardList = new ArrayList<>();
         chartValue = new ArrayList<>();
@@ -134,6 +150,72 @@ public class MPChartPage extends AppCompatActivity {
         HttpsTrustManager.allowAllSSL();
         RequestQueue queue = Volley.newRequestQueue(this);
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, DCARD_URL, null, response -> {
+            try {
+                dcardList.clear();
+                chartValue.clear();
+                for (int i = 0; i < response.length(); i++) {
+                    JSONObject dcardObject = response.getJSONObject(i);
+                    Dcard dcard = new Dcard();
+                    dcard.setSascore(dcardObject.getString("SA_Score"));
+                    dcard.setSaclass(dcardObject.getString("SA_Class"));
+                    dcard.setTitle(dcardObject.getString("Title"));
+                    dcard.setDate(dcardObject.getString("CreatedAt"));
+                    dcard.setContent(dcardObject.getString("Content"));
+                    dcard.setId(dcardObject.getString("Id"));
+                    dcard.setLv1(dcardObject.getString("KeywordLevel1"));
+                    dcard.setLv2(dcardObject.getString("KeywordLevel2"));
+                    dcard.setLv3(dcardObject.getString("KeywordLevel3"));
+                    switch (dcardObject.getString("SA_Class")){
+                        case "Positive":
+                            dcard.setSaclassnum("2.0");
+                            break;
+                        case "Neutral":
+                            dcard.setSaclassnum("0.0");
+                            break;
+                        case "Negative":
+                            dcard.setSaclassnum("1.0");
+                            break;
+                        case "null":
+                            dcard.setSaclassnum("3.0");
+                            break;
+                    }
+                    dcardList.add(dcard);
+                    chartValue.add(dcardObject.getString("SA_Class"));
+                }
+                mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                adapter = new Adapter(getApplicationContext(), dcardList);
+                mRecyclerView.setAdapter(adapter);
+                int posCount = Collections.frequency(chartValue, elementToFound_pos);
+                int neuCount = Collections.frequency(chartValue, elementToFound_neu);
+                int negCount = Collections.frequency(chartValue, elementToFound_neg);
+
+                pos = posCount;
+                neu = neuCount;
+                neg = negCount;
+
+                showPieChart();
+                progressBar.setVisibility(View.GONE);
+            } catch (JSONException e) {
+                progressBar.setVisibility(View.GONE);
+                Toast.makeText(MPChartPage.this, "文章未更新",Toast.LENGTH_LONG).show();
+                e.printStackTrace();
+            }
+        }, error -> {
+            progressBar.setVisibility(View.GONE);
+            Toast.makeText(MPChartPage.this, "文章未更新",Toast.LENGTH_LONG).show();
+            error.printStackTrace();
+        });
+        queue.add(jsonArrayRequest);
+    }
+
+    public void updateDcard(){
+        date1 = date1_txt.getText().toString();
+        date2 = date2_txt.getText().toString();
+        DCARD_URL = UPDATE_DCARD_URL;
+        progressBar.setVisibility(View.VISIBLE);
+        HttpsTrustManager.allowAllSSL();
+        RequestQueue queue = Volley.newRequestQueue(this);
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, DCARD_URL + date1 + "/" + date2, null, response -> {
             try {
                 dcardList.clear();
                 chartValue.clear();
@@ -247,6 +329,62 @@ public class MPChartPage extends AppCompatActivity {
                 mRecyclerView.setAdapter(adapter);
             }
         });
+    }
+
+    public void nowMonth() {
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat m0d1Format = new SimpleDateFormat("yyyy-MM");
+        SimpleDateFormat m0d31Format = new SimpleDateFormat("yyyy-MM-dd");
+        date1_txt.setText(m0d1Format.format(calendar.getTime()) + "-01");
+        date2_txt.setText(m0d31Format.format(calendar.getTime()));
+    }
+
+    public void date1Picker(){
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        new DatePickerDialog(this, (view, year1, month1, day1) -> {
+            month1 += 1;
+            String month2, day2;
+            if (month1 < 10) {
+                month2 = "0";
+            } else {
+                month2 = "";
+            }
+            if (day1 < 10) {
+                day2 = "0";
+            } else {
+                day2 = "";
+            }
+            String dateTime = year1 +"-"+ month2 + month1 +"-"+ day2 + day1;
+            date1_txt.setText(dateTime);
+        }, year, month, day).show();
+    }
+
+    public void date2Picker(){
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        new DatePickerDialog(this, (view, year1, month1, day1) -> {
+            month1 += 1;
+            String month2, day2;
+            if (month1 < 10) {
+                month2 = "0";
+            } else {
+                month2 = "";
+            }
+            if (day1 < 10) {
+                day2 = "0";
+            } else {
+                day2 = "";
+            }
+            String dateTime = year1 +"-"+ month2 + month1 +"-"+ day2 + day1;
+            date2_txt.setText(dateTime);
+        }, year, month, day).show();
     }
 
     //側邊選單code Strat

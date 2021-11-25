@@ -67,11 +67,10 @@ public class HomePage extends AppCompatActivity {
     ViewPager2 pager2;
     PieChart pieChart;
     String DCARD_URL;
-    private static final String APR_DCARD_URL = "https://cguimfinalproject-test.herokuapp.com/GetData5.php";
-    private static final String TODAY_DCARD_URL = "https://cguimfinalproject-test.herokuapp.com/getTodayDcard.php";
-    private static final String MONTH_DCARD_URL = "https://cguimfinalproject-test.herokuapp.com/getMonthDcard.php";
-    private static final String WEEK_DCARD_URL = "https://cguimfinalproject-test.herokuapp.com/getWeekDcard.php";
-    private static final String BARCHART_URL = "https://cguimfinalproject-test.herokuapp.com/groupBarChartData.php";
+    private static final String TODAY_DCARD_URL = "https://fathomless-fjord-03751.herokuapp.com/date/today";
+    private static final String MONTH_DCARD_URL = "https://fathomless-fjord-03751.herokuapp.com/date/month";
+    private static final String WEEK_DCARD_URL = "https://fathomless-fjord-03751.herokuapp.com/date/week";
+    private static final String BARCHART_URL = "https://fathomless-fjord-03751.herokuapp.com/GBChart4Data";
     private static final String elementToFound_pos = "Positive";
     private static final String elementToFound_neu = "Neutral";
     private static final String elementToFound_neg = "Negative";
@@ -214,7 +213,8 @@ public class HomePage extends AppCompatActivity {
         progressBar1.setVisibility(View.VISIBLE);
         progressBar2.setVisibility(View.VISIBLE);
         HttpsTrustManager.allowAllSSL();
-        RequestQueue queue = Volley.newRequestQueue(this);
+        RequestQueue queue = MySingleton.getInstance(this.getApplicationContext()).
+                getRequestQueue();
         @SuppressLint("SetTextI18n") JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, DCARD_URL, null, response -> {
             try {
                 dcardList.clear();
@@ -279,6 +279,7 @@ public class HomePage extends AppCompatActivity {
             progressBar2.setVisibility(View.GONE);
             Toast.makeText(HomePage.this, "文章未更新",Toast.LENGTH_LONG).show();
         });
+        MySingleton.getInstance(this).addToRequestQueue(jsonArrayRequest);
         queue.add(jsonArrayRequest);
     }
 
@@ -326,7 +327,8 @@ public class HomePage extends AppCompatActivity {
     public void loadBarChartValue() {
         progressBar3.setVisibility(View.VISIBLE);
         HttpsTrustManager.allowAllSSL();
-        RequestQueue queue = Volley.newRequestQueue(this);
+        RequestQueue queue = MySingleton.getInstance(this.getApplicationContext()).
+                getRequestQueue();
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, BARCHART_URL, null, response -> {
             try {
                 barChartValue.clear();
@@ -359,6 +361,7 @@ public class HomePage extends AppCompatActivity {
             Toast.makeText(HomePage.this, "資料未更新",Toast.LENGTH_LONG).show();
             error.printStackTrace();
         });
+        MySingleton.getInstance(this).addToRequestQueue(jsonArrayRequest);
         queue.add(jsonArrayRequest);
     }
 

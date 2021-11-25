@@ -19,10 +19,15 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Cache;
+import com.android.volley.Network;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.BasicNetwork;
+import com.android.volley.toolbox.DiskBasedCache;
+import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 
@@ -38,9 +43,10 @@ public class ArticlePage extends AppCompatActivity {
     private  List<Dcard> dcardList;
     RecyclerView ArticleRecyclerview;
     Adapter adapter;
-    private static final String DCARD_URL = "https://cguimfinalproject-test.herokuapp.com/getAllDcard.php";
+    private static final String DCARD_URL = "https://fathomless-fjord-03751.herokuapp.com/getAllDcard";
+    private static final String UPDATE_DCARD_URL = "https://fathomless-fjord-03751.herokuapp.com/getAllDcard/before/";
     private DrawerLayout drawerLayout;
-    String Name,Job,Account,Password;//接收帳號相關資料
+    String Name,Job,Account,Password, rvitemId;//接收帳號相關資料
     TextView DM_Tilte;//側邊選單標題 : 姓名+職稱
     ProgressBar progressBar;
     EditText edtxt;
@@ -77,6 +83,7 @@ public class ArticlePage extends AppCompatActivity {
         ArticleRecyclerview = findViewById(R.id.ArticlePage_RecyclerView);
         dcardList = new ArrayList<>();
         AP_LoadDcard();
+        updateDcard();
 
         //取得傳遞過來的資料
         Intent intent = this.getIntent();
@@ -106,7 +113,8 @@ public class ArticlePage extends AppCompatActivity {
 
     private void AP_LoadDcard(){
         HttpsTrustManager.allowAllSSL();
-        RequestQueue queue = Volley.newRequestQueue(this);
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, DCARD_URL, null, response -> {
             try {
                 for (int i = 0; i < response.length(); i++) {
@@ -133,6 +141,9 @@ public class ArticlePage extends AppCompatActivity {
                             break;
                     }
                     dcardList.add(dcard);
+                    if (i == 29) {
+                        rvitemId = dcardObject.getString("Id");
+                    }
                 }
                 ArticleRecyclerview.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                 adapter = new Adapter(getApplicationContext(), dcardList);
@@ -146,7 +157,66 @@ public class ArticlePage extends AppCompatActivity {
             Toast.makeText(ArticlePage.this, error.getMessage(),Toast.LENGTH_LONG).show();
             error.printStackTrace();
         });
-        queue.add(jsonArrayRequest);
+        requestQueue.add(jsonArrayRequest);
+    }
+
+    private void updateDcard(){
+        ArticleRecyclerview.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                if (!recyclerView.canScrollVertically(1)) {
+//                    Toast.makeText(ArticlePage.this, "Last" + rvitemId, Toast.LENGTH_LONG).show();
+                    progressBar.setVisibility(View.VISIBLE);
+                    HttpsTrustManager.allowAllSSL();
+                    RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+                    JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, UPDATE_DCARD_URL + rvitemId, null, response -> {
+                        try {
+                            for (int i = 0; i < response.length(); i++) {
+                                JSONObject dcardObject = response.getJSONObject(i);
+                                Dcard dcard = new Dcard();
+                                dcard.setSascore(dcardObject.getString("SA_Score"));
+                                dcard.setSaclass(dcardObject.getString("SA_Class"));
+                                dcard.setTitle(dcardObject.getString("Title"));
+                                dcard.setDate(dcardObject.getString("CreatedAt"));
+                                dcard.setContent(dcardObject.getString("Content"));
+                                dcard.setId(dcardObject.getString("Id"));
+                                dcard.setLv1(dcardObject.getString("KeywordLevel1"));
+                                dcard.setLv2(dcardObject.getString("KeywordLevel2"));
+                                dcard.setLv3(dcardObject.getString("KeywordLevel3"));
+                                switch (dcardObject.getString("SA_Class")){
+                                    case "Positive":
+                                        dcard.setSaclassnum("2.0");
+                                        break;
+                                    case "Neutral":
+                                        dcard.setSaclassnum("0.0");
+                                        break;
+                                    case "Negative":
+                                        dcard.setSaclassnum("1.0");
+                                        break;
+                                }
+                                dcardList.add(dcard);
+                                if (i == 29) {
+                                    rvitemId = dcardObject.getString("Id");
+                                }
+                            }
+                            ArticleRecyclerview.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                            adapter = new Adapter(getApplicationContext(), dcardList);
+                            ArticleRecyclerview.setAdapter(adapter);
+                            progressBar.setVisibility(View.GONE);
+                        } catch (JSONException e) {
+                            Toast.makeText(ArticlePage.this, e.getMessage(),Toast.LENGTH_LONG).show();
+                            e.printStackTrace();
+                        }
+                    }, error -> {
+                        Toast.makeText(ArticlePage.this, error.getMessage(),Toast.LENGTH_LONG).show();
+                        error.printStackTrace();
+                    });
+                    requestQueue.add(jsonArrayRequest);
+                }
+            }
+        });
     }
 
     //側邊選單code Strat

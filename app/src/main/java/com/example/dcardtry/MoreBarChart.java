@@ -34,7 +34,7 @@ import java.util.Date;
 import java.util.List;
 
 public class MoreBarChart extends AppCompatActivity {
-    private static final String FULL_BARCHART_URL = "https://cguimfinalproject-test.herokuapp.com/fullGBChartData.php";
+    private static final String FULL_BARCHART_URL = "https://fathomless-fjord-03751.herokuapp.com/GBChart12Data";
     List<String> barChartValue, barChartValue1;
     BarChart barChart;
     BarDataSet barDataSet1, barDataSet2, barDataSet3;
@@ -55,7 +55,8 @@ public class MoreBarChart extends AppCompatActivity {
     public void loadBarChartValue() {
         progressBar.setVisibility(View.VISIBLE);
         HttpsTrustManager.allowAllSSL();
-        RequestQueue queue = Volley.newRequestQueue(this);
+        RequestQueue queue = MySingleton.getInstance(this.getApplicationContext()).
+                getRequestQueue();
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, FULL_BARCHART_URL, null, response -> {
             try {
                 barChartValue.clear();
@@ -112,14 +113,15 @@ public class MoreBarChart extends AppCompatActivity {
                 progressBar.setVisibility(View.GONE);
             } catch (JSONException e) {
                 progressBar.setVisibility(View.GONE);
-                Toast.makeText(MoreBarChart.this, e.getMessage(),Toast.LENGTH_LONG).show();
+                Toast.makeText(MoreBarChart.this, "資料未更新",Toast.LENGTH_LONG).show();
                 e.printStackTrace();
             }
         }, error -> {
             progressBar.setVisibility(View.GONE);
-            Toast.makeText(MoreBarChart.this, error.getMessage(),Toast.LENGTH_LONG).show();
+            Toast.makeText(MoreBarChart.this, "資料未更新",Toast.LENGTH_LONG).show();
             error.printStackTrace();
         });
+        MySingleton.getInstance(this).addToRequestQueue(jsonArrayRequest);
         queue.add(jsonArrayRequest);
     }
 
