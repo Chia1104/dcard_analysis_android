@@ -11,8 +11,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,59 +18,48 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Cache;
-import com.android.volley.Network;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.BasicNetwork;
-import com.android.volley.toolbox.DiskBasedCache;
-import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-public class ArticlePage extends AppCompatActivity {
-    private  List<Dcard> dcardList;
+public class SearchArticlePage extends AppCompatActivity {
+    private List<Dcard> dcardList;
     RecyclerView ArticleRecyclerview;
     Adapter adapter;
-    private static final String DCARD_URL = "https://fathomless-fjord-03751.herokuapp.com/getAllDcard";
-    private static final String UPDATE_DCARD_URL = "https://fathomless-fjord-03751.herokuapp.com/getAllDcard/before/";
     private static final String SEARCH_DCARD_URL = "https://fathomless-fjord-03751.herokuapp.com/getAllDcard/search/";
     private DrawerLayout drawerLayout;
-    String Name,Job,Account,Password, rvitemId, searchContent;//接收帳號相關資料
+    String Name, Job, Account, Password, searchContent;//接收帳號相關資料
     TextView DM_Tilte;//側邊選單標題 : 姓名+職稱
     ProgressBar progressBar;
+    EditText edtxt;
     Button searchArticle_btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate( savedInstanceState );
-        setContentView( R.layout.activity_article_page );
-        //設定隱藏標題
-        getSupportActionBar().hide();
-        //設定隱藏狀態
-        getWindow().getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_FULLSCREEN);
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_search_article_page);
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerlayout);
 
+        edtxt = findViewById(R.id.search_EdText);
+
+        progressBar = findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.GONE);
         searchArticle_btn = findViewById(R.id.searchArticle_btn);
         searchArticle_btn.setOnClickListener(v -> {
-            redirectActivity(this, SearchArticlePage.class);
+            searchContent = edtxt.getText().toString();
+            searchDcard();
         });
 
         ArticleRecyclerview = findViewById(R.id.ArticlePage_RecyclerView);
         dcardList = new ArrayList<>();
-        AP_LoadDcard();
-        updateDcard();
 
         //取得傳遞過來的資料
         Intent intent = this.getIntent();
@@ -84,15 +71,16 @@ public class ArticlePage extends AppCompatActivity {
         //加上側邊選單姓名、職稱
         DM_Tilte=findViewById( R.id.drawer_menu_title );
         DM_Tilte.setText( "\t"+Name+"\n"+Job+"\t\t 您好" );
-        progressBar = findViewById(R.id.progressBar);
     }
 
-    private void AP_LoadDcard(){
-//        progressBar.setVisibility(View.VISIBLE);
+    private void searchDcard() {
+
         HttpsTrustManager.allowAllSSL();
         RequestQueue requestQueue = Volley.newRequestQueue(this);
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, DCARD_URL, null, response -> {
+        progressBar.setVisibility(View.VISIBLE);
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, SEARCH_DCARD_URL + searchContent, null, response -> {
             try {
+                dcardList.clear();
                 for (int i = 0; i < response.length(); i++) {
                     JSONObject dcardObject = response.getJSONObject(i);
                     Dcard dcard = new Dcard();
@@ -106,9 +94,6 @@ public class ArticlePage extends AppCompatActivity {
                     dcard.setLv2(dcardObject.getString("KeywordLevel2"));
                     dcard.setLv3(dcardObject.getString("KeywordLevel3"));
                     dcardList.add(dcard);
-                    if (i == 29) {
-                        rvitemId = dcardObject.getString("Id");
-                    }
                 }
                 ArticleRecyclerview.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                 adapter = new Adapter(getApplicationContext(), dcardList);
@@ -116,64 +101,15 @@ public class ArticlePage extends AppCompatActivity {
                 progressBar.setVisibility(View.GONE);
             } catch (JSONException e) {
                 progressBar.setVisibility(View.GONE);
-                Toast.makeText(ArticlePage.this, "" + e.getMessage(),Toast.LENGTH_LONG).show();
+                Toast.makeText(SearchArticlePage.this, "" + e.getMessage(),Toast.LENGTH_LONG).show();
                 e.printStackTrace();
             }
         }, error -> {
             progressBar.setVisibility(View.GONE);
-            Toast.makeText(ArticlePage.this, "" + error.getMessage(),Toast.LENGTH_LONG).show();
+            Toast.makeText(SearchArticlePage.this, "" + error.getMessage(),Toast.LENGTH_LONG).show();
             error.printStackTrace();
         });
         requestQueue.add(jsonArrayRequest);
-    }
-
-    private void updateDcard(){
-        ArticleRecyclerview.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-
-                if (!recyclerView.canScrollVertically(1)) {
-                    progressBar.setVisibility(View.VISIBLE);
-                    HttpsTrustManager.allowAllSSL();
-                    RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-                    JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, UPDATE_DCARD_URL + rvitemId, null, response -> {
-                        try {
-                            for (int i = 0; i < response.length(); i++) {
-                                JSONObject dcardObject = response.getJSONObject(i);
-                                Dcard dcard = new Dcard();
-                                dcard.setSascore(dcardObject.getString("SA_Score"));
-                                dcard.setSaclass(dcardObject.getString("SA_Class"));
-                                dcard.setTitle(dcardObject.getString("Title"));
-                                dcard.setDate(dcardObject.getString("CreatedAt"));
-                                dcard.setContent(dcardObject.getString("Content"));
-                                dcard.setId(dcardObject.getString("Id"));
-                                dcard.setLv1(dcardObject.getString("KeywordLevel1"));
-                                dcard.setLv2(dcardObject.getString("KeywordLevel2"));
-                                dcard.setLv3(dcardObject.getString("KeywordLevel3"));
-                                dcardList.add(dcard);
-                                if (i == 29) {
-                                    rvitemId = dcardObject.getString("Id");
-                                }
-                            }
-                            ArticleRecyclerview.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                            adapter = new Adapter(getApplicationContext(), dcardList);
-                            ArticleRecyclerview.setAdapter(adapter);
-                            progressBar.setVisibility(View.GONE);
-                        } catch (JSONException e) {
-                            progressBar.setVisibility(View.GONE);
-                            Toast.makeText(ArticlePage.this, "" + e.getMessage(),Toast.LENGTH_LONG).show();
-                            e.printStackTrace();
-                        }
-                    }, error -> {
-                        progressBar.setVisibility(View.GONE);
-                        Toast.makeText(ArticlePage.this, "" + error.getMessage(),Toast.LENGTH_LONG).show();
-                        error.printStackTrace();
-                    });
-                    requestQueue.add(jsonArrayRequest);
-                }
-            }
-        });
     }
 
     //側邊選單code Strat
@@ -271,5 +207,4 @@ public class ArticlePage extends AppCompatActivity {
         closeDrawer(drawerLayout);
     }
     //側邊選單code End
-
 }
