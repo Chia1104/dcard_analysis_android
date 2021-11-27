@@ -60,55 +60,11 @@ public class MoreBarChart extends AppCompatActivity {
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, FULL_BARCHART_URL, null, response -> {
             try {
                 barChartValue.clear();
-                JSONObject dcardObject = response.getJSONObject(0);
-                barChartValue.add(dcardObject.getString("m0"));
-                barChartValue.add(dcardObject.getString("m0posCount"));
-                barChartValue.add(dcardObject.getString("m0neuCount"));
-                barChartValue.add(dcardObject.getString("m0negCount"));
-                barChartValue.add(dcardObject.getString("m1"));
-                barChartValue.add(dcardObject.getString("m1posCount"));
-                barChartValue.add(dcardObject.getString("m1neuCount"));
-                barChartValue.add(dcardObject.getString("m1negCount"));
-                barChartValue.add(dcardObject.getString("m2"));
-                barChartValue.add(dcardObject.getString("m2posCount"));
-                barChartValue.add(dcardObject.getString("m2neuCount"));
-                barChartValue.add(dcardObject.getString("m2negCount"));
-                barChartValue.add(dcardObject.getString("m3"));
-                barChartValue.add(dcardObject.getString("m3posCount"));
-                barChartValue.add(dcardObject.getString("m3neuCount"));
-                barChartValue.add(dcardObject.getString("m3negCount"));
-                barChartValue.add(dcardObject.getString("m4"));
-                barChartValue.add(dcardObject.getString("m4posCount"));
-                barChartValue.add(dcardObject.getString("m4neuCount"));
-                barChartValue.add(dcardObject.getString("m4negCount"));
-                barChartValue.add(dcardObject.getString("m5"));
-                barChartValue.add(dcardObject.getString("m5posCount"));
-                barChartValue.add(dcardObject.getString("m5neuCount"));
-                barChartValue.add(dcardObject.getString("m5negCount"));
-                barChartValue.add(dcardObject.getString("m6"));
-                barChartValue.add(dcardObject.getString("m6posCount"));
-                barChartValue.add(dcardObject.getString("m6neuCount"));
-                barChartValue.add(dcardObject.getString("m6negCount"));
-                barChartValue.add(dcardObject.getString("m7"));
-                barChartValue.add(dcardObject.getString("m7posCount"));
-                barChartValue.add(dcardObject.getString("m7neuCount"));
-                barChartValue.add(dcardObject.getString("m7negCount"));
-                barChartValue.add(dcardObject.getString("m8"));
-                barChartValue.add(dcardObject.getString("m8posCount"));
-                barChartValue.add(dcardObject.getString("m8neuCount"));
-                barChartValue.add(dcardObject.getString("m8negCount"));
-                barChartValue.add(dcardObject.getString("m9"));
-                barChartValue.add(dcardObject.getString("m9posCount"));
-                barChartValue.add(dcardObject.getString("m9neuCount"));
-                barChartValue.add(dcardObject.getString("m9negCount"));
-                barChartValue.add(dcardObject.getString("m10"));
-                barChartValue.add(dcardObject.getString("m10posCount"));
-                barChartValue.add(dcardObject.getString("m10neuCount"));
-                barChartValue.add(dcardObject.getString("m10negCount"));
-                barChartValue.add(dcardObject.getString("m11"));
-                barChartValue.add(dcardObject.getString("m11posCount"));
-                barChartValue.add(dcardObject.getString("m11neuCount"));
-                barChartValue.add(dcardObject.getString("m11negCount"));
+                for (int i = 0; i < response.length(); i++) {
+                    JSONObject dcardObject = response.getJSONObject(i);
+                    barChartValue.add(dcardObject.getString("Count"));
+                    barChartValue.add(dcardObject.getString("newDate"));
+                }
                 ShowBarChart();
                 progressBar.setVisibility(View.GONE);
             } catch (JSONException e) {
@@ -126,7 +82,7 @@ public class MoreBarChart extends AppCompatActivity {
     }
 
     public void ShowBarChart() {
-        String[] month = new String[]{barChartValue.get(0), barChartValue.get(4), barChartValue.get(8), barChartValue.get(12), barChartValue.get(16), barChartValue.get(20), barChartValue.get(24), barChartValue.get(28), barChartValue.get(32), barChartValue.get(36), barChartValue.get(40), barChartValue.get(44)};
+        String[] month = new String[]{barChartValue.get(1), barChartValue.get(3), barChartValue.get(5), barChartValue.get(7), barChartValue.get(9), barChartValue.get(11), barChartValue.get(13), barChartValue.get(15), barChartValue.get(17), barChartValue.get(19), barChartValue.get(21), barChartValue.get(23)};
 
         barChart = findViewById(R.id.bar_chart);
 
@@ -218,18 +174,18 @@ public class MoreBarChart extends AppCompatActivity {
 
         // adding new entry to our array list with bar
         // entry and passing x and y axis value to it.
-        barEntries.add(new BarEntry(1f, Float.parseFloat(barChartValue.get(1))));
-        barEntries.add(new BarEntry(2f, Float.parseFloat(barChartValue.get(5))));
-        barEntries.add(new BarEntry(3f, Float.parseFloat(barChartValue.get(9))));
-        barEntries.add(new BarEntry(4f, Float.parseFloat(barChartValue.get(13))));
-        barEntries.add(new BarEntry(5f, Float.parseFloat(barChartValue.get(17))));
-        barEntries.add(new BarEntry(6f, Float.parseFloat(barChartValue.get(21))));
-        barEntries.add(new BarEntry(7f, Float.parseFloat(barChartValue.get(25))));
-        barEntries.add(new BarEntry(8f, Float.parseFloat(barChartValue.get(29))));
-        barEntries.add(new BarEntry(9f, Float.parseFloat(barChartValue.get(33))));
-        barEntries.add(new BarEntry(10f, Float.parseFloat(barChartValue.get(37))));
-        barEntries.add(new BarEntry(11f, Float.parseFloat(barChartValue.get(41))));
-        barEntries.add(new BarEntry(12f, Float.parseFloat(barChartValue.get(45))));
+        barEntries.add(new BarEntry(1f, Float.parseFloat(barChartValue.get(0))));
+        barEntries.add(new BarEntry(2f, Float.parseFloat(barChartValue.get(2))));
+        barEntries.add(new BarEntry(3f, Float.parseFloat(barChartValue.get(4))));
+        barEntries.add(new BarEntry(4f, Float.parseFloat(barChartValue.get(6))));
+        barEntries.add(new BarEntry(5f, Float.parseFloat(barChartValue.get(8))));
+        barEntries.add(new BarEntry(6f, Float.parseFloat(barChartValue.get(10))));
+        barEntries.add(new BarEntry(7f, Float.parseFloat(barChartValue.get(12))));
+        barEntries.add(new BarEntry(8f, Float.parseFloat(barChartValue.get(14))));
+        barEntries.add(new BarEntry(9f, Float.parseFloat(barChartValue.get(16))));
+        barEntries.add(new BarEntry(10f, Float.parseFloat(barChartValue.get(18))));
+        barEntries.add(new BarEntry(11f, Float.parseFloat(barChartValue.get(20))));
+        barEntries.add(new BarEntry(12f, Float.parseFloat(barChartValue.get(22))));
         return barEntries;
     }
 
@@ -241,17 +197,17 @@ public class MoreBarChart extends AppCompatActivity {
 
         // adding new entry to our array list with bar
         // entry and passing x and y axis value to it.
-        barEntries.add(new BarEntry(1f, Float.parseFloat(barChartValue.get(2))));
-        barEntries.add(new BarEntry(2f, Float.parseFloat(barChartValue.get(6))));
-        barEntries.add(new BarEntry(3f, Float.parseFloat(barChartValue.get(10))));
-        barEntries.add(new BarEntry(4f, Float.parseFloat(barChartValue.get(14))));
-        barEntries.add(new BarEntry(5f, Float.parseFloat(barChartValue.get(18))));
-        barEntries.add(new BarEntry(6f, Float.parseFloat(barChartValue.get(22))));
-        barEntries.add(new BarEntry(7f, Float.parseFloat(barChartValue.get(26))));
-        barEntries.add(new BarEntry(8f, Float.parseFloat(barChartValue.get(30))));
-        barEntries.add(new BarEntry(9f, Float.parseFloat(barChartValue.get(34))));
-        barEntries.add(new BarEntry(10f, Float.parseFloat(barChartValue.get(38))));
-        barEntries.add(new BarEntry(11f, Float.parseFloat(barChartValue.get(42))));
+        barEntries.add(new BarEntry(1f, Float.parseFloat(barChartValue.get(24))));
+        barEntries.add(new BarEntry(2f, Float.parseFloat(barChartValue.get(26))));
+        barEntries.add(new BarEntry(3f, Float.parseFloat(barChartValue.get(28))));
+        barEntries.add(new BarEntry(4f, Float.parseFloat(barChartValue.get(30))));
+        barEntries.add(new BarEntry(5f, Float.parseFloat(barChartValue.get(32))));
+        barEntries.add(new BarEntry(6f, Float.parseFloat(barChartValue.get(34))));
+        barEntries.add(new BarEntry(7f, Float.parseFloat(barChartValue.get(36))));
+        barEntries.add(new BarEntry(8f, Float.parseFloat(barChartValue.get(38))));
+        barEntries.add(new BarEntry(9f, Float.parseFloat(barChartValue.get(40))));
+        barEntries.add(new BarEntry(10f, Float.parseFloat(barChartValue.get(42))));
+        barEntries.add(new BarEntry(11f, Float.parseFloat(barChartValue.get(44))));
         barEntries.add(new BarEntry(12f, Float.parseFloat(barChartValue.get(46))));
         return barEntries;
     }
@@ -263,18 +219,18 @@ public class MoreBarChart extends AppCompatActivity {
 
         // adding new entry to our array list with bar
         // entry and passing x and y axis value to it.
-        barEntries.add(new BarEntry(1f, Float.parseFloat(barChartValue.get(3))));
-        barEntries.add(new BarEntry(2f, Float.parseFloat(barChartValue.get(7))));
-        barEntries.add(new BarEntry(3f, Float.parseFloat(barChartValue.get(11))));
-        barEntries.add(new BarEntry(4f, Float.parseFloat(barChartValue.get(15))));
-        barEntries.add(new BarEntry(5f, Float.parseFloat(barChartValue.get(19))));
-        barEntries.add(new BarEntry(6f, Float.parseFloat(barChartValue.get(23))));
-        barEntries.add(new BarEntry(7f, Float.parseFloat(barChartValue.get(27))));
-        barEntries.add(new BarEntry(8f, Float.parseFloat(barChartValue.get(31))));
-        barEntries.add(new BarEntry(9f, Float.parseFloat(barChartValue.get(35))));
-        barEntries.add(new BarEntry(10f, Float.parseFloat(barChartValue.get(39))));
-        barEntries.add(new BarEntry(11f, Float.parseFloat(barChartValue.get(43))));
-        barEntries.add(new BarEntry(12f, Float.parseFloat(barChartValue.get(47))));
+        barEntries.add(new BarEntry(1f, Float.parseFloat(barChartValue.get(48))));
+        barEntries.add(new BarEntry(2f, Float.parseFloat(barChartValue.get(50))));
+        barEntries.add(new BarEntry(3f, Float.parseFloat(barChartValue.get(52))));
+        barEntries.add(new BarEntry(4f, Float.parseFloat(barChartValue.get(54))));
+        barEntries.add(new BarEntry(5f, Float.parseFloat(barChartValue.get(56))));
+        barEntries.add(new BarEntry(6f, Float.parseFloat(barChartValue.get(58))));
+        barEntries.add(new BarEntry(7f, Float.parseFloat(barChartValue.get(60))));
+        barEntries.add(new BarEntry(8f, Float.parseFloat(barChartValue.get(62))));
+        barEntries.add(new BarEntry(9f, Float.parseFloat(barChartValue.get(64))));
+        barEntries.add(new BarEntry(10f, Float.parseFloat(barChartValue.get(66))));
+        barEntries.add(new BarEntry(11f, Float.parseFloat(barChartValue.get(68))));
+        barEntries.add(new BarEntry(12f, Float.parseFloat(barChartValue.get(70))));
         return barEntries;
     }
 }

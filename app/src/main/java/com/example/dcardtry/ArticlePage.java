@@ -46,9 +46,8 @@ public class ArticlePage extends AppCompatActivity {
     Adapter adapter;
     private static final String DCARD_URL = "https://fathomless-fjord-03751.herokuapp.com/getAllDcard";
     private static final String UPDATE_DCARD_URL = "https://fathomless-fjord-03751.herokuapp.com/getAllDcard/before/";
-    private static final String SEARCH_DCARD_URL = "https://fathomless-fjord-03751.herokuapp.com/getAllDcard/search/";
     private DrawerLayout drawerLayout;
-    String Name,Job,Account,Password, rvitemId, searchContent;//接收帳號相關資料
+    String Name,Job,Account,Password, rvitemId;//接收帳號相關資料
     TextView DM_Tilte;//側邊選單標題 : 姓名+職稱
     ProgressBar progressBar;
     Button searchArticle_btn;

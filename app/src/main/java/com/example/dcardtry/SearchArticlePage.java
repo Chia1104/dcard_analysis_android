@@ -34,9 +34,7 @@ public class SearchArticlePage extends AppCompatActivity {
     RecyclerView ArticleRecyclerview;
     Adapter adapter;
     private static final String SEARCH_DCARD_URL = "https://fathomless-fjord-03751.herokuapp.com/getAllDcard/search/";
-    private DrawerLayout drawerLayout;
-    String Name, Job, Account, Password, searchContent;//接收帳號相關資料
-    TextView DM_Tilte;//側邊選單標題 : 姓名+職稱
+    String searchContent;
     ProgressBar progressBar;
     EditText edtxt;
     Button searchArticle_btn;
@@ -45,8 +43,6 @@ public class SearchArticlePage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_article_page);
-
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawerlayout);
 
         edtxt = findViewById(R.id.search_EdText);
 
@@ -60,17 +56,6 @@ public class SearchArticlePage extends AppCompatActivity {
 
         ArticleRecyclerview = findViewById(R.id.ArticlePage_RecyclerView);
         dcardList = new ArrayList<>();
-
-        //取得傳遞過來的資料
-        Intent intent = this.getIntent();
-        Name = intent.getStringExtra("name");
-        Job = intent.getStringExtra( "job" );
-        Account = intent.getStringExtra( "account" );
-        Password = intent.getStringExtra("password");
-
-        //加上側邊選單姓名、職稱
-        DM_Tilte=findViewById( R.id.drawer_menu_title );
-        DM_Tilte.setText( "\t"+Name+"\n"+Job+"\t\t 您好" );
     }
 
     private void searchDcard() {
@@ -101,110 +86,14 @@ public class SearchArticlePage extends AppCompatActivity {
                 progressBar.setVisibility(View.GONE);
             } catch (JSONException e) {
                 progressBar.setVisibility(View.GONE);
-                Toast.makeText(SearchArticlePage.this, "" + e.getMessage(),Toast.LENGTH_LONG).show();
+                Toast.makeText(SearchArticlePage.this, "未找到文章",Toast.LENGTH_LONG).show();
                 e.printStackTrace();
             }
         }, error -> {
             progressBar.setVisibility(View.GONE);
-            Toast.makeText(SearchArticlePage.this, "" + error.getMessage(),Toast.LENGTH_LONG).show();
+            Toast.makeText(SearchArticlePage.this, "未找到文章",Toast.LENGTH_LONG).show();
             error.printStackTrace();
         });
         requestQueue.add(jsonArrayRequest);
     }
-
-    //側邊選單code Strat
-    public void ClickMenu(View view){
-        openDrawer(drawerLayout);
-    }
-
-    public void openDrawer(DrawerLayout drawerLayout) {
-        drawerLayout.openDrawer( GravityCompat.START );
-    }
-
-    public void ClickCancle(View view){
-        closeDrawer(drawerLayout);
-    }
-
-    public static void closeDrawer(DrawerLayout drawerLayout) {
-        //check condition
-        if(drawerLayout.isDrawerOpen( GravityCompat.START )){
-            //when drawer is open
-            drawerLayout.closeDrawer( GravityCompat.START );
-        }
-    }
-
-    public void ClickHome(View view){
-        //Restart activity_home_page.xml
-        redirectActivity(this,HomePage.class);
-    }
-
-    public void ClickArticle(View view){
-        //Redirect(重定向) activity to articlePage
-        closeDrawer(drawerLayout);
-    }
-
-    public void ClickChart(View view){
-        //Redirect(重定向) activity to chartPage
-        //redirectActivity(this,);
-    }
-
-    public void ClickAccountInfo(View view){
-        //Redirect(重定向) activity to accountPage(帳號管理頁面)
-        redirectActivity(this,UserChangePassword.class);
-    }
-
-    public void ClickLogout(View view){
-        //回到登入頁面
-        logout(this);
-    }
-
-    public void redirectActivity(Activity activity, Class aClass){
-        //導到其他頁面
-        //Initialize intent
-        Intent intent=new Intent(activity,aClass);
-        intent.putExtra( "name",Name );
-        intent.putExtra( "job",Job );
-        intent.putExtra( "account",Account );
-        intent.putExtra( "password",Password );
-        //set flag
-        //intent.setFlags( Intent.FLAG_ACTIVITY_NEW_TASK );
-        //start activity
-        activity.startActivity(intent);
-    }
-
-    public static void logout(Activity activity){
-        //Initialize alert dialog
-        AlertDialog.Builder builder=new AlertDialog.Builder( activity );
-        //set title
-        builder.setTitle( "登出提醒" );
-        //set message
-        builder.setMessage( "確定要登出嗎?" );
-        //Positive yes button
-        builder.setPositiveButton( "是", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                //Finish activity
-                activity.finishAffinity();
-                //回到登入頁面
-                Intent intent=new Intent(activity,MainActivity.class);
-                activity.startActivity( intent );
-            }
-        } );
-        //Negative no button
-        builder.setNegativeButton( "否", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                //Dismiss dialog
-                dialog.dismiss();
-            }
-        } );
-        builder.show();
-    }
-
-    @Override
-    protected void onPause(){
-        super.onPause();
-        closeDrawer(drawerLayout);
-    }
-    //側邊選單code End
 }

@@ -332,23 +332,11 @@ public class HomePage extends AppCompatActivity {
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, BARCHART_URL, null, response -> {
             try {
                 barChartValue.clear();
-                JSONObject dcardObject = response.getJSONObject(0);
-                barChartValue.add(dcardObject.getString("m0"));
-                barChartValue.add(dcardObject.getString("m0posCount"));
-                barChartValue.add(dcardObject.getString("m0neuCount"));
-                barChartValue.add(dcardObject.getString("m0negCount"));
-                barChartValue.add(dcardObject.getString("m1"));
-                barChartValue.add(dcardObject.getString("m1posCount"));
-                barChartValue.add(dcardObject.getString("m1neuCount"));
-                barChartValue.add(dcardObject.getString("m1negCount"));
-                barChartValue.add(dcardObject.getString("m2"));
-                barChartValue.add(dcardObject.getString("m2posCount"));
-                barChartValue.add(dcardObject.getString("m2neuCount"));
-                barChartValue.add(dcardObject.getString("m2negCount"));
-                barChartValue.add(dcardObject.getString("m3"));
-                barChartValue.add(dcardObject.getString("m3posCount"));
-                barChartValue.add(dcardObject.getString("m3neuCount"));
-                barChartValue.add(dcardObject.getString("m3negCount"));
+                for (int i = 0; i < response.length(); i++) {
+                    JSONObject dcardObject = response.getJSONObject(i);
+                    barChartValue.add(dcardObject.getString("Count"));
+                    barChartValue.add(dcardObject.getString("newDate"));
+                }
                 ShowBarChart();
                 progressBar3.setVisibility(View.GONE);
             } catch (JSONException e) {
@@ -366,7 +354,7 @@ public class HomePage extends AppCompatActivity {
     }
 
     public void ShowBarChart() {
-        String[] month = new String[]{barChartValue.get(0), barChartValue.get(4), barChartValue.get(8), barChartValue.get(12)};
+        String[] month = new String[]{barChartValue.get(1), barChartValue.get(3), barChartValue.get(5), barChartValue.get(7)};
 
         barChart = findViewById(R.id.bar_chart);
 
@@ -457,10 +445,10 @@ public class HomePage extends AppCompatActivity {
 
         // adding new entry to our array list with bar
         // entry and passing x and y axis value to it.
-        barEntries.add(new BarEntry(1f, Float.parseFloat(barChartValue.get(1))));
-        barEntries.add(new BarEntry(2f, Float.parseFloat(barChartValue.get(5))));
-        barEntries.add(new BarEntry(3f, Float.parseFloat(barChartValue.get(9))));
-        barEntries.add(new BarEntry(4f, Float.parseFloat(barChartValue.get(13))));
+        barEntries.add(new BarEntry(1f, Float.parseFloat(barChartValue.get(0))));
+        barEntries.add(new BarEntry(2f, Float.parseFloat(barChartValue.get(2))));
+        barEntries.add(new BarEntry(3f, Float.parseFloat(barChartValue.get(4))));
+        barEntries.add(new BarEntry(4f, Float.parseFloat(barChartValue.get(6))));
         return barEntries;
     }
 
@@ -471,9 +459,9 @@ public class HomePage extends AppCompatActivity {
 
         // adding new entry to our array list with bar
         // entry and passing x and y axis value to it.
-        barEntries.add(new BarEntry(1f, Float.parseFloat(barChartValue.get(2))));
-        barEntries.add(new BarEntry(2f, Float.parseFloat(barChartValue.get(6))));
-        barEntries.add(new BarEntry(3f, Float.parseFloat(barChartValue.get(10))));
+        barEntries.add(new BarEntry(1f, Float.parseFloat(barChartValue.get(8))));
+        barEntries.add(new BarEntry(2f, Float.parseFloat(barChartValue.get(10))));
+        barEntries.add(new BarEntry(3f, Float.parseFloat(barChartValue.get(12))));
         barEntries.add(new BarEntry(4f, Float.parseFloat(barChartValue.get(14))));
         return barEntries;
     }
@@ -485,10 +473,10 @@ public class HomePage extends AppCompatActivity {
 
         // adding new entry to our array list with bar
         // entry and passing x and y axis value to it.
-        barEntries.add(new BarEntry(1f, Float.parseFloat(barChartValue.get(3))));
-        barEntries.add(new BarEntry(2f, Float.parseFloat(barChartValue.get(7))));
-        barEntries.add(new BarEntry(3f, Float.parseFloat(barChartValue.get(11))));
-        barEntries.add(new BarEntry(4f, Float.parseFloat(barChartValue.get(15))));
+        barEntries.add(new BarEntry(1f, Float.parseFloat(barChartValue.get(16))));
+        barEntries.add(new BarEntry(2f, Float.parseFloat(barChartValue.get(18))));
+        barEntries.add(new BarEntry(3f, Float.parseFloat(barChartValue.get(20))));
+        barEntries.add(new BarEntry(4f, Float.parseFloat(barChartValue.get(22))));
         return barEntries;
     }
 

@@ -1,5 +1,7 @@
 package com.example.dcardtry;
 
+import java.util.ArrayList;
+
 public class Dcard {
     private String title;
     private String date;
