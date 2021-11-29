@@ -199,6 +199,7 @@ public class ArticlePage extends AppCompatActivity {
     public void ClickHome(View view){
         //Restart activity_home_page.xml
         redirectActivity(this,HomePage.class);
+        finish();
     }
 
     public void ClickArticle(View view){
@@ -209,11 +210,13 @@ public class ArticlePage extends AppCompatActivity {
     public void ClickChart(View view){
         //Redirect(重定向) activity to chartPage
         redirectActivity(this,MPChartPage.class);
+        finish();
     }
 
     public void ClickTrend(View view){
         //Redirect(重定向) activity to chartPage
         redirectActivity(this,MoreBarChart.class);
+        finish();
     }
 
     public void ClickAccountInfo(View view){

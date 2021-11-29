@@ -137,11 +137,18 @@
                     </RelativeLayout>
                     <!--Banner_End-->
                     <!--TimeButton_Start-->
+                    <!--TimeButton_End-->
+
+                    <!--Weekly-Monthly_Summary_Start-->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginLeft="30dp"
                         android:layout_marginTop="15dp"
+                        android:layout_marginEnd="30dp"
+                        android:layout_marginRight="30dp"
+                        android:gravity="center"
                         android:orientation="horizontal">
 
 
@@ -149,65 +156,62 @@
                             android:id="@+id/getToday_btn"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="right"
                             android:layout_marginLeft="5dp"
                             android:layout_marginRight="5dp"
-                            android:layout_gravity="right"
                             android:backgroundTint="@color/BtnBackgroundColor"
                             android:onClick="ClickToday"
                             android:text="日"
-                            android:textSize="25dp"/>
+                            android:textSize="23dp" />
 
                         <Button
                             android:id="@+id/getWeek_btn"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="right"
                             android:layout_marginLeft="5dp"
                             android:layout_marginRight="5dp"
-                            android:layout_gravity="right"
                             android:backgroundTint="@color/BtnBackgroundColor"
                             android:onClick="ClickWeek"
                             android:text="週"
-                            android:textSize="25dp"/>
+                            android:textSize="23dp" />
 
                         <Button
                             android:id="@+id/getMonth_btn"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="right"
                             android:layout_marginLeft="5dp"
                             android:layout_marginRight="5dp"
-                            android:layout_gravity="right"
                             android:backgroundTint="@color/BtnBackgroundColor"
                             android:onClick="ClickMonth"
                             android:text="月"
-                            android:textSize="25dp" />
+                            android:textSize="23dp" />
 
 
                     </LinearLayout>
-                    <!--TimeButton_End-->
 
-                    <!--Weekly-Monthly_Summary_Start-->
                     <LinearLayout
                         android:id="@+id/HomePage_Weekly_MonthlySummary"
-                        android:layout_width="380dp"
+                        android:layout_width="350dp"
                         android:layout_height="150dp"
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="15dp"
                         android:background="@drawable/article_summary_border"
                         android:orientation="vertical"
-                        android:paddingTop="5dp"
+                        android:paddingTop="17dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent">
-
 
 
                         <TextView
                             android:id="@+id/month_static_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center"
                             android:text="概覽"
                             android:textColor="@color/black"
                             android:textSize="20dp" />
-
 
 
                         <LinearLayout
@@ -237,7 +241,7 @@
                                     android:layout_height="wrap_content"
                                     android:text="0"
                                     android:textColor="@color/black"
-                                    android:textSize="45dp" />
+                                    android:textSize="43dp" />
                             </LinearLayout>
 
                             <LinearLayout
@@ -259,10 +263,9 @@
                                     android:id="@+id/averagePoint"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="5dp"
                                     android:text="0"
                                     android:textColor="@color/black"
-                                    android:textSize="40dp" />
+                                    android:textSize="43dp" />
                             </LinearLayout>
 
                             <LinearLayout
@@ -286,7 +289,7 @@
                                     android:layout_height="wrap_content"
                                     android:text="0"
                                     android:textColor="@color/black"
-                                    android:textSize="45dp" />
+                                    android:textSize="43dp" />
                             </LinearLayout>
 
                         </LinearLayout>

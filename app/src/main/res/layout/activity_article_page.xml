@@ -18,7 +18,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp">
 
             <Button
                 android:id="@+id/searchArticle_btn"
@@ -26,6 +28,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:backgroundTint="@color/BtnBackgroundColor"
+                android:gravity="center"
                 android:text="查詢" />
         </LinearLayout>
 

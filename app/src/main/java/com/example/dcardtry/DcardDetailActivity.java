@@ -81,10 +81,4 @@ public class DcardDetailActivity extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
         startActivity(intent);
     };
-
-    public  void ClickBlack (View view){
-        //Redirect(重定向) activity to articlePage
-        Intent intent=new Intent(this,ArticlePage.class);
-        startActivity(intent);
-    }
 }

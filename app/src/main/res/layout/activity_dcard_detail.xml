@@ -27,19 +27,23 @@
             app:alignItems="stretch"
             app:flexDirection="column"
             app:flexWrap="wrap">
-
-            <com.google.android.flexbox.FlexboxLayout
-                android:layout_width="match_parent"
+        <com.google.android.flexbox.FlexboxLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:alignItems="center"
+            app:justifyContent="flex_end">
+            <Button
+                android:id="@+id/urlButton"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:alignItems="center"
-                app:justifyContent="flex_end">
+                android:backgroundTint="@color/BtnBackgroundColor"
+                android:text="Open Dcard"
+                tools:layout_editor_absoluteX="257dp" />
 
-
-
-            </com.google.android.flexbox.FlexboxLayout>
+        </com.google.android.flexbox.FlexboxLayout>
 
             <com.google.android.flexbox.FlexboxLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingBottom="10dp"
                 app:alignItems="center"
@@ -47,20 +51,13 @@
 
                 <TextView
                     android:id="@+id/title_tv"
-                    android:layout_width="200dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="20dp"
                     android:text="TextView"
                     android:textColor="@color/black"
                     android:textSize="28dp" />
 
-                <Button
-                    android:id="@+id/urlButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="@color/BtnBackgroundColor"
-                    android:text="Open Dcard"
-                    tools:layout_editor_absoluteX="257dp" />
+
 
             </com.google.android.flexbox.FlexboxLayout>
 

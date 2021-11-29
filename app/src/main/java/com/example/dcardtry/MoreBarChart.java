@@ -424,16 +424,19 @@ public class MoreBarChart extends AppCompatActivity {
     public void ClickHome(View view){
         //Restart activity_home_page.xml
         redirectActivity(this,HomePage.class);
+        finish();
     }
 
     public void ClickArticle(View view){
         //Redirect(重定向) activity to articlePage
         redirectActivity(this,ArticlePage.class);
+        finish();
     }
 
     public void ClickChart(View view){
         //Redirect(重定向) activity to chartPage
         redirectActivity(this, MPChartPage.class);
+        finish();
     }
 
     public void ClickBarChart(View view){

@@ -411,11 +411,13 @@ public class MPChartPage extends AppCompatActivity {
     public void ClickHome(View view){
         //Restart activity_home_page.xml
         redirectActivity(this,HomePage.class);
+        finish();
     }
 
     public void ClickArticle(View view){
         //Redirect(重定向) activity to articlePage
         redirectActivity( this,ArticlePage.class );
+        finish();
     }
 
     public void ClickChart(View view){
@@ -426,6 +428,7 @@ public class MPChartPage extends AppCompatActivity {
     public void ClickTrend(View view){
         //Redirect(重定向) activity to chartPage
         redirectActivity(this,MoreBarChart.class);
+        finish();
     }
 
     public void ClickAccountInfo(View view){

@@ -209,6 +209,7 @@ public class MainActivity extends AppCompatActivity{
                             registeredPage.putExtra( "account",account );
                             registeredPage.putExtra( "password",password );
                             startActivity(registeredPage);
+                            finish();
                             break;
                         } else {
                             result.setText( "密碼錯誤" );
