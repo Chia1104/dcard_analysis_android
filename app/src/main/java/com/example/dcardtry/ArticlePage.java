@@ -82,7 +82,7 @@ public class ArticlePage extends AppCompatActivity {
 
         //加上側邊選單姓名、職稱
         DM_Tilte=findViewById( R.id.drawer_menu_title );
-        DM_Tilte.setText( "\t"+Name+"\n"+Job+"\t\t 您好" );
+        DM_Tilte.setText( Name+"\n"+Job+"\t\t 您好" );
         progressBar = findViewById(R.id.progressBar);
     }
 
@@ -208,7 +208,12 @@ public class ArticlePage extends AppCompatActivity {
 
     public void ClickChart(View view){
         //Redirect(重定向) activity to chartPage
-        //redirectActivity(this,);
+        redirectActivity(this,MPChartPage.class);
+    }
+
+    public void ClickTrend(View view){
+        //Redirect(重定向) activity to chartPage
+        redirectActivity(this,MoreBarChart.class);
     }
 
     public void ClickAccountInfo(View view){

@@ -19,6 +19,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.content.Intent;
 import android.widget.Toast;
@@ -94,6 +95,7 @@ public class HomePage extends AppCompatActivity {
     int articleCount = 0, keywordCount = 0;
     float scoreSum = 0, avgScore = 0;
     TextView twm_txt;
+    ScrollView HPScroller;
 
 
     @Override
@@ -123,14 +125,28 @@ public class HomePage extends AppCompatActivity {
 
         //加上側邊選單姓名、職稱
         DM_Tilte=findViewById( R.id.drawer_menu_title );
-        DM_Tilte.setText( "\t"+Name+"\n"+Job+"\t\t 您好" );
+        DM_Tilte.setText( Name+"\n"+Job+"\t\t 您好" );
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         dotsLayout=findViewById(R.id.dots_container);
         pager2=findViewById(R.id.view_pager2);
 
+        //頂部快捷鍵開始
+        HPScroller= (ScrollView) findViewById( R.id.HomePage_ScrollView );
+        Runnable runnable = new Runnable() {
+
+            public void run() {
+
+            }
+            public void neeee(View v){
+
+            }
+
+        };
+        //頂部快捷鍵結束
+
         //Banner中底部Title
-        bannertxt=new String[]{"即時掌握社群訊息","精準分析找出關鍵問題","視覺化呈現大量資料","","",""};
+        bannertxt=new String[]{"即時掌握社群訊息","精準分析找出關鍵問題","視覺化呈現大量資料"};
 
         //Banner中圖片
         bannerpic = new int[]{R.drawable.banner_pic8,
@@ -145,7 +161,7 @@ public class HomePage extends AppCompatActivity {
         pager2.setAdapter(adapter);
         pager2.setCurrentItem(99);
 
-        dots=new TextView[6];
+        dots=new TextView[3];
         dotsIndicator();
 
         Article_Summary = findViewById(R.id.Article_Summary_RecyclerView);
@@ -174,12 +190,27 @@ public class HomePage extends AppCompatActivity {
                 if(pager2.getCurrentItem()==(Integer.MAX_VALUE)-2)
                 //防止自動輪播到最後一張時無法繼續輪播下去
                 {
-                    pager2.setCurrentItem(pager2.getCurrentItem()%5);
+                    pager2.setCurrentItem(pager2.getCurrentItem()%4);
                 }
             }
         };
-        BannerTimer.schedule(timerTask, 0,20000);
+        BannerTimer.schedule(timerTask, 0,15000);
     }
+
+    //頂部快捷鍵開始
+    public void gotoTop(View view){
+        HPScroller.scrollTo( 0,0 );
+    }
+    public void gotoArticleSummary(View view){
+        HPScroller.scrollTo( 0,1750 );
+    }
+    public void gotoEmotionAmount(View view){
+        HPScroller.scrollTo( 0,3350 );
+    }
+    public void gotoEmotionTrend(View view){
+        HPScroller.scrollTo( 0,4950 );
+    }
+    //頂部快捷鍵結束
 
     private void dotsIndicator() {
         for(int i=0;i<dots.length;i++){
@@ -189,14 +220,14 @@ public class HomePage extends AppCompatActivity {
             dotsLayout.addView(dots[i]);//設定主圖背景顏色
         }
         //dots[0].setTextColor(getResources().getColor(R.color.gray));//line:61-64暫時解決初始畫面時Banner下方圓點看不到的問題
-        for(int i=0;i<=5;i++){
+        for(int i=0;i<=2;i++){
             dots[i].setTextColor(getResources().getColor(R.color.gray));
         }
     }
 
     private void selectedIndicator(int position) {
         for(int i=0;i<dots.length;i++){
-            if(i==position%6){
+            if(i==position%3){
                 dots[i].setTextColor(getResources().getColor(R.color.black));
             }
             else{
@@ -531,26 +562,17 @@ public class HomePage extends AppCompatActivity {
 
     public void ClickChart(View view){
         //Redirect(重定向) activity to chartPage
-//        try {
-//            Intent intent = new Intent(getApplicationContext(), DcardDetailActivity.class);
-//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//            intent.putExtra("twm", twm_txt.getText().toString());
-//            intent.putExtra( "name",Name );
-//            intent.putExtra( "job",Job );
-//            intent.putExtra( "account",Account );
-//            intent.putExtra( "password",Password );
-//            getApplicationContext().startActivity(intent);
-//            itntTWM(this, MPChartPage.class);
-//        } catch (Exception e) {
-//            Toast.makeText(HomePage.this, e.getMessage(),Toast.LENGTH_LONG).show();
-//        }
-
         redirectActivity(this, MPChartPage.class);
     }
 
     public void ClickBarChart(View view){
         //Redirect(重定向) activity to chartPage
         redirectActivity(this, MoreBarChart.class);
+    }
+
+    public void ClickTrend(View view){
+        //Redirect(重定向) activity to chartPage
+        redirectActivity(this,MoreBarChart.class);
     }
 
     public void ClickAccountInfo(View view){

@@ -86,7 +86,7 @@ public class MPChartPage extends AppCompatActivity {
 
         //加上側邊選單姓名、職稱
         DM_Tilte=findViewById( R.id.drawer_menu_title );
-        DM_Tilte.setText( "\t"+Name+"\n"+Job+"\t\t 您好" );
+        DM_Tilte.setText(Name+"\n"+Job+"\t\t 您好" );
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
 
@@ -415,12 +415,17 @@ public class MPChartPage extends AppCompatActivity {
 
     public void ClickArticle(View view){
         //Redirect(重定向) activity to articlePage
-        closeDrawer(drawerLayout);
+        redirectActivity( this,ArticlePage.class );
     }
 
     public void ClickChart(View view){
         //Redirect(重定向) activity to chartPage
-//        redirectActivity(this,);
+        closeDrawer(drawerLayout);
+    }
+
+    public void ClickTrend(View view){
+        //Redirect(重定向) activity to chartPage
+        redirectActivity(this,MoreBarChart.class);
     }
 
     public void ClickAccountInfo(View view){

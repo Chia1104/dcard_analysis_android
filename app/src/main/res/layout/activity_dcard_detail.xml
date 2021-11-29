@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".DcardDetailActivity">
+    android:id="@+id/drawerLayout"
 
+    tools:context=".DcardDetailActivity"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <include layout="@layout/only_back_toolbar" />
+    <!--HeaderBar_End-->
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="62dp">
 
         <com.google.android.flexbox.FlexboxLayout
             android:layout_width="match_parent"
@@ -21,33 +27,40 @@
             app:alignItems="stretch"
             app:flexDirection="column"
             app:flexWrap="wrap">
-        <com.google.android.flexbox.FlexboxLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:alignItems="center"
-            app:justifyContent="flex_end">
-            <Button
-                android:id="@+id/urlButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Open Dcard"
-                tools:layout_editor_absoluteX="257dp" />
-
-        </com.google.android.flexbox.FlexboxLayout>
 
             <com.google.android.flexbox.FlexboxLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:alignItems="center"
+                app:justifyContent="flex_end">
+
+
+
+            </com.google.android.flexbox.FlexboxLayout>
+
+            <com.google.android.flexbox.FlexboxLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
+                app:alignItems="center"
                 app:justifyContent="flex_start">
 
                 <TextView
                     android:id="@+id/title_tv"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:text="TextView"
+                    android:textColor="@color/black"
+                    android:textSize="28dp" />
+
+                <Button
+                    android:id="@+id/urlButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="TextView"
-                    android:textSize="20sp" />
-
+                    android:backgroundTint="@color/BtnBackgroundColor"
+                    android:text="Open Dcard"
+                    tools:layout_editor_absoluteX="257dp" />
 
             </com.google.android.flexbox.FlexboxLayout>
 
@@ -65,13 +78,17 @@
                         android:id="@+id/class_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="TextView" />
+                        android:text="TextView"
+                        android:textSize="18dp"
+                        android:paddingRight="5dp"/>
 
                     <TextView
                         android:id="@+id/score_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="TextView" />
+                        android:text="TextView"
+                        android:textSize="18dp"
+                        android:paddingLeft="5dp"/>
 
                 </com.google.android.flexbox.FlexboxLayout>
 
@@ -79,7 +96,9 @@
                     android:id="@+id/date_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="TextView" />
+                    android:text="TextView"
+                    android:textSize="15dp"
+                    android:textColor="@color/black"/>
 
             </com.google.android.flexbox.FlexboxLayout>
 
@@ -91,19 +110,27 @@
                     android:id="@+id/lv1_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="null" />
+                    android:text="null"
+                    android:textSize="18dp"
+                    android:paddingRight="5dp"/>
 
                 <TextView
                     android:id="@+id/lv2_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="null" />
+                    android:text="null"
+                    android:textSize="18dp"
+                    android:paddingRight="5dp"
+                    android:paddingLeft="5dp"/>
 
                 <TextView
                     android:id="@+id/lv3_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="null" />
+                    android:text="null"
+                    android:textSize="18dp"
+                    android:paddingRight="5dp"
+                    android:paddingLeft="5dp"/>
 
             </com.google.android.flexbox.FlexboxLayout>
 
@@ -111,9 +138,13 @@
                 android:id="@+id/content_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:layout_marginTop="25dp"
+                android:text="TextView"
+                android:lineSpacingExtra="5dp"
+                android:textSize="20dp"
+                android:textColor="@color/black"/>
 
         </com.google.android.flexbox.FlexboxLayout>
     </ScrollView>
+</LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>

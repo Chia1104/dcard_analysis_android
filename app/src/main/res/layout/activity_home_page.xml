@@ -7,504 +7,578 @@
     android:layout_height="match_parent"
     tools:context=".HomePage">
 
-<!--HomePage主畫面開始-->
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
-
-    <include layout="@layout/main_toolbar"/>
-    <!--HeaderBar_End-->
-
-<ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:scrollbarStyle="insideOverlay">
-
-    <RelativeLayout
+    <!--HomePage主畫面開始-->
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white"
-        tools:context=".HomePage">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
+        <include layout="@layout/main_toolbar"/>
+        <!--HeaderBar_End-->
+
+        <!--Address_Start-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="vertical">
-
-            <!--Banner_Start-->
-            <RelativeLayout
-                android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:padding="12dp"
+            android:gravity="center_vertical"
+            android:background="@color/BtnOrange1">
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
-                tools:context=".MainActivity">
-
-                <androidx.viewpager2.widget.ViewPager2
-                    android:id="@+id/view_pager2"
-                    android:layout_width="match_parent"
-                    android:layout_height="300dp"
-                    android:layout_marginTop="0sp">
-
-                </androidx.viewpager2.widget.ViewPager2>
-
-                <LinearLayout
-                    android:id="@+id/dots_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="280dp"
-                    android:gravity="center_horizontal"
-                    android:orientation="horizontal"></LinearLayout>
-
-                <Button
-                    android:id="@+id/buttonToLeft"
-                    android:layout_width="40dp"
-                    android:layout_height="50dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="125dp"
-                    android:gravity="center"
-                    android:onClick="BannerBntToLeft"
-                    android:outlineProvider="none"
-                    android:text="\u003C"
-                    android:textSize="20sp"
-                    app:backgroundTint="@color/btnGray"
-                    app:cornerRadius="100dp" />
-
-                <Button
-                    android:id="@+id/buttonToRight"
-                    android:layout_width="40dp"
-                    android:layout_height="50dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginTop="125dp"
-                    android:layout_marginRight="10dp"
-                    android:onClick="BannerBntToRight"
-                    android:outlineProvider="none"
-                    android:text="\u003E"
-                    android:textSize="20sp"
-                    app:backgroundTint="@color/btnGray"
-                    app:cornerRadius="100dp" />
-            </RelativeLayout>
-            <!--Banner_End-->
-
-            <!--Weekly-Monthly_Summary_Start-->
-            <LinearLayout
-                android:id="@+id/HomePage_Weekly_MonthlySummary"
-                android:layout_width="380dp"
-                android:layout_height="150dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="30dp"
-                android:background="@drawable/article_summary_border"
-                android:orientation="vertical"
-                android:paddingTop="5dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="0dp"
-                    android:orientation="horizontal">
-
-                    <Button
-                        android:id="@+id/getToday_btn"
-                        android:layout_width="70dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="right"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginRight="10dp"
-                        android:backgroundTint="@color/BtnBackgroundColor"
-                        android:onClick="ClickToday"
-                        android:text="本日" />
-
-                    <Button
-                        android:id="@+id/getWeek_btn"
-                        android:layout_width="70dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="right"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginRight="10dp"
-                        android:backgroundTint="@color/BtnBackgroundColor"
-                        android:onClick="ClickWeek"
-                        android:text="本週" />
-
-                    <Button
-                        android:id="@+id/getMonth_btn"
-                        android:layout_width="70dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="right"
-                        android:backgroundTint="@color/BtnBackgroundColor"
-                        android:onClick="ClickMonth"
-                        android:text="本月" />
-
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:id="@+id/articleAmountBox"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="文章數"
-                            android:textColor="@color/black"
-                            android:textSize="15dp" />
-
-                        <TextView
-                            android:id="@+id/articleAmount"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="0"
-                            android:textColor="@color/black"
-                            android:textSize="40dp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/averagePointBack"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="平均情緒分數"
-                            android:textColor="@color/black"
-                            android:textSize="15dp" />
-
-                        <TextView
-                            android:id="@+id/averagePoint"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="0"
-                            android:textColor="@color/black"
-                            android:textSize="40dp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/keyword_Match_Amount_Box"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="關鍵詞文章數"
-                            android:textColor="@color/black"
-                            android:textSize="15dp" />
-
-                        <TextView
-                            android:id="@+id/keyword_Match_Amount"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="0"
-                            android:textColor="@color/black"
-                            android:textSize="40dp" />
-                    </LinearLayout>
-
-                </LinearLayout>
-
-            </LinearLayout>
-            <!--Weekly-Monthly_Summary_End-->
-
-            <!--ArticleSummary_Start-->
-            <LinearLayout
-                android:id="@+id/HomePage_ArticleSummary"
-                android:layout_width="350dp"
-                android:layout_height="447dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="30dp"
-                android:background="@drawable/article_summary_border"
-                android:orientation="vertical"
-                android:paddingTop="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
-                <!--高度先調好420dp，避免剛跑進去時資料還沒抓到此格高度很小，觀感問題。資料跑出來時，420dp Height 也適當-->
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@color/white"
-                        android:orientation="horizontal">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical"
-                            android:paddingLeft="10dp"
-                            android:paddingTop="5dp">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="left|center_vertical"
-                                android:text="文章"
-                                android:textColor="#000000"
-                                android:textSize="28dp"
-                                app:layout_constraintStart_toStartOf="parent">
-
-                            </TextView>
-
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical"
-                            android:paddingRight="10dp">
-
-                            <Button
-                                android:id="@+id/gotoArticleBtn"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="right"
-                                android:backgroundTint="@color/BtnBackgroundColor"
-                                android:onClick="ClickArticle"
-                                android:text="more" />
-
-                        </LinearLayout>
-
-                    </LinearLayout>
-                    <!--標題、內容分隔底線可以放這-->
-                </LinearLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/Article_Summary_RecyclerView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@color/white" />
-
-                    <ProgressBar
-                        android:id="@+id/progressBar1"
-                        style="?android:attr/progressBarStyleLarge"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true" />
-                </RelativeLayout>
-
-            </LinearLayout>
-            <!--ArticleSummary_End-->
-
-            <!--ChartSummary_Start-->
-            <LinearLayout
-                android:id="@+id/HomePage_ChartSummary"
-                android:layout_width="350dp"
-                android:layout_height="400dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="30dp"
-                android:background="@drawable/article_summary_border"
-                android:orientation="vertical"
-                android:paddingTop="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@color/white"
-                        android:orientation="horizontal">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="horizontal"
-                            android:paddingLeft="10dp"
-                            android:paddingTop="5dp">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="left|center_vertical"
-                                android:text="分析"
-                                android:textColor="#000000"
-                                android:textSize="28dp"
-                                app:layout_constraintStart_toStartOf="parent">
-
-                            </TextView>
-
-                            <TextView
-                                android:id="@+id/twm_txt"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:text="TextView"
-                                android:visibility="invisible" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical"
-                            android:paddingRight="10dp">
-
-                            <Button
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="right"
-                                android:backgroundTint="@color/BtnBackgroundColor"
-                                android:onClick="ClickChart"
-                                android:text="more" />
-
-                        </LinearLayout>
-
-                    </LinearLayout>
-                    <!--標題、內容分隔底線可以放這-->
-                </LinearLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <com.github.mikephil.charting.charts.PieChart
-                        android:id="@+id/pieChart_view"
-                        android:layout_width="match_parent"
-                        android:layout_height="150pt">
-
-                    </com.github.mikephil.charting.charts.PieChart>
-
-                    <ProgressBar
-                        android:id="@+id/progressBar2"
-                        style="?android:attr/progressBarStyleLarge"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true" />
-                </RelativeLayout>
-
-            </LinearLayout>
-            <!--ChartSummary_End-->
-
-            <!--BarChart_Start-->
-            <LinearLayout
-                android:id="@+id/HomePage_BarChart"
-                android:layout_width="350dp"
-                android:layout_height="400dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="30dp"
-                android:layout_marginBottom="40dp"
-                android:background="@drawable/article_summary_border"
-                android:orientation="vertical"
-                android:paddingTop="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@color/white"
-                        android:orientation="horizontal">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="horizontal"
-                            android:paddingLeft="10dp"
-                            android:paddingTop="5dp">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="left|center_vertical"
-                                android:text="分析"
-                                android:textColor="#000000"
-                                android:textSize="28dp"
-                                app:layout_constraintStart_toStartOf="parent">
-
-                            </TextView>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical"
-                            android:paddingRight="10dp">
-
-                            <Button
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="right"
-                                android:backgroundTint="@color/BtnBackgroundColor"
-                                android:onClick="ClickBarChart"
-                                android:text="more" />
-
-                        </LinearLayout>
-
-                    </LinearLayout>
-                    <!--標題、內容分隔底線可以放這-->
-                </LinearLayout>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <com.github.mikephil.charting.charts.BarChart
-                        android:id="@+id/bar_chart"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1" />
-
-                    <ProgressBar
-                        android:id="@+id/progressBar3"
-                        style="?android:attr/progressBarStyleLarge"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true" />
-                </RelativeLayout>
-
-            </LinearLayout>
-            <!--BarChart_End-->
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:text="回到頂部"
+                android:textSize="15dp"
+                android:textColor="@color/black"
+                android:onClick="gotoTop"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:text="文章"
+                android:textSize="15dp"
+                android:textColor="@color/black"
+                android:onClick="gotoArticleSummary"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:text="情緒總量"
+                android:textSize="15dp"
+                android:textColor="@color/black"
+                android:onClick="gotoEmotionAmount"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:text="情緒趨勢"
+                android:textSize="15dp"
+                android:textColor="@color/black"
+                android:onClick="gotoEmotionTrend"/>
 
         </LinearLayout>
-    </RelativeLayout>
-</ScrollView>
+        <!--Address_End-->
 
 
-</LinearLayout>
-<!--HomePage主畫面結束-->
+        <ScrollView
+            android:id="@+id/HomePage_ScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbarStyle="insideOverlay">
 
-<!--HomePage側邊選單開始-->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                tools:context=".HomePage">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="vertical">
+
+                    <!--Banner_Start-->
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        tools:context=".MainActivity">
+
+                        <androidx.viewpager2.widget.ViewPager2
+                            android:id="@+id/view_pager2"
+                            android:layout_width="match_parent"
+                            android:layout_height="300dp"
+                            android:layout_marginTop="0sp">
+
+                        </androidx.viewpager2.widget.ViewPager2>
+
+                        <LinearLayout
+                            android:id="@+id/dots_container"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="280dp"
+                            android:gravity="center_horizontal"
+                            android:orientation="horizontal"></LinearLayout>
+
+                        <Button
+                            android:id="@+id/buttonToLeft"
+                            android:layout_width="40dp"
+                            android:layout_height="50dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="125dp"
+                            android:gravity="center"
+                            android:onClick="BannerBntToLeft"
+                            android:outlineProvider="none"
+                            android:text="\u003C"
+                            android:textSize="20sp"
+                            app:backgroundTint="@color/BtnOrange1"
+                            app:cornerRadius="100dp" />
+
+                        <Button
+                            android:id="@+id/buttonToRight"
+                            android:layout_width="40dp"
+                            android:layout_height="50dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginTop="125dp"
+                            android:layout_marginRight="10dp"
+                            android:onClick="BannerBntToRight"
+                            android:outlineProvider="none"
+                            android:text="\u003E"
+                            android:textSize="20sp"
+                            app:backgroundTint="@color/BtnOrange1"
+                            app:cornerRadius="100dp" />
+                    </RelativeLayout>
+                    <!--Banner_End-->
+                    <!--TimeButton_Start-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="15dp"
+                        android:orientation="horizontal">
+
+
+                        <Button
+                            android:id="@+id/getToday_btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_gravity="right"
+                            android:backgroundTint="@color/BtnBackgroundColor"
+                            android:onClick="ClickToday"
+                            android:text="日"
+                            android:textSize="25dp"/>
+
+                        <Button
+                            android:id="@+id/getWeek_btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_gravity="right"
+                            android:backgroundTint="@color/BtnBackgroundColor"
+                            android:onClick="ClickWeek"
+                            android:text="週"
+                            android:textSize="25dp"/>
+
+                        <Button
+                            android:id="@+id/getMonth_btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_gravity="right"
+                            android:backgroundTint="@color/BtnBackgroundColor"
+                            android:onClick="ClickMonth"
+                            android:text="月"
+                            android:textSize="25dp" />
+
+
+                    </LinearLayout>
+                    <!--TimeButton_End-->
+
+                    <!--Weekly-Monthly_Summary_Start-->
+                    <LinearLayout
+                        android:id="@+id/HomePage_Weekly_MonthlySummary"
+                        android:layout_width="380dp"
+                        android:layout_height="150dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="15dp"
+                        android:background="@drawable/article_summary_border"
+                        android:orientation="vertical"
+                        android:paddingTop="5dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent">
+
+
+
+                        <TextView
+                            android:id="@+id/month_static_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="概覽"
+                            android:textColor="@color/black"
+                            android:textSize="20dp" />
+
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:id="@+id/articleAmountBox"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="文章數"
+                                    android:textColor="@color/black"
+                                    android:textSize="15dp" />
+
+                                <TextView
+                                    android:id="@+id/articleAmount"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="0"
+                                    android:textColor="@color/black"
+                                    android:textSize="45dp" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/averagePointBack"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="平均情緒分數"
+                                    android:textColor="@color/black"
+                                    android:textSize="15dp" />
+
+                                <TextView
+                                    android:id="@+id/averagePoint"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="5dp"
+                                    android:text="0"
+                                    android:textColor="@color/black"
+                                    android:textSize="40dp" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/keyword_Match_Amount_Box"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="關鍵詞文章數"
+                                    android:textColor="@color/black"
+                                    android:textSize="15dp" />
+
+                                <TextView
+                                    android:id="@+id/keyword_Match_Amount"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="0"
+                                    android:textColor="@color/black"
+                                    android:textSize="45dp" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+                    <!--Weekly-Monthly_Summary_End-->
+
+                    <!--ArticleSummary_Start-->
+                    <LinearLayout
+                        android:id="@+id/HomePage_ArticleSummary"
+                        android:layout_width="350dp"
+                        android:layout_height="447dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="30dp"
+                        android:background="@drawable/article_summary_border"
+                        android:orientation="vertical"
+                        android:paddingTop="10dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent">
+                        <!--高度先調好420dp，避免剛跑進去時資料還沒抓到此格高度很小，觀感問題。資料跑出來時，420dp Height 也適當-->
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@color/white"
+                                android:orientation="horizontal">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:orientation="vertical"
+                                    android:paddingLeft="10dp"
+                                    android:paddingTop="5dp">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="left|center_vertical"
+                                        android:text="文章"
+                                        android:textColor="#000000"
+                                        android:textSize="28dp"
+                                        app:layout_constraintStart_toStartOf="parent">
+
+                                    </TextView>
+
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:orientation="vertical"
+                                    android:paddingRight="10dp">
+
+                                    <Button
+                                        android:id="@+id/gotoArticleBtn"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="right"
+                                        android:backgroundTint="@color/BtnBackgroundColor"
+                                        android:onClick="ClickArticle"
+                                        android:text="more" />
+
+                                </LinearLayout>
+
+                            </LinearLayout>
+                            <!--標題、內容分隔底線可以放這-->
+                        </LinearLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/Article_Summary_RecyclerView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@color/white" />
+
+                            <ProgressBar
+                                android:id="@+id/progressBar1"
+                                style="?android:attr/progressBarStyleLarge"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true" />
+                        </RelativeLayout>
+
+                    </LinearLayout>
+                    <!--ArticleSummary_End-->
+
+                    <!--ChartSummary_Start-->
+                    <LinearLayout
+                        android:id="@+id/HomePage_ChartSummary"
+                        android:layout_width="350dp"
+                        android:layout_height="400dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="30dp"
+                        android:background="@drawable/article_summary_border"
+                        android:orientation="vertical"
+                        android:paddingTop="10dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@color/white"
+                                android:orientation="horizontal">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:orientation="horizontal"
+                                    android:paddingLeft="10dp"
+                                    android:paddingTop="5dp">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="left|center_vertical"
+                                        android:text="情緒總量"
+                                        android:textColor="#000000"
+                                        android:textSize="28dp"
+                                        app:layout_constraintStart_toStartOf="parent">
+
+                                    </TextView>
+
+                                    <TextView
+                                        android:id="@+id/twm_txt"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:text="TextView"
+                                        android:visibility="invisible" />
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:orientation="vertical"
+                                    android:paddingRight="10dp">
+
+                                    <Button
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="right"
+                                        android:backgroundTint="@color/BtnBackgroundColor"
+                                        android:onClick="ClickChart"
+                                        android:text="more" />
+
+                                </LinearLayout>
+
+                            </LinearLayout>
+                            <!--標題、內容分隔底線可以放這-->
+                        </LinearLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <com.github.mikephil.charting.charts.PieChart
+                                android:id="@+id/pieChart_view"
+                                android:layout_width="match_parent"
+                                android:layout_height="150pt">
+
+
+                            </com.github.mikephil.charting.charts.PieChart>
+
+                            <ProgressBar
+                                android:id="@+id/progressBar2"
+                                style="?android:attr/progressBarStyleLarge"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true" />
+                        </RelativeLayout>
+
+                    </LinearLayout>
+                    <!--ChartSummary_End-->
+
+                    <!--BarChart_Start-->
+                    <LinearLayout
+                        android:id="@+id/HomePage_BarChart"
+                        android:layout_width="350dp"
+                        android:layout_height="400dp"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="30dp"
+                        android:layout_marginBottom="40dp"
+                        android:background="@drawable/article_summary_border"
+                        android:orientation="vertical"
+                        android:paddingTop="10dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@color/white"
+                                android:orientation="horizontal">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:orientation="horizontal"
+                                    android:paddingLeft="10dp"
+                                    android:paddingTop="5dp">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="left|center_vertical"
+                                        android:text="情緒趨勢"
+                                        android:textColor="#000000"
+                                        android:textSize="28dp"
+                                        app:layout_constraintStart_toStartOf="parent">
+
+                                    </TextView>
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:orientation="vertical"
+                                    android:paddingRight="10dp">
+
+                                    <Button
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="right"
+                                        android:backgroundTint="@color/BtnBackgroundColor"
+                                        android:onClick="ClickBarChart"
+                                        android:text="more" />
+
+                                </LinearLayout>
+
+                            </LinearLayout>
+                            <!--標題、內容分隔底線可以放這-->
+                        </LinearLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <com.github.mikephil.charting.charts.BarChart
+                                android:id="@+id/bar_chart"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1" />
+
+                            <ProgressBar
+                                android:id="@+id/progressBar3"
+                                style="?android:attr/progressBarStyleLarge"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true" />
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+                    <!--BarChart_End-->
+
+                </LinearLayout>
+            </RelativeLayout>
+        </ScrollView>
+
+
+    </LinearLayout>
+    <!--HomePage主畫面結束-->
+
+    <!--HomePage側邊選單開始-->
     <RelativeLayout
         android:id="@+id/SiderNavView"
         android:layout_width="match_parent"
@@ -515,6 +589,6 @@
         <include layout="@layout/drawer_menu" />
 
     </RelativeLayout>
-<!--HomePage側邊選單結束-->
+    <!--HomePage側邊選單結束-->
 
 </androidx.drawerlayout.widget.DrawerLayout>

@@ -18,6 +18,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Dcardtry">
         <activity
+            android:name=".RegisterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LoginActivity"
+            android:exported="false" />
+        <activity
             android:name=".SearchArticlePage"
             android:exported="false" />
         <activity

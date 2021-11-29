@@ -56,7 +56,7 @@ public class Manager_AddAccount extends AppCompatActivity{
         Password = intent.getStringExtra("password");
 
         MDM_Tilte=findViewById( R.id.manager_drawer_menu_title );
-        MDM_Tilte.setText( "\t"+Name+"\n"+Job+"\t\t 您好" );
+        MDM_Tilte.setText(Name+"\n"+Job+"\t\t 您好" );
 
     }
 

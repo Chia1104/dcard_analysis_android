@@ -46,7 +46,7 @@ public class ManagerChangePassword extends AppCompatActivity {
 
         //加上側邊選單姓名、職稱
         MDM_Tilte=findViewById( R.id.manager_drawer_menu_title );
-        MDM_Tilte.setText( "\t"+Name+"\n"+Job+"\t\t 您好" );
+        MDM_Tilte.setText(Name+"\n"+Job+"\t\t 您好" );
 
         //最上面顯示目前帳號
         MTitle=findViewById( R.id.MCP_Title );

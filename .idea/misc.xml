@@ -57,21 +57,30 @@
         <entry key="..\:/Users/user/dcardtry/app/src/main/res/menu/drawer_menu.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/user/dcardtry/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.26564102564102565" />
         <entry key="..\:/Users/user/dcardtry/app/src/main/res/xml/network_security_config.xml" value="0.24094202898550723" />
+        <entry key="..\:/Users/yuyuc/AndroidStudioProjects/dcardtry/app/src/main/res/drawable-v24/ic_baseline_back_38.xml" value="0.3907407407407407" />
         <entry key="..\:/Users/yuyuc/AndroidStudioProjects/dcardtry/app/src/main/res/drawable/bg_round_button.xml" value="0.5609375" />
         <entry key="..\:/Users/yuyuc/AndroidStudioProjects/dcardtry/app/src/main/res/drawable/ic_baseline_arrow_upward_24.xml" value="0.5609375" />
         <entry key="..\:/Users/yuyuc/AndroidStudioProjects/dcardtry/app/src/main/res/drawable/ic_baseline_reorder_38.xml" value="0.5609375" />
+        <entry key="..\:/Users/yuyuc/AndroidStudioProjects/dcardtry/app/src/main/res/drawable/ic_chart.xml" value="0.565625" />
+        <entry key="..\:/Users/yuyuc/AndroidStudioProjects/dcardtry/app/src/main/res/layout/account_manager_accountlist.xml" value="0.39945652173913043" />
         <entry key="..\:/Users/yuyuc/AndroidStudioProjects/dcardtry/app/src/main/res/layout/activity_article_page.xml" value="0.5536458333333333" />
         <entry key="..\:/Users/yuyuc/AndroidStudioProjects/dcardtry/app/src/main/res/layout/activity_dcard_detail.xml" value="0.5536458333333333" />
         <entry key="..\:/Users/yuyuc/AndroidStudioProjects/dcardtry/app/src/main/res/layout/activity_home_page.xml" value="0.41169635941130905" />
+        <entry key="..\:/Users/yuyuc/AndroidStudioProjects/dcardtry/app/src/main/res/layout/activity_login.xml" value="0.4026268115942029" />
         <entry key="..\:/Users/yuyuc/AndroidStudioProjects/dcardtry/app/src/main/res/layout/activity_main.xml" value="0.411231884057971" />
         <entry key="..\:/Users/yuyuc/AndroidStudioProjects/dcardtry/app/src/main/res/layout/activity_manager_add_account.xml" value="0.24259259259259258" />
+        <entry key="..\:/Users/yuyuc/AndroidStudioProjects/dcardtry/app/src/main/res/layout/activity_manager_entry.xml" value="0.2361111111111111" />
         <entry key="..\:/Users/yuyuc/AndroidStudioProjects/dcardtry/app/src/main/res/layout/activity_more_bar_chart.xml" value="0.40942028985507245" />
         <entry key="..\:/Users/yuyuc/AndroidStudioProjects/dcardtry/app/src/main/res/layout/activity_mpchart_page.xml" value="0.411231884057971" />
+        <entry key="..\:/Users/yuyuc/AndroidStudioProjects/dcardtry/app/src/main/res/layout/activity_register.xml" value="0.4026268115942029" />
         <entry key="..\:/Users/yuyuc/AndroidStudioProjects/dcardtry/app/src/main/res/layout/activity_search_article_page.xml" value="0.4026268115942029" />
         <entry key="..\:/Users/yuyuc/AndroidStudioProjects/dcardtry/app/src/main/res/layout/activity_user_change_password.xml" value="0.4017210144927536" />
         <entry key="..\:/Users/yuyuc/AndroidStudioProjects/dcardtry/app/src/main/res/layout/article_list_item.xml" value="0.5536458333333333" />
         <entry key="..\:/Users/yuyuc/AndroidStudioProjects/dcardtry/app/src/main/res/layout/article_summary_list_item.xml" value="0.5" />
         <entry key="..\:/Users/yuyuc/AndroidStudioProjects/dcardtry/app/src/main/res/layout/article_summary_listi_tem.xml" value="0.411231884057971" />
+        <entry key="..\:/Users/yuyuc/AndroidStudioProjects/dcardtry/app/src/main/res/layout/drawer_menu.xml" value="0.4026268115942029" />
+        <entry key="..\:/Users/yuyuc/AndroidStudioProjects/dcardtry/app/src/main/res/layout/main_toolbar.xml" value="0.2361111111111111" />
+        <entry key="..\:/Users/yuyuc/AndroidStudioProjects/dcardtry/app/src/main/res/layout/only_back_toolbar.xml" value="0.2361111111111111" />
       </map>
     </option>
   </component>

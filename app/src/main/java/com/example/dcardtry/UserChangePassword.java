@@ -125,6 +125,11 @@ public class UserChangePassword extends AppCompatActivity {
         //redirectActivity(this,);
     }
 
+    public void ClickTrend(View view){
+        //Redirect(重定向) activity to chartPage
+        redirectActivity(this,MoreBarChart.class);
+    }
+
     public void ClickAccountInfo(View view){
         //Restart activity_home_page.xml
         closeDrawer(drawerLayout);

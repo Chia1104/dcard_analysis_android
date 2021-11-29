@@ -44,6 +44,11 @@ public class SearchArticlePage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_article_page);
 
+        //設定隱藏標題
+        getSupportActionBar().hide();
+        //設定隱藏狀態
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
+
         edtxt = findViewById(R.id.search_EdText);
 
         progressBar = findViewById(R.id.progressBar);

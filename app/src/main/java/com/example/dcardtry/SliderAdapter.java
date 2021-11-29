@@ -28,8 +28,8 @@ public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.MyViewHold
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.bannertxt.setText(bannertxt[position%6]);
-        holder.bannerpic.setBackgroundResource(bannerpic[position%6]);
+        holder.bannertxt.setText(bannertxt[position%3]);
+        holder.bannerpic.setBackgroundResource(bannerpic[position%3]);
     }
 
     @Override
