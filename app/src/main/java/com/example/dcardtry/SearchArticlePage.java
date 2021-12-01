@@ -33,7 +33,7 @@ public class SearchArticlePage extends AppCompatActivity {
     private List<Dcard> dcardList;
     RecyclerView ArticleRecyclerview;
     Adapter adapter;
-    private static final String SEARCH_DCARD_URL = "https://fathomless-fjord-03751.herokuapp.com/getAllDcard/search/";
+    private static final String SEARCH_DCARD_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/getAllDcard/search/";
     String searchContent;
     ProgressBar progressBar;
     EditText edtxt;

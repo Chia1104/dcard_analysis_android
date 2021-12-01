@@ -48,10 +48,10 @@ public class MPChartPage extends AppCompatActivity {
 
     PieChart pieChart;
     String DCARD_URL;
-    private static final String UPDATE_DCARD_URL = "https://fathomless-fjord-03751.herokuapp.com/date/";
-    private static final String TODAY_DCARD_URL = "https://fathomless-fjord-03751.herokuapp.com/date/today";
-    private static final String MONTH_DCARD_URL = "https://fathomless-fjord-03751.herokuapp.com/date/month";
-    private static final String WEEK_DCARD_URL = "https://fathomless-fjord-03751.herokuapp.com/date/week";
+    private static final String UPDATE_DCARD_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/date/";
+    private static final String TODAY_DCARD_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/date/today";
+    private static final String MONTH_DCARD_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/date/month";
+    private static final String WEEK_DCARD_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/date/week";
     private static final String elementToFound_pos = "Positive";
     private static final String elementToFound_neu = "Neutral";
     private static final String elementToFound_neg = "Negative";

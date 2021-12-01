@@ -68,10 +68,10 @@ public class HomePage extends AppCompatActivity {
     ViewPager2 pager2;
     PieChart pieChart;
     String DCARD_URL;
-    private static final String TODAY_DCARD_URL = "https://fathomless-fjord-03751.herokuapp.com/date/today";
-    private static final String MONTH_DCARD_URL = "https://fathomless-fjord-03751.herokuapp.com/date/month";
-    private static final String WEEK_DCARD_URL = "https://fathomless-fjord-03751.herokuapp.com/date/week";
-    private static final String BARCHART_URL = "https://fathomless-fjord-03751.herokuapp.com/GBChart4Data";
+    private static final String TODAY_DCARD_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/date/today";
+    private static final String MONTH_DCARD_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/date/month";
+    private static final String WEEK_DCARD_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/date/week";
+    private static final String BARCHART_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/GBChart4Data";
     private static final String elementToFound_pos = "Positive";
     private static final String elementToFound_neu = "Neutral";
     private static final String elementToFound_neg = "Negative";
@@ -94,8 +94,8 @@ public class HomePage extends AppCompatActivity {
     ProgressBar progressBar1, progressBar2, progressBar3;
     int articleCount = 0, keywordCount = 0;
     float scoreSum = 0, avgScore = 0;
-    TextView twm_txt;
     ScrollView HPScroller;
+    LinearLayout HomePage_ArticleSummary;
 
 
     @Override
@@ -105,11 +105,17 @@ public class HomePage extends AppCompatActivity {
         progressBar1 = findViewById(R.id.progressBar1);
         progressBar2 = findViewById(R.id.progressBar2);
         progressBar3 = findViewById(R.id.progressBar3);
-
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+        dotsLayout=findViewById(R.id.dots_container);
+        pager2=findViewById(R.id.view_pager2);
+        DM_Tilte=findViewById( R.id.drawer_menu_title );
         MSAccount=findViewById( R.id.articleAmount );
         MSAverage=findViewById( R.id.averagePoint );
         MSKey=findViewById( R.id.keyword_Match_Amount );
-        twm_txt = findViewById(R.id.twm_txt);
+        Article_Summary = findViewById(R.id.Article_Summary_RecyclerView);
+        HomePage_ArticleSummary = findViewById(R.id.HomePage_ArticleSummary);
+        dcardList = new ArrayList<>();
+        chartValue = new ArrayList<>();
 
         //設定隱藏標題
         getSupportActionBar().hide();
@@ -124,12 +130,7 @@ public class HomePage extends AppCompatActivity {
         Password = intent.getStringExtra("password");
 
         //加上側邊選單姓名、職稱
-        DM_Tilte=findViewById( R.id.drawer_menu_title );
         DM_Tilte.setText( Name+"\n"+Job+"\t\t 您好" );
-
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
-        dotsLayout=findViewById(R.id.dots_container);
-        pager2=findViewById(R.id.view_pager2);
 
         //頂部快捷鍵開始
         HPScroller= (ScrollView) findViewById( R.id.HomePage_ScrollView );
@@ -149,12 +150,10 @@ public class HomePage extends AppCompatActivity {
         bannertxt=new String[]{"即時掌握社群訊息","精準分析找出關鍵問題","視覺化呈現大量資料"};
 
         //Banner中圖片
-        bannerpic = new int[]{R.drawable.banner_pic8,
+        bannerpic = new int[]{
+                R.drawable.banner_pic8,
                 R.drawable.banner_pic7,
                 R.drawable.banner_pic2,
-                R.drawable.banner_pic3,
-                R.drawable.banner_pic3,
-                R.drawable.banner_pic3
         };
 
         adapter =new SliderAdapter(list,bannertxt,bannerpic);
@@ -163,10 +162,6 @@ public class HomePage extends AppCompatActivity {
 
         dots=new TextView[3];
         dotsIndicator();
-
-        Article_Summary = findViewById(R.id.Article_Summary_RecyclerView);
-        dcardList = new ArrayList<>();
-        chartValue = new ArrayList<>();
 
         DCARD_URL = MONTH_DCARD_URL;
         loadDcard();
@@ -181,20 +176,20 @@ public class HomePage extends AppCompatActivity {
             }
         });
 
-        BannerTimer = new Timer(true);//此處造成模擬器一開始執行時，第一頁會馬上跳掉。不會等設定時間
-        TimerTask timerTask;
-        timerTask = new TimerTask() {
-            @Override
-            public void run() {
-                pager2.setCurrentItem(pager2.getCurrentItem()+1);
-                if(pager2.getCurrentItem()==(Integer.MAX_VALUE)-2)
-                //防止自動輪播到最後一張時無法繼續輪播下去
-                {
-                    pager2.setCurrentItem(pager2.getCurrentItem()%4);
-                }
-            }
-        };
-        BannerTimer.schedule(timerTask, 0,15000);
+//        BannerTimer = new Timer(true);//此處造成模擬器一開始執行時，第一頁會馬上跳掉。不會等設定時間
+//        TimerTask timerTask;
+//        timerTask = new TimerTask() {
+//            @Override
+//            public void run() {
+//                pager2.setCurrentItem(pager2.getCurrentItem()+1);
+//                if(pager2.getCurrentItem()==3)
+//                //防止自動輪播到最後一張時無法繼續輪播下去
+//                {
+//                    pager2.setCurrentItem(pager2.getCurrentItem()%3);
+//                }
+//            }
+//        };
+//        BannerTimer.schedule(timerTask, 0,15000);
     }
 
     //頂部快捷鍵開始
@@ -202,10 +197,10 @@ public class HomePage extends AppCompatActivity {
         HPScroller.scrollTo( 0,0 );
     }
     public void gotoArticleSummary(View view){
-        HPScroller.scrollTo( 0,1750 );
+        HPScroller.scrollTo( 0,1500 );
     }
     public void gotoEmotionAmount(View view){
-        HPScroller.scrollTo( 0,3350 );
+        HPScroller.scrollTo( 0,2800 );
     }
     public void gotoEmotionTrend(View view){
         HPScroller.scrollTo( 0,4950 );
@@ -244,9 +239,8 @@ public class HomePage extends AppCompatActivity {
         progressBar1.setVisibility(View.VISIBLE);
         progressBar2.setVisibility(View.VISIBLE);
         HttpsTrustManager.allowAllSSL();
-        RequestQueue queue = MySingleton.getInstance(this.getApplicationContext()).
-                getRequestQueue();
-        @SuppressLint("SetTextI18n") JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, DCARD_URL, null, response -> {
+        RequestQueue queue = Volley.newRequestQueue(this);
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, DCARD_URL, null, response -> {
             try {
                 dcardList.clear();
                 chartValue.clear();
@@ -310,7 +304,6 @@ public class HomePage extends AppCompatActivity {
             progressBar2.setVisibility(View.GONE);
             Toast.makeText(HomePage.this, "文章未更新",Toast.LENGTH_LONG).show();
         });
-        MySingleton.getInstance(this).addToRequestQueue(jsonArrayRequest);
         queue.add(jsonArrayRequest);
     }
 
@@ -358,18 +351,22 @@ public class HomePage extends AppCompatActivity {
     public void loadBarChartValue() {
         progressBar3.setVisibility(View.VISIBLE);
         HttpsTrustManager.allowAllSSL();
-        RequestQueue queue = MySingleton.getInstance(this.getApplicationContext()).
-                getRequestQueue();
+        RequestQueue queue = Volley.newRequestQueue(this);
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, BARCHART_URL, null, response -> {
             try {
-                barChartValue.clear();
                 for (int i = 0; i < response.length(); i++) {
                     JSONObject dcardObject = response.getJSONObject(i);
                     barChartValue.add(dcardObject.getString("Count"));
                     barChartValue.add(dcardObject.getString("newDate"));
                 }
-                ShowBarChart();
-                progressBar3.setVisibility(View.GONE);
+                try {
+                    ShowBarChart();
+                    progressBar3.setVisibility(View.GONE);
+                } catch (Exception e) {
+                    progressBar3.setVisibility(View.GONE);
+                    Toast.makeText(HomePage.this, "資料未更新",Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+                }
             } catch (JSONException e) {
                 progressBar3.setVisibility(View.GONE);
                 Toast.makeText(HomePage.this, "資料未更新",Toast.LENGTH_LONG).show();
@@ -380,7 +377,6 @@ public class HomePage extends AppCompatActivity {
             Toast.makeText(HomePage.this, "資料未更新",Toast.LENGTH_LONG).show();
             error.printStackTrace();
         });
-        MySingleton.getInstance(this).addToRequestQueue(jsonArrayRequest);
         queue.add(jsonArrayRequest);
     }
 
@@ -543,19 +539,16 @@ public class HomePage extends AppCompatActivity {
     }
 
     public void ClickToday(View view){
-        twm_txt.setText("today");
         DCARD_URL = TODAY_DCARD_URL;
         loadDcard();
     }
 
     public void ClickWeek(View view){
-        twm_txt.setText("week");
         DCARD_URL = WEEK_DCARD_URL;
         loadDcard();
     }
 
     public void ClickMonth(View view){
-        twm_txt.setText("month");
         DCARD_URL = MONTH_DCARD_URL;
         loadDcard();
     }
@@ -595,14 +588,6 @@ public class HomePage extends AppCompatActivity {
          intent.putExtra( "password",Password );
          //start activity
          activity.startActivity(intent);
-    }
-    public void itntTWM(Activity activity,Class aClass){
-        //導到其他頁面
-        //Initialize intent
-        Intent intent_twm_txt=new Intent(activity,aClass);
-        intent_twm_txt.putExtra("twm", twm_txt.getText().toString());
-        //start activity
-        activity.startActivity(intent_twm_txt);
     }
 
     public static void logout(Activity activity){

@@ -44,8 +44,8 @@ public class ArticlePage extends AppCompatActivity {
     private  List<Dcard> dcardList;
     RecyclerView ArticleRecyclerview;
     Adapter adapter;
-    private static final String DCARD_URL = "https://fathomless-fjord-03751.herokuapp.com/getAllDcard";
-    private static final String UPDATE_DCARD_URL = "https://fathomless-fjord-03751.herokuapp.com/getAllDcard/before/";
+    private static final String DCARD_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/getAllDcard";
+    private static final String UPDATE_DCARD_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/getAllDcard/before/";
     private DrawerLayout drawerLayout;
     String Name,Job,Account,Password, rvitemId;//接收帳號相關資料
     TextView DM_Tilte;//側邊選單標題 : 姓名+職稱
@@ -109,7 +109,8 @@ public class ArticlePage extends AppCompatActivity {
                         rvitemId = dcardObject.getString("Id");
                     }
                 }
-                ArticleRecyclerview.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+                ArticleRecyclerview.setLayoutManager(linearLayoutManager);
                 adapter = new Adapter(getApplicationContext(), dcardList);
                 ArticleRecyclerview.setAdapter(adapter);
                 progressBar.setVisibility(View.GONE);
@@ -155,9 +156,11 @@ public class ArticlePage extends AppCompatActivity {
                                     rvitemId = dcardObject.getString("Id");
                                 }
                             }
-                            ArticleRecyclerview.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
+                            ArticleRecyclerview.setLayoutManager(linearLayoutManager);
                             adapter = new Adapter(getApplicationContext(), dcardList);
                             ArticleRecyclerview.setAdapter(adapter);
+                            ArticleRecyclerview.scrollToPosition(adapter.getItemCount() - 30);
                             progressBar.setVisibility(View.GONE);
                         } catch (JSONException e) {
                             progressBar.setVisibility(View.GONE);

@@ -46,8 +46,8 @@ import java.util.Date;
 import java.util.List;
 
 public class MoreBarChart extends AppCompatActivity {
-    private static final String FULL_BARCHART_URL = "https://fathomless-fjord-03751.herokuapp.com/GBChart12Data";
-    private static final String FULL_LINECHART_URL = "https://fathomless-fjord-03751.herokuapp.com/LineChart12Data";
+    private static final String FULL_BARCHART_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/GBChart12Data";
+    private static final String FULL_LINECHART_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/LineChart12Data";
     List<String> barChartValue, lineChartValue;
     BarChart barChart;
     BarDataSet barDataSet1, barDataSet2, barDataSet3;
@@ -105,8 +105,14 @@ public class MoreBarChart extends AppCompatActivity {
                     barChartValue.add(dcardObject.getString("Count"));
                     barChartValue.add(dcardObject.getString("newDate"));
                 }
-                ShowBarChart();
-                progressBar.setVisibility(View.GONE);
+                try {
+                    ShowBarChart();
+                    progressBar.setVisibility(View.GONE);
+                } catch (Exception e) {
+                    progressBar.setVisibility(View.GONE);
+                    Toast.makeText(MoreBarChart.this, "資料未更新",Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+                }
             } catch (JSONException e) {
                 progressBar.setVisibility(View.GONE);
                 Toast.makeText(MoreBarChart.this, "資料未更新",Toast.LENGTH_LONG).show();
@@ -131,9 +137,14 @@ public class MoreBarChart extends AppCompatActivity {
                     lineChartValue.add(dcardObject.getString("avgScore"));
                     lineChartValue.add(dcardObject.getString("newDate"));
                 }
-                mplinechart(); //設定數據源
-                initX();
-                initY();
+                try {
+                    mplinechart(); //設定數據源
+                    initX();
+                    initY();
+                } catch (Exception e) {
+                    Toast.makeText(MoreBarChart.this, "資料未更新",Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+                }
             } catch (JSONException e) {
                 Toast.makeText(MoreBarChart.this, "資料未更新",Toast.LENGTH_LONG).show();
                 e.printStackTrace();
