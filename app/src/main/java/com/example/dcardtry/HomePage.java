@@ -122,15 +122,15 @@ public class HomePage extends AppCompatActivity {
         //設定隱藏狀態
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
 
-        //取得傳遞過來的資料
-        Intent intent = this.getIntent();
-        Name = intent.getStringExtra("name");
-        Job = intent.getStringExtra( "job" );
-        Account = intent.getStringExtra( "account" );
-        Password = intent.getStringExtra("password");
-
-        //加上側邊選單姓名、職稱
-        DM_Tilte.setText( Name+"\n"+Job+"\t\t 您好" );
+//        //取得傳遞過來的資料
+//        Intent intent = this.getIntent();
+//        Name = intent.getStringExtra("name");
+//        Job = intent.getStringExtra( "job" );
+//        Account = intent.getStringExtra( "account" );
+//        Password = intent.getStringExtra("password");
+//
+//        //加上側邊選單姓名、職稱
+//        DM_Tilte.setText( Name+"\n"+Job+"\t\t 您好" );
 
         //頂部快捷鍵開始
         HPScroller= (ScrollView) findViewById( R.id.HomePage_ScrollView );
