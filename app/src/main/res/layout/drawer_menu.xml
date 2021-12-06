@@ -181,33 +181,6 @@
     </LinearLayout>
     <!--帳號類別路徑 Title + 底線 結束-->
 
-    <!--更改密碼 開始-->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        android:onClick="ClickAccountInfo">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="48dp"
-            android:src="@drawable/ic_account"/>
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="更改密碼"
-            android:textSize="20dp"
-            android:textColor="@color/black"
-            android:padding="12dp"
-            android:layout_marginRight="16dp"/>
-
-    </LinearLayout>
-    <!--更改密碼 結束-->
-
     <!--登出開始-->
     <LinearLayout
         android:layout_width="match_parent"

@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -30,6 +31,7 @@ import com.android.volley.toolbox.BasicNetwork;
 import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
@@ -38,7 +40,9 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ArticlePage extends AppCompatActivity {
     private  List<Dcard> dcardList;
@@ -47,10 +51,13 @@ public class ArticlePage extends AppCompatActivity {
     private static final String DCARD_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/getAllDcard";
     private static final String UPDATE_DCARD_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/getAllDcard/before/";
     private DrawerLayout drawerLayout;
-    String Name,Job,Account,Password, rvitemId;//接收帳號相關資料
+    String rvitemId, pname;//接收帳號相關資料
     TextView DM_Tilte;//側邊選單標題 : 姓名+職稱
     ProgressBar progressBar;
     Button searchArticle_btn;
+    SharedPreferences mPreferences;
+    String sharedprofFile = "com.protocoderspoint.registration_login";
+    static SharedPreferences.Editor preferencesEditor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +69,8 @@ public class ArticlePage extends AppCompatActivity {
         getWindow().getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_FULLSCREEN);
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerlayout);
+        DM_Tilte=findViewById( R.id.drawer_menu_title );
+        details();
 
         searchArticle_btn = findViewById(R.id.searchArticle_btn);
         searchArticle_btn.setOnClickListener(v -> {
@@ -73,17 +82,13 @@ public class ArticlePage extends AppCompatActivity {
         AP_LoadDcard();
         updateDcard();
 
-        //取得傳遞過來的資料
-        Intent intent = this.getIntent();
-        Name = intent.getStringExtra("name");
-        Job = intent.getStringExtra( "job" );
-        Account = intent.getStringExtra( "account" );
-        Password = intent.getStringExtra("password");
-
-        //加上側邊選單姓名、職稱
-        DM_Tilte=findViewById( R.id.drawer_menu_title );
-        DM_Tilte.setText( Name+"\n"+Job+"\t\t 您好" );
         progressBar = findViewById(R.id.progressBar);
+    }
+    public void details() {
+        mPreferences = getSharedPreferences(sharedprofFile,MODE_PRIVATE);
+        preferencesEditor = mPreferences.edit();
+        pname = mPreferences.getString("name","null");
+        DM_Tilte.setText("Hello " + pname);
     }
 
     private void AP_LoadDcard(){
@@ -222,11 +227,6 @@ public class ArticlePage extends AppCompatActivity {
         finish();
     }
 
-    public void ClickAccountInfo(View view){
-        //Redirect(重定向) activity to accountPage(帳號管理頁面)
-        redirectActivity(this,UserChangePassword.class);
-    }
-
     public void ClickLogout(View view){
         //回到登入頁面
         logout(this);
@@ -236,10 +236,7 @@ public class ArticlePage extends AppCompatActivity {
         //導到其他頁面
         //Initialize intent
         Intent intent=new Intent(activity,aClass);
-        intent.putExtra( "name",Name );
-        intent.putExtra( "job",Job );
-        intent.putExtra( "account",Account );
-        intent.putExtra( "password",Password );
+
         //set flag
         //intent.setFlags( Intent.FLAG_ACTIVITY_NEW_TASK );
         //start activity
@@ -257,10 +254,11 @@ public class ArticlePage extends AppCompatActivity {
         builder.setPositiveButton( "是", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                preferencesEditor.clear().commit();
                 //Finish activity
                 activity.finishAffinity();
                 //回到登入頁面
-                Intent intent=new Intent(activity,MainActivity.class);
+                Intent intent=new Intent(activity,LoginActivity.class);
                 activity.startActivity( intent );
             }
         } );

@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
@@ -43,7 +45,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MoreBarChart extends AppCompatActivity {
     private static final String FULL_BARCHART_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/GBChart12Data";
@@ -55,9 +59,12 @@ public class MoreBarChart extends AppCompatActivity {
     ProgressBar progressBar;
     ArrayList<Entry> values;
     LineChart mLineChart;
-    String Name,Job,Account,Password;//接收登入頁面傳過來的資料
+    String pname;
     TextView DM_Tilte;//側邊選單標題 : 姓名+職稱
     private DrawerLayout drawerLayout;
+    SharedPreferences mPreferences;
+    String sharedprofFile = "com.protocoderspoint.registration_login";
+    static SharedPreferences.Editor preferencesEditor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,34 +76,30 @@ public class MoreBarChart extends AppCompatActivity {
         //設定隱藏狀態
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
 
-        //取得傳遞過來的資料
-        Intent intent = this.getIntent();
-        Name = intent.getStringExtra("name");
-        Job = intent.getStringExtra( "job" );
-        Account = intent.getStringExtra( "account" );
-        Password = intent.getStringExtra("password");
-
-        //加上側邊選單姓名、職稱
-        DM_Tilte=findViewById( R.id.drawer_menu_title );
-        DM_Tilte.setText( Name+"\n"+Job+"\t\t 您好" );
-
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+        DM_Tilte=findViewById( R.id.drawer_menu_title );
+        details();
         
         progressBar = findViewById(R.id.progressBar);
         mLineChart = findViewById(R.id.lineChart);
         barChartValue = new ArrayList<>();
         lineChartValue = new ArrayList<>();
         values = new ArrayList<>();
-
         loadBarChartValue();
         loadLineChartValue();
+    }
+
+    public void details() {
+        mPreferences = getSharedPreferences(sharedprofFile,MODE_PRIVATE);
+        preferencesEditor = mPreferences.edit();
+        pname = mPreferences.getString("name","null");
+        DM_Tilte.setText("Hello " + pname);
     }
 
     public void loadBarChartValue() {
         progressBar.setVisibility(View.VISIBLE);
         HttpsTrustManager.allowAllSSL();
-        RequestQueue queue = MySingleton.getInstance(this.getApplicationContext()).
-                getRequestQueue();
+        RequestQueue queue = Volley.newRequestQueue(this);
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, FULL_BARCHART_URL, null, response -> {
             try {
                 barChartValue.clear();
@@ -123,7 +126,6 @@ public class MoreBarChart extends AppCompatActivity {
             Toast.makeText(MoreBarChart.this, "資料未更新",Toast.LENGTH_LONG).show();
             error.printStackTrace();
         });
-        MySingleton.getInstance(this).addToRequestQueue(jsonArrayRequest);
         queue.add(jsonArrayRequest);
     }
 
@@ -460,11 +462,6 @@ public class MoreBarChart extends AppCompatActivity {
         closeDrawer( drawerLayout );
     }
 
-    public void ClickAccountInfo(View view){
-        //Redirect(重定向) activity to accountPage(帳號管理頁面)
-        redirectActivity(this,UserChangePassword.class);
-    }
-
     public void ClickLogout(View view){
         //回到登入頁面
         logout(this);
@@ -474,24 +471,9 @@ public class MoreBarChart extends AppCompatActivity {
          //導到其他頁面
          //Initialize intent
          Intent intent=new Intent(activity,aClass);
-         intent.putExtra( "name",Name );
-         intent.putExtra( "job",Job );
-         intent.putExtra( "account",Account );
-         intent.putExtra( "password",Password );
          //start activity
          activity.startActivity(intent);
     }
-    /*
-    public void itntTWM(Activity activity,Class aClass){
-        //導到其他頁面
-        //Initialize intent
-        Intent intent_twm_txt=new Intent(activity,aClass);
-        intent_twm_txt.putExtra("twm", twm_txt.getText().toString());
-        //start activity
-        activity.startActivity(intent_twm_txt);
-    }
-
-     */
 
     public static void logout(Activity activity){
         //Initialize alert dialog
@@ -504,10 +486,11 @@ public class MoreBarChart extends AppCompatActivity {
         builder.setPositiveButton( "是", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                preferencesEditor.clear().commit();
                 //Finish activity
                 activity.finishAffinity();
                 //回到登入頁面
-                Intent intent=new Intent(activity,MainActivity.class);
+                Intent intent=new Intent(activity,LoginActivity.class);
                 activity.startActivity( intent );
             }
         } );

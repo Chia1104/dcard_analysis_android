@@ -11,6 +11,7 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -23,6 +24,7 @@ import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.Entry;
@@ -62,10 +64,13 @@ public class MPChartPage extends AppCompatActivity {
     Adapter adapter;
     RecyclerView.LayoutManager mLayoutManager;
     ProgressBar progressBar;
-    String Name,Job,Account,Password, date1, date2;//接收登入頁面傳過來的資料
-    TextView DM_Tilte, tv_twm, date1_txt, date2_txt;//側邊選單標題 : 姓名+職稱
+    String  date1, date2, pname;//接收登入頁面傳過來的資料
+    TextView DM_Tilte, date1_txt, date2_txt;//側邊選單標題 : 姓名+職稱
     private DrawerLayout drawerLayout;
     Button getToday_btn, getWeek_btn, getMonth_btn, search_btn;
+    SharedPreferences mPreferences;
+    String sharedprofFile = "com.protocoderspoint.registration_login";
+    static SharedPreferences.Editor preferencesEditor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,18 +82,9 @@ public class MPChartPage extends AppCompatActivity {
         //設定隱藏狀態
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
 
-        //取得傳遞過來的資料
-        Intent intent = this.getIntent();
-        Name = intent.getStringExtra("name");
-        Job = intent.getStringExtra( "job" );
-        Account = intent.getStringExtra( "account" );
-        Password = intent.getStringExtra("password");
-
-        //加上側邊選單姓名、職稱
-        DM_Tilte=findViewById( R.id.drawer_menu_title );
-        DM_Tilte.setText(Name+"\n"+Job+"\t\t 您好" );
-
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+        DM_Tilte=findViewById( R.id.drawer_menu_title );
+        details();
 
         progressBar = findViewById(R.id.progressBar);
         mRecyclerView = findViewById(R.id.recyclerView);
@@ -132,6 +128,13 @@ public class MPChartPage extends AppCompatActivity {
             DCARD_URL = MONTH_DCARD_URL;
             loadDcardWithVolley();
         });
+    }
+
+    public void details() {
+        mPreferences = getSharedPreferences(sharedprofFile,MODE_PRIVATE);
+        preferencesEditor = mPreferences.edit();
+        pname = mPreferences.getString("name","null");
+        DM_Tilte.setText("Hello " + pname);
     }
 
     private void filter1(String text) {
@@ -431,11 +434,6 @@ public class MPChartPage extends AppCompatActivity {
         finish();
     }
 
-    public void ClickAccountInfo(View view){
-        //Redirect(重定向) activity to accountPage(帳號管理頁面)
-        redirectActivity(this,UserChangePassword.class);
-    }
-
     public void ClickLogout(View view){
         //回到登入頁面
         logout(this);
@@ -445,10 +443,6 @@ public class MPChartPage extends AppCompatActivity {
         //導到其他頁面
         //Initialize intent
         Intent intent=new Intent(activity,aClass);
-        intent.putExtra( "name",Name );
-        intent.putExtra( "job",Job );
-        intent.putExtra( "account",Account );
-        intent.putExtra( "password",Password );
         //set flag
         //intent.setFlags( Intent.FLAG_ACTIVITY_NEW_TASK );
         //start activity
@@ -466,10 +460,11 @@ public class MPChartPage extends AppCompatActivity {
         builder.setPositiveButton( "是", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                preferencesEditor.clear().commit();
                 //Finish activity
                 activity.finishAffinity();
                 //回到登入頁面
-                Intent intent=new Intent(activity,MainActivity.class);
+                Intent intent=new Intent(activity,LoginActivity.class);
                 activity.startActivity( intent );
             }
         } );

@@ -135,7 +135,7 @@
                     android:orientation="horizontal">
 
                     <Button
-                        android:id="@+id/register_btn"
+                        android:id="@+id/registerpage_btn"
                         android:layout_width="match_parent"
                         android:layout_height="55dp"
                         android:layout_gravity="bottom|clip_vertical"

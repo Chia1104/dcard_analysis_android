@@ -36,29 +36,14 @@
             android:name=".DcardDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".ManagerChangePassword"
-            android:exported="true" />
-        <activity
-            android:name=".Manager_AddAccount"
-            android:exported="true" />
-        <activity
-            android:name=".UserChangePassword"
-            android:exported="true" />
-        <activity
-            android:name=".ManagerPage"
-            android:exported="true" />
-        <activity
             android:name=".ArticlePage"
             android:exported="true" />
-        <activity android:name=".HomePage" />
-        <activity android:name=".Manager_entry" />
-        <activity android:name=".CreateAccount" />
-        <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <activity android:name=".HomePage" >
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
         </activity>
     </application>
 
