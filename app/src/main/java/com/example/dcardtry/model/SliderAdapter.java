@@ -1,4 +1,4 @@
-package com.example.dcardtry;
+package com.example.dcardtry.model;
 
 
 import android.view.LayoutInflater;
@@ -8,6 +8,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.dcardtry.R;
 
 public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.MyViewHolder> {
 

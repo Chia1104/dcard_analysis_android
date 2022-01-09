@@ -1,4 +1,4 @@
-package com.example.dcardtry;
+package com.example.dcardtry.model;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package com.example.dcardtry;
+package com.example.dcardtry.UIActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
@@ -7,17 +7,13 @@ import androidx.viewpager2.widget.ViewPager2;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Html;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
@@ -27,39 +23,33 @@ import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.dcardtry.SQLconnect.MysqlCon;
+import com.example.dcardtry.HttpsTrustManager;
+import com.example.dcardtry.R;
+import com.example.dcardtry.model.ArticleSummaryAdapter;
+import com.example.dcardtry.model.Dcard;
+import com.example.dcardtry.model.SliderAdapter;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
-import com.github.mikephil.charting.highlight.Highlight;
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
 
-import java.util.Calendar;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -70,10 +60,10 @@ public class HomePage extends AppCompatActivity {
     ViewPager2 pager2;
     PieChart pieChart;
     String DCARD_URL;
-    private static final String TODAY_DCARD_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/date/today";
-    private static final String MONTH_DCARD_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/date/month";
-    private static final String WEEK_DCARD_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/date/week";
-    private static final String BARCHART_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/GBChart4Data";
+    private static final String TODAY_DCARD_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/api/date/today";
+    private static final String MONTH_DCARD_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/api/date/month";
+    private static final String WEEK_DCARD_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/api/date/week";
+    private static final String BARCHART_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/api/GBChart4Data";
     private static final String elementToFound_pos = "Positive";
     private static final String elementToFound_neu = "Neutral";
     private static final String elementToFound_neg = "Negative";
@@ -565,7 +555,7 @@ public class HomePage extends AppCompatActivity {
 
     public void ClickArticle(View view){
         //Redirect(重定向) activity to articlePage
-        redirectActivity(this,ArticlePage.class);
+        redirectActivity(this, ArticlePage.class);
     }
 
     public void ClickToday(View view){

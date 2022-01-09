@@ -1,10 +1,8 @@
-package com.example.dcardtry;
+package com.example.dcardtry.UIActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -21,8 +19,9 @@ import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.dcardtry.HttpsTrustManager;
+import com.example.dcardtry.R;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -34,24 +33,16 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
-import com.github.mikephil.charting.highlight.Highlight;
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class MoreBarChart extends AppCompatActivity {
-    private static final String FULL_BARCHART_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/GBChart12Data";
-    private static final String FULL_LINECHART_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/LineChart12Data";
+    private static final String FULL_BARCHART_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/api/GBChart12Data";
+    private static final String FULL_LINECHART_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/api/LineChart12Data";
     List<String> barChartValue, lineChartValue;
     BarChart barChart;
     BarDataSet barDataSet1, barDataSet2, barDataSet3;
@@ -436,13 +427,13 @@ public class MoreBarChart extends AppCompatActivity {
 
     public void ClickHome(View view){
         //Restart activity_home_page.xml
-        redirectActivity(this,HomePage.class);
+        redirectActivity(this, HomePage.class);
         finish();
     }
 
     public void ClickArticle(View view){
         //Redirect(重定向) activity to articlePage
-        redirectActivity(this,ArticlePage.class);
+        redirectActivity(this, ArticlePage.class);
         finish();
     }
 
@@ -490,7 +481,7 @@ public class MoreBarChart extends AppCompatActivity {
                 //Finish activity
                 activity.finishAffinity();
                 //回到登入頁面
-                Intent intent=new Intent(activity,LoginActivity.class);
+                Intent intent=new Intent(activity, LoginActivity.class);
                 activity.startActivity( intent );
             }
         } );

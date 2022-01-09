@@ -18,27 +18,27 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Dcardtry">
         <activity
-            android:name=".RegisterActivity"
+            android:name=".UIActivity.RegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".UIActivity.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".SearchArticlePage"
+            android:name=".UIActivity.SearchArticlePage"
             android:exported="false" />
         <activity
-            android:name=".MoreBarChart"
+            android:name=".UIActivity.MoreBarChart"
             android:exported="false" />
         <activity
-            android:name=".MPChartPage"
+            android:name=".UIActivity.MPChartPage"
             android:exported="false" />
         <activity
-            android:name=".DcardDetailActivity"
+            android:name=".UIActivity.DcardDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".ArticlePage"
+            android:name=".UIActivity.ArticlePage"
             android:exported="true" />
-        <activity android:name=".HomePage" >
+        <activity android:name=".UIActivity.HomePage" >
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
 

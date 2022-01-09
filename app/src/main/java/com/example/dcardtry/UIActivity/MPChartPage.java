@@ -1,4 +1,4 @@
-package com.example.dcardtry;
+package com.example.dcardtry.UIActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
@@ -12,20 +12,21 @@ import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.dcardtry.HttpsTrustManager;
+import com.example.dcardtry.R;
+import com.example.dcardtry.adapter.Adapter;
+import com.example.dcardtry.model.Dcard;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
@@ -50,10 +51,10 @@ public class MPChartPage extends AppCompatActivity {
 
     PieChart pieChart;
     String DCARD_URL;
-    private static final String UPDATE_DCARD_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/date/";
-    private static final String TODAY_DCARD_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/date/today";
-    private static final String MONTH_DCARD_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/date/month";
-    private static final String WEEK_DCARD_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/date/week";
+    private static final String UPDATE_DCARD_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/api/date/";
+    private static final String TODAY_DCARD_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/api/date/today";
+    private static final String MONTH_DCARD_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/api/date/month";
+    private static final String WEEK_DCARD_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/api/date/week";
     private static final String elementToFound_pos = "Positive";
     private static final String elementToFound_neu = "Neutral";
     private static final String elementToFound_neg = "Negative";
@@ -413,13 +414,13 @@ public class MPChartPage extends AppCompatActivity {
 
     public void ClickHome(View view){
         //Restart activity_home_page.xml
-        redirectActivity(this,HomePage.class);
+        redirectActivity(this, HomePage.class);
         finish();
     }
 
     public void ClickArticle(View view){
         //Redirect(重定向) activity to articlePage
-        redirectActivity( this,ArticlePage.class );
+        redirectActivity( this, ArticlePage.class );
         finish();
     }
 
@@ -430,7 +431,7 @@ public class MPChartPage extends AppCompatActivity {
 
     public void ClickTrend(View view){
         //Redirect(重定向) activity to chartPage
-        redirectActivity(this,MoreBarChart.class);
+        redirectActivity(this, MoreBarChart.class);
         finish();
     }
 
@@ -464,7 +465,7 @@ public class MPChartPage extends AppCompatActivity {
                 //Finish activity
                 activity.finishAffinity();
                 //回到登入頁面
-                Intent intent=new Intent(activity,LoginActivity.class);
+                Intent intent=new Intent(activity, LoginActivity.class);
                 activity.startActivity( intent );
             }
         } );

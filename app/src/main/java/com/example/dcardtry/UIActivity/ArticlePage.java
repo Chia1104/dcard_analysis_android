@@ -1,4 +1,4 @@
-package com.example.dcardtry;
+package com.example.dcardtry.UIActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
@@ -12,44 +12,33 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Cache;
-import com.android.volley.Network;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.BasicNetwork;
-import com.android.volley.toolbox.DiskBasedCache;
-import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.dcardtry.HttpsTrustManager;
+import com.example.dcardtry.R;
+import com.example.dcardtry.adapter.Adapter;
+import com.example.dcardtry.model.Dcard;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ArticlePage extends AppCompatActivity {
     private  List<Dcard> dcardList;
     RecyclerView ArticleRecyclerview;
     Adapter adapter;
-    private static final String DCARD_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/getAllDcard";
-    private static final String UPDATE_DCARD_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/getAllDcard/before/";
+    private static final String DCARD_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/api/getAllDcard";
+    private static final String UPDATE_DCARD_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/api/getAllDcard/before/";
     private DrawerLayout drawerLayout;
     String rvitemId, pname;//接收帳號相關資料
     TextView DM_Tilte;//側邊選單標題 : 姓名+職稱
@@ -206,7 +195,7 @@ public class ArticlePage extends AppCompatActivity {
 
     public void ClickHome(View view){
         //Restart activity_home_page.xml
-        redirectActivity(this,HomePage.class);
+        redirectActivity(this, HomePage.class);
         finish();
     }
 
@@ -217,13 +206,13 @@ public class ArticlePage extends AppCompatActivity {
 
     public void ClickChart(View view){
         //Redirect(重定向) activity to chartPage
-        redirectActivity(this,MPChartPage.class);
+        redirectActivity(this, MPChartPage.class);
         finish();
     }
 
     public void ClickTrend(View view){
         //Redirect(重定向) activity to chartPage
-        redirectActivity(this,MoreBarChart.class);
+        redirectActivity(this, MoreBarChart.class);
         finish();
     }
 
@@ -258,7 +247,7 @@ public class ArticlePage extends AppCompatActivity {
                 //Finish activity
                 activity.finishAffinity();
                 //回到登入頁面
-                Intent intent=new Intent(activity,LoginActivity.class);
+                Intent intent=new Intent(activity, LoginActivity.class);
                 activity.startActivity( intent );
             }
         } );

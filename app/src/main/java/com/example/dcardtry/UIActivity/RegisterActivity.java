@@ -1,11 +1,10 @@
-package com.example.dcardtry;
+package com.example.dcardtry.UIActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,21 +12,21 @@ import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.dcardtry.HttpsTrustManager;
+import com.example.dcardtry.R;
 
 import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class LoginActivity extends AppCompatActivity {
-    EditText accountInput, passwordInput;
-    Button login_btn, registerpage_btn;
-    String email, password;
-    private static final String URL_LOGIN = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/api/login";
+public class RegisterActivity extends AppCompatActivity {
+    EditText nameInput, emailInput, passwordInput2, cpasswordInput;
+    String name, email, password, cpassword;
+    Button loginpage_btn, register_btn;
+    private static final String URL_REGISTER = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/api/register";
     SharedPreferences mPreferences;
     String sharedprofFile = "com.protocoderspoint.registration_login";
     SharedPreferences.Editor preferencesEditor;
@@ -35,33 +34,36 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE); //will hide the title
-        getSupportActionBar().hide(); // hide the title bar
-        setContentView(R.layout.activity_login);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getSupportActionBar().hide();
+        setContentView(R.layout.activity_register);
 
         mPreferences=getSharedPreferences(sharedprofFile,MODE_PRIVATE);
         preferencesEditor = mPreferences.edit();
 
-        accountInput = findViewById(R.id.accountInput);
-        passwordInput = findViewById(R.id.passwordInput);
-        login_btn = findViewById(R.id.login_btn);
-        registerpage_btn = findViewById(R.id.registerpage_btn);
+        nameInput = findViewById(R.id.nameInput);
+        emailInput = findViewById(R.id.emailInput);
+        passwordInput2 = findViewById(R.id.passwordInput2);
+        cpasswordInput = findViewById(R.id.cpasswordInput);
+        loginpage_btn = findViewById(R.id.loginpage_btn);
+        register_btn = findViewById(R.id.register_btn);
 
-        login_btn.setOnClickListener(v -> {
-            email = accountInput.getText().toString().trim();
-            password = passwordInput.getText().toString().trim();
-            login();
+        loginpage_btn.setOnClickListener(v -> {
+            startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
         });
-
-        registerpage_btn.setOnClickListener(v -> {
-            startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
+        register_btn.setOnClickListener(v -> {
+            name = nameInput.getText().toString().trim();
+            email = emailInput.getText().toString().trim();
+            password = passwordInput2.getText().toString().trim();
+            cpassword = cpasswordInput.getText().toString().trim();
+            register();
         });
     }
 
-    public void login() {
+    public void register() {
         HttpsTrustManager.allowAllSSL();
         RequestQueue queue = Volley.newRequestQueue(this);
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_LOGIN,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_REGISTER,
                 response -> {
                     try {
                         JSONObject jsonObject = new JSONObject(response);
@@ -73,23 +75,23 @@ public class LoginActivity extends AppCompatActivity {
                             preferencesEditor.putString("name", name);
                             preferencesEditor.apply();
                             Toast.makeText(getApplicationContext(), "success", Toast.LENGTH_LONG).show();
-                            Intent i1 = new Intent(LoginActivity.this, HomePage.class);
-                            startActivity(i1);
+                            Intent i = new Intent(RegisterActivity.this, HomePage.class);
+                            startActivity(i);
                             finish();
-                        } else {
-                            Toast.makeText(getApplicationContext(), "登入失敗", Toast.LENGTH_LONG).show();
                         }
 
                     } catch (Exception e) {
                         e.printStackTrace();
-                        Toast.makeText(getApplicationContext(), "登入失敗", Toast.LENGTH_LONG).show();
+
                     }
                 }, error -> {
+
             if (error.networkResponse.statusCode == 401) {
-                Toast.makeText(getApplicationContext(), "登入失敗", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "註冊錯誤!", Toast.LENGTH_LONG).show();
             } else {
                 Toast.makeText(getApplicationContext(), "Could not fetch!", Toast.LENGTH_LONG).show();
             }
+
         }) {
             public Map<String, String> getHeaders() {
                 Map<String, String> params = new HashMap<>();
@@ -101,8 +103,10 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<>();
+                params.put("name", name);
                 params.put("email", email);
                 params.put("password", password);
+                params.put("c_password", cpassword);
                 return params;
             }
         };
