@@ -1,4 +1,4 @@
-package com.example.dcardtry.model;
+package com.example.dcardtry.adapter;
 
 
 import android.view.LayoutInflater;

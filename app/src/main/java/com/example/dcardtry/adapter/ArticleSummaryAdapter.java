@@ -1,4 +1,4 @@
-package com.example.dcardtry.model;
+package com.example.dcardtry.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dcardtry.UIActivity.DcardDetailActivity;
 import com.example.dcardtry.R;
+import com.example.dcardtry.model.Dcard;
 
 import java.util.List;
 
