@@ -1,4 +1,4 @@
-package com.example.dcardtry;
+package com.example.dcardtry.UIActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
@@ -7,16 +7,13 @@ import androidx.viewpager2.widget.ViewPager2;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.graphics.Color;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Html;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
@@ -26,38 +23,33 @@ import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.dcardtry.SQLconnect.MysqlCon;
+import com.example.dcardtry.HttpsTrustManager;
+import com.example.dcardtry.R;
+import com.example.dcardtry.model.ArticleSummaryAdapter;
+import com.example.dcardtry.model.Dcard;
+import com.example.dcardtry.model.SliderAdapter;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
-import com.github.mikephil.charting.highlight.Highlight;
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
 
-import java.util.Calendar;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -68,10 +60,10 @@ public class HomePage extends AppCompatActivity {
     ViewPager2 pager2;
     PieChart pieChart;
     String DCARD_URL;
-    private static final String TODAY_DCARD_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/date/today";
-    private static final String MONTH_DCARD_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/date/month";
-    private static final String WEEK_DCARD_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/date/week";
-    private static final String BARCHART_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/GBChart4Data";
+    private static final String TODAY_DCARD_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/api/date/today";
+    private static final String MONTH_DCARD_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/api/date/month";
+    private static final String WEEK_DCARD_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/api/date/week";
+    private static final String BARCHART_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/api/GBChart4Data";
     private static final String elementToFound_pos = "Positive";
     private static final String elementToFound_neu = "Neutral";
     private static final String elementToFound_neg = "Negative";
@@ -87,15 +79,18 @@ public class HomePage extends AppCompatActivity {
     BarDataSet barDataSet1, barDataSet2, barDataSet3;
     ArrayList barEntries;
     private DrawerLayout drawerLayout;
-    Timer BannerTimer;
-    String Name,Job,Account,Password;//接收登入頁面傳過來的資料
+    String ptoken, pname;
     TextView DM_Tilte;//側邊選單標題 : 姓名+職稱
-    TextView MSTitle,MSAccount,MSAverage,MSKey;//本月統計用
+    TextView MSAccount,MSAverage,MSKey;//本月統計用
     ProgressBar progressBar1, progressBar2, progressBar3;
     int articleCount = 0, keywordCount = 0;
     float scoreSum = 0, avgScore = 0;
     ScrollView HPScroller;
     LinearLayout HomePage_ArticleSummary;
+    SharedPreferences mPreferences;
+    String sharedprofFile = "com.protocoderspoint.registration_login";
+    private static final String URL_DETAILS = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/api/details";
+    static SharedPreferences.Editor preferencesEditor;
 
 
     @Override
@@ -122,15 +117,7 @@ public class HomePage extends AppCompatActivity {
         //設定隱藏狀態
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
 
-        //取得傳遞過來的資料
-        Intent intent = this.getIntent();
-        Name = intent.getStringExtra("name");
-        Job = intent.getStringExtra( "job" );
-        Account = intent.getStringExtra( "account" );
-        Password = intent.getStringExtra("password");
-
-        //加上側邊選單姓名、職稱
-        DM_Tilte.setText( Name+"\n"+Job+"\t\t 您好" );
+        details();
 
         //頂部快捷鍵開始
         HPScroller= (ScrollView) findViewById( R.id.HomePage_ScrollView );
@@ -175,21 +162,6 @@ public class HomePage extends AppCompatActivity {
                 super.onPageSelected(position);
             }
         });
-
-//        BannerTimer = new Timer(true);//此處造成模擬器一開始執行時，第一頁會馬上跳掉。不會等設定時間
-//        TimerTask timerTask;
-//        timerTask = new TimerTask() {
-//            @Override
-//            public void run() {
-//                pager2.setCurrentItem(pager2.getCurrentItem()+1);
-//                if(pager2.getCurrentItem()==3)
-//                //防止自動輪播到最後一張時無法繼續輪播下去
-//                {
-//                    pager2.setCurrentItem(pager2.getCurrentItem()%3);
-//                }
-//            }
-//        };
-//        BannerTimer.schedule(timerTask, 0,15000);
     }
 
     //頂部快捷鍵開始
@@ -234,6 +206,54 @@ public class HomePage extends AppCompatActivity {
     public void BannerBntToRight(View view){pager2.setCurrentItem(pager2.getCurrentItem()+1);}
     public void BannerBntToLeft(View view){pager2.setCurrentItem(pager2.getCurrentItem()-1);}
 
+    public void details() {
+        mPreferences = getSharedPreferences(sharedprofFile,MODE_PRIVATE);
+        preferencesEditor = mPreferences.edit();
+        ptoken = mPreferences.getString("token","null");
+        HttpsTrustManager.allowAllSSL();
+        RequestQueue queue = Volley.newRequestQueue(this);
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_DETAILS,
+                response -> {
+                    try {
+                        JSONObject jsonObject = new JSONObject(response);
+                        String message = jsonObject.getString("message");
+
+                        if (message.equals("success")) {
+                            String name = jsonObject.getString("name");
+                            DM_Tilte.setText("Hello " + name);
+                        }
+
+                    } catch (Exception e) {
+                        preferencesEditor.clear().commit();
+                        Toast.makeText(getApplicationContext(), "請重新登入", Toast.LENGTH_LONG).show();
+                        Intent i = new Intent(HomePage.this, LoginActivity.class);
+                        startActivity(i);
+                        finish();
+                    }
+                }, error -> {
+            if (error.networkResponse.statusCode == 401) {
+                preferencesEditor.clear().commit();
+                Toast.makeText(getApplicationContext(), "請重新登入", Toast.LENGTH_LONG).show();
+                Intent i = new Intent(HomePage.this, LoginActivity.class);
+                startActivity(i);
+                finish();
+            } else {
+                Toast.makeText(getApplicationContext(), "Could not fetch!", Toast.LENGTH_LONG).show();
+            }
+
+        }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> params = new HashMap<>();
+                params.put("Accept-Encoding", "gzip, deflate, br");
+                params.put("Accept", "application/json");
+                params.put("Conection", "keep-alive");
+                params.put("Authorization", "Bearer " + ptoken);
+                return params;
+            }
+        };
+        queue.add(stringRequest);
+    }
 
     public void loadDcard(){
         progressBar1.setVisibility(View.VISIBLE);
@@ -535,7 +555,7 @@ public class HomePage extends AppCompatActivity {
 
     public void ClickArticle(View view){
         //Redirect(重定向) activity to articlePage
-        redirectActivity(this,ArticlePage.class);
+        redirectActivity(this, ArticlePage.class);
     }
 
     public void ClickToday(View view){
@@ -568,11 +588,6 @@ public class HomePage extends AppCompatActivity {
         redirectActivity(this,MoreBarChart.class);
     }
 
-    public void ClickAccountInfo(View view){
-        //Redirect(重定向) activity to accountPage(帳號管理頁面)
-        redirectActivity(this,UserChangePassword.class);
-    }
-
     public void ClickLogout(View view){
         //回到登入頁面
         logout(this);
@@ -582,10 +597,6 @@ public class HomePage extends AppCompatActivity {
          //導到其他頁面
          //Initialize intent
          Intent intent=new Intent(activity,aClass);
-         intent.putExtra( "name",Name );
-         intent.putExtra( "job",Job );
-         intent.putExtra( "account",Account );
-         intent.putExtra( "password",Password );
          //start activity
          activity.startActivity(intent);
     }
@@ -601,10 +612,11 @@ public class HomePage extends AppCompatActivity {
         builder.setPositiveButton( "是", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                preferencesEditor.clear().commit();
                 //Finish activity
                 activity.finishAffinity();
                 //回到登入頁面
-                Intent intent=new Intent(activity,MainActivity.class);
+                Intent intent=new Intent(activity,LoginActivity.class);
                 activity.startActivity( intent );
             }
         } );

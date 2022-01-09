@@ -1,27 +1,24 @@
-package com.example.dcardtry;
+package com.example.dcardtry.UIActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.dcardtry.HttpsTrustManager;
+import com.example.dcardtry.R;
+import com.example.dcardtry.adapter.Adapter;
+import com.example.dcardtry.model.Dcard;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,7 +30,7 @@ public class SearchArticlePage extends AppCompatActivity {
     private List<Dcard> dcardList;
     RecyclerView ArticleRecyclerview;
     Adapter adapter;
-    private static final String SEARCH_DCARD_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/getAllDcard/search/";
+    private static final String SEARCH_DCARD_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/api/getAllDcard/search/";
     String searchContent;
     ProgressBar progressBar;
     EditText edtxt;

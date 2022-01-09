@@ -1,11 +1,10 @@
-package com.example.dcardtry;
+package com.example.dcardtry.UIActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,10 +12,10 @@ import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.dcardtry.HttpsTrustManager;
+import com.example.dcardtry.R;
 
 import org.json.JSONObject;
 
@@ -25,7 +24,7 @@ import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
     EditText accountInput, passwordInput;
-    Button login_btn, register_btn;
+    Button login_btn, registerpage_btn;
     String email, password;
     private static final String URL_LOGIN = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/api/login";
     SharedPreferences mPreferences;
@@ -45,7 +44,7 @@ public class LoginActivity extends AppCompatActivity {
         accountInput = findViewById(R.id.accountInput);
         passwordInput = findViewById(R.id.passwordInput);
         login_btn = findViewById(R.id.login_btn);
-        register_btn = findViewById(R.id.register_btn);
+        registerpage_btn = findViewById(R.id.registerpage_btn);
 
         login_btn.setOnClickListener(v -> {
             email = accountInput.getText().toString().trim();
@@ -53,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
             login();
         });
 
-        register_btn.setOnClickListener(v -> {
+        registerpage_btn.setOnClickListener(v -> {
             startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
         });
     }
@@ -68,7 +67,9 @@ public class LoginActivity extends AppCompatActivity {
                         String message = jsonObject.getString("message");
                         if (message.equals("success")) {
                             String token = jsonObject.getString("token");
+                            String name = jsonObject.getString("name");
                             preferencesEditor.putString("token", token);
+                            preferencesEditor.putString("name", name);
                             preferencesEditor.apply();
                             Toast.makeText(getApplicationContext(), "success", Toast.LENGTH_LONG).show();
                             Intent i1 = new Intent(LoginActivity.this, HomePage.class);

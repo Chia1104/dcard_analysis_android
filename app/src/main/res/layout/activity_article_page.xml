@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ArticlePage">
+    tools:context=".UIActivity.ArticlePage">
 
     <!--ArticlePage主畫面開始-->
     <LinearLayout

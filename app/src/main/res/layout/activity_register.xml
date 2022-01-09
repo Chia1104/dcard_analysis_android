@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
-    tools:context=".MainActivity">
+    tools:context=".UIActivity.RegisterActivity">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -17,7 +17,7 @@
 
 
         <LinearLayout
-            android:id="@+id/mainpage"
+            android:id="@+id/registerpage"
             android:layout_width="wrap_content"
             android:layout_height="550dp"
             android:background="#66FFFFFF"
@@ -57,7 +57,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="登入"
+                    android:text="註冊"
                     android:textColor="#000000"
                     android:textSize="30sp" />
 
@@ -75,16 +75,16 @@
                 android:layout_marginTop="25dp">
 
                 <TextView
-                    android:id="@+id/textView2"
+                    android:id="@+id/name_txt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="帳號 :"
+                    android:text="名稱 :"
                     android:textColor="#000000"
                     android:textSize="20sp" />
 
                 <EditText
-                    android:id="@+id/accountInput"
+                    android:id="@+id/nameInput"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -96,11 +96,33 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingTop="25dp">
+                android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/textView3"
+                    android:id="@+id/email_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Email :"
+                    android:textColor="#000000"
+                    android:textSize="20sp" />
+
+                <EditText
+                    android:id="@+id/emailInput"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:inputType="textEmailAddress" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/password_txt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -109,7 +131,30 @@
                     android:textSize="20sp" />
 
                 <EditText
-                    android:id="@+id/passwordInput"
+                    android:id="@+id/passwordInput2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:inputType="textPassword" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/cpassword_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="密碼確認 :"
+                    android:textColor="#000000"
+                    android:textSize="20sp" />
+
+                <EditText
+                    android:id="@+id/cpasswordInput"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -121,20 +166,19 @@
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:paddingLeft="10dp"
                 android:paddingTop="20dp"
-                android:paddingRight="10dp"
-                android:paddingLeft="10dp">
+                android:paddingRight="10dp">
 
 
                 <Button
-                    android:id="@+id/button"
-                    android:layout_width="match_parent"
+                    android:id="@+id/register_btn"
+                    android:layout_width="250dp"
                     android:layout_height="55dp"
-                    android:layout_gravity="top"
+                    android:layout_gravity="center|top"
                     android:background="@drawable/bg_round_button"
                     android:gravity="center"
-                    android:onClick="login"
-                    android:text="登入"
+                    android:text="註冊"
                     android:textSize="20sp" />
 
                 <LinearLayout
@@ -146,37 +190,18 @@
                     android:orientation="horizontal">
 
                     <Button
-                        android:id="@+id/manager"
+                        android:id="@+id/loginpage_btn"
                         android:layout_width="match_parent"
                         android:layout_height="55dp"
                         android:layout_gravity="bottom|clip_vertical"
                         android:background="@color/transparent"
-                        android:onClick="gotoM"
-                        android:text="註冊"
+                        android:text="登入"
                         android:textColor="#063B95"
                         android:textSize="20sp"
                         app:backgroundTint="#00FFFFFF" />
                 </LinearLayout>
 
             </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:orientation="horizontal"
-                android:visibility="visible">
-
-                <TextView
-                    android:id="@+id/loginresult"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:textColor="#000000"
-                    android:textSize="20sp"
-                    android:text=""/>
-
-            </LinearLayout>
-
-
 
 
         </LinearLayout>

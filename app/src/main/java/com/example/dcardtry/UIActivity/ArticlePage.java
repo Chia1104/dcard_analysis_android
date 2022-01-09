@@ -1,4 +1,4 @@
-package com.example.dcardtry;
+package com.example.dcardtry.UIActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
@@ -10,47 +10,43 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Cache;
-import com.android.volley.Network;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.BasicNetwork;
-import com.android.volley.toolbox.DiskBasedCache;
-import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.dcardtry.HttpsTrustManager;
+import com.example.dcardtry.R;
+import com.example.dcardtry.adapter.Adapter;
+import com.example.dcardtry.model.Dcard;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class ArticlePage extends AppCompatActivity {
     private  List<Dcard> dcardList;
     RecyclerView ArticleRecyclerview;
     Adapter adapter;
-    private static final String DCARD_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/getAllDcard";
-    private static final String UPDATE_DCARD_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/getAllDcard/before/";
+    private static final String DCARD_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/api/getAllDcard";
+    private static final String UPDATE_DCARD_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/api/getAllDcard/before/";
     private DrawerLayout drawerLayout;
-    String Name,Job,Account,Password, rvitemId;//接收帳號相關資料
+    String rvitemId, pname;//接收帳號相關資料
     TextView DM_Tilte;//側邊選單標題 : 姓名+職稱
     ProgressBar progressBar;
     Button searchArticle_btn;
+    SharedPreferences mPreferences;
+    String sharedprofFile = "com.protocoderspoint.registration_login";
+    static SharedPreferences.Editor preferencesEditor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +58,8 @@ public class ArticlePage extends AppCompatActivity {
         getWindow().getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_FULLSCREEN);
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerlayout);
+        DM_Tilte=findViewById( R.id.drawer_menu_title );
+        details();
 
         searchArticle_btn = findViewById(R.id.searchArticle_btn);
         searchArticle_btn.setOnClickListener(v -> {
@@ -73,17 +71,13 @@ public class ArticlePage extends AppCompatActivity {
         AP_LoadDcard();
         updateDcard();
 
-        //取得傳遞過來的資料
-        Intent intent = this.getIntent();
-        Name = intent.getStringExtra("name");
-        Job = intent.getStringExtra( "job" );
-        Account = intent.getStringExtra( "account" );
-        Password = intent.getStringExtra("password");
-
-        //加上側邊選單姓名、職稱
-        DM_Tilte=findViewById( R.id.drawer_menu_title );
-        DM_Tilte.setText( Name+"\n"+Job+"\t\t 您好" );
         progressBar = findViewById(R.id.progressBar);
+    }
+    public void details() {
+        mPreferences = getSharedPreferences(sharedprofFile,MODE_PRIVATE);
+        preferencesEditor = mPreferences.edit();
+        pname = mPreferences.getString("name","null");
+        DM_Tilte.setText("Hello " + pname);
     }
 
     private void AP_LoadDcard(){
@@ -201,7 +195,7 @@ public class ArticlePage extends AppCompatActivity {
 
     public void ClickHome(View view){
         //Restart activity_home_page.xml
-        redirectActivity(this,HomePage.class);
+        redirectActivity(this, HomePage.class);
         finish();
     }
 
@@ -212,19 +206,14 @@ public class ArticlePage extends AppCompatActivity {
 
     public void ClickChart(View view){
         //Redirect(重定向) activity to chartPage
-        redirectActivity(this,MPChartPage.class);
+        redirectActivity(this, MPChartPage.class);
         finish();
     }
 
     public void ClickTrend(View view){
         //Redirect(重定向) activity to chartPage
-        redirectActivity(this,MoreBarChart.class);
+        redirectActivity(this, MoreBarChart.class);
         finish();
-    }
-
-    public void ClickAccountInfo(View view){
-        //Redirect(重定向) activity to accountPage(帳號管理頁面)
-        redirectActivity(this,UserChangePassword.class);
     }
 
     public void ClickLogout(View view){
@@ -236,10 +225,7 @@ public class ArticlePage extends AppCompatActivity {
         //導到其他頁面
         //Initialize intent
         Intent intent=new Intent(activity,aClass);
-        intent.putExtra( "name",Name );
-        intent.putExtra( "job",Job );
-        intent.putExtra( "account",Account );
-        intent.putExtra( "password",Password );
+
         //set flag
         //intent.setFlags( Intent.FLAG_ACTIVITY_NEW_TASK );
         //start activity
@@ -257,10 +243,11 @@ public class ArticlePage extends AppCompatActivity {
         builder.setPositiveButton( "是", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                preferencesEditor.clear().commit();
                 //Finish activity
                 activity.finishAffinity();
                 //回到登入頁面
-                Intent intent=new Intent(activity,MainActivity.class);
+                Intent intent=new Intent(activity, LoginActivity.class);
                 activity.startActivity( intent );
             }
         } );

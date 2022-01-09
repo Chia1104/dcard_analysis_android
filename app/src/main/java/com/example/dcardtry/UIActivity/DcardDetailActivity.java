@@ -1,4 +1,4 @@
-package com.example.dcardtry;
+package com.example.dcardtry.UIActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.example.dcardtry.R;
 
 public class DcardDetailActivity extends AppCompatActivity {
     private String title, content, date, sascore, saclass, lv1, lv2, lv3, id;
