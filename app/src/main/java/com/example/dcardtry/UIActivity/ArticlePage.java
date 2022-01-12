@@ -37,7 +37,7 @@ public class ArticlePage extends AppCompatActivity {
     private  List<Dcard> dcardList;
     RecyclerView ArticleRecyclerview;
     Adapter adapter;
-    private static final String DCARD_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/api/getAllDcard";
+    private static final String DCARD_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/api/getAllDcard/30";
     private static final String UPDATE_DCARD_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/api/getAllDcard/before/";
     private DrawerLayout drawerLayout;
     String rvitemId, pname;//接收帳號相關資料
@@ -131,7 +131,7 @@ public class ArticlePage extends AppCompatActivity {
                     progressBar.setVisibility(View.VISIBLE);
                     HttpsTrustManager.allowAllSSL();
                     RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-                    JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, UPDATE_DCARD_URL + rvitemId, null, response -> {
+                    JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, UPDATE_DCARD_URL + rvitemId + "/30", null, response -> {
                         try {
                             for (int i = 0; i < response.length(); i++) {
                                 JSONObject dcardObject = response.getJSONObject(i);
