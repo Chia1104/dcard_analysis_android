@@ -68,9 +68,9 @@ public class HomePage extends AppCompatActivity {
     private static final String elementToFound_neu = "Neutral";
     private static final String elementToFound_neg = "Negative";
     Integer neg, neu, pos;
-    int list[],bannerpic[];
+    int[] list,bannerpic;
     TextView[] dots;
-    String bannertxt[];
+    String[] bannertxt;
     RecyclerView Article_Summary;
     private  List<Dcard> dcardList;
     List<String> chartValue;

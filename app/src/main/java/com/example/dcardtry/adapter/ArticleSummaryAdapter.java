@@ -20,8 +20,8 @@ import java.util.List;
 public  class ArticleSummaryAdapter extends RecyclerView.Adapter<ArticleSummaryAdapter.ViewHolder>{
     LayoutInflater inflater;
     List<Dcard> dcards;
-    private Context mContext;
-    private  int size;
+    private final Context mContext;
+    private final int size;
 
     public ArticleSummaryAdapter(Context context, List<Dcard> dcards, int size) {
         this.mContext = context;

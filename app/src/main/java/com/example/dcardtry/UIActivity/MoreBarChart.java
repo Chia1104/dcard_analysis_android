@@ -39,6 +39,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class MoreBarChart extends AppCompatActivity {
     private static final String FULL_BARCHART_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/api/GBChart12Data";
@@ -63,7 +64,7 @@ public class MoreBarChart extends AppCompatActivity {
         setContentView(R.layout.activity_more_bar_chart);
 
         //設定隱藏標題
-        getSupportActionBar().hide();
+        Objects.requireNonNull(getSupportActionBar()).hide();
         //設定隱藏狀態
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
 

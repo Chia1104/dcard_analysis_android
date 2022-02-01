@@ -21,7 +21,7 @@ import java.util.List;
 public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     LayoutInflater inflater;
     List<Dcard> dcards;
-    private Context mContext;
+    private final Context mContext;
 
     public Adapter(Context context, List<Dcard> dcards) {
         this.mContext = context;

@@ -17,9 +17,9 @@ public class SliderAdapter extends RecyclerView.Adapter<SliderAdapter.MyViewHold
         this.list = list;this.bannertxt=bannertxt;this.bannerpic=bannerpic;
     }
 
-    int list[];
-    String bannertxt[];
-    int bannerpic[];
+    int[] list;
+    String[] bannertxt;
+    int[] bannerpic;
 
     @NonNull
     @Override

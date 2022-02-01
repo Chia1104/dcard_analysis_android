@@ -1,5 +1,6 @@
 package com.example.dcardtry.UIActivity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -37,8 +38,8 @@ public class ArticlePage extends AppCompatActivity {
     private  List<Dcard> dcardList;
     RecyclerView ArticleRecyclerview;
     Adapter adapter;
-    private static final String DCARD_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/api/getAllDcard/30";
-    private static final String UPDATE_DCARD_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/api/getAllDcard/before/";
+    private static final String DCARD_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/api/dcard?limit=30";
+    private static final String UPDATE_DCARD_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/api/dcardBefore";
     private DrawerLayout drawerLayout;
     String rvitemId, pname;//接收帳號相關資料
     TextView DM_Tilte;//側邊選單標題 : 姓名+職稱
@@ -124,14 +125,14 @@ public class ArticlePage extends AppCompatActivity {
     private void updateDcard(){
         ArticleRecyclerview.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
 
                 if (!recyclerView.canScrollVertically(1)) {
                     progressBar.setVisibility(View.VISIBLE);
                     HttpsTrustManager.allowAllSSL();
                     RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-                    JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, UPDATE_DCARD_URL + rvitemId + "/30", null, response -> {
+                    JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, UPDATE_DCARD_URL + "?beforeId=" + rvitemId + "&limit=30", null, response -> {
                         try {
                             for (int i = 0; i < response.length(); i++) {
                                 JSONObject dcardObject = response.getJSONObject(i);

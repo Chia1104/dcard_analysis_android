@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import com.example.dcardtry.R;
 
+import java.util.Objects;
+
 public class DcardDetailActivity extends AppCompatActivity {
     private String title, content, date, sascore, saclass, lv1, lv2, lv3, id;
     private TextView tvTitle, tvContent, tvDate, tvsascore, tvsaclass, tvlv1, tvlv2, tvlv3;
@@ -22,7 +24,7 @@ public class DcardDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_dcard_detail);
 
         //設定隱藏標題
-        getSupportActionBar().hide();
+        Objects.requireNonNull(getSupportActionBar()).hide();
         //設定隱藏狀態
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
 
@@ -78,7 +80,7 @@ public class DcardDetailActivity extends AppCompatActivity {
         }
 
     }
-    private Button.OnClickListener btnURLListener = v -> {
+    private final Button.OnClickListener btnURLListener = v -> {
         Uri uri = Uri.parse("https://www.dcard.tw/f/cgu/p/" + id);
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
         startActivity(intent);

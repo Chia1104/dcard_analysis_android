@@ -79,7 +79,7 @@ public class MPChartPage extends AppCompatActivity {
         setContentView(R.layout.activity_mpchart_page);
 
         //設定隱藏標題
-        getSupportActionBar().hide();
+        Objects.requireNonNull(getSupportActionBar()).hide();
         //設定隱藏狀態
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
 
