@@ -42,8 +42,8 @@ import java.util.List;
 import java.util.Objects;
 
 public class MoreBarChart extends AppCompatActivity {
-    private static final String FULL_BARCHART_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/api/GBChart12Data";
-    private static final String FULL_LINECHART_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/api/LineChart12Data";
+    private static final String FULL_BARCHART_URL = "https://dcard-analysis-laravel-fdqsyjapma-de.a.run.app/api/GBChart12Data";
+    private static final String FULL_LINECHART_URL = "https://dcard-analysis-laravel-fdqsyjapma-de.a.run.app/api/LineChart12Data";
     List<String> barChartValue, lineChartValue;
     BarChart barChart;
     BarDataSet barDataSet1, barDataSet2, barDataSet3;

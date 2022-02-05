@@ -30,7 +30,7 @@ public class SearchArticlePage extends AppCompatActivity {
     private List<Dcard> dcardList;
     RecyclerView ArticleRecyclerview;
     Adapter adapter;
-    private static final String SEARCH_DCARD_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/api/dcardSearch?search=";
+    private static final String SEARCH_DCARD_URL = "https://dcard-analysis-laravel-fdqsyjapma-de.a.run.app/api/dcardSearch?search=";
     String searchContent;
     ProgressBar progressBar;
     EditText edtxt;

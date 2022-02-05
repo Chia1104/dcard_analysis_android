@@ -27,7 +27,7 @@ public class RegisterActivity extends AppCompatActivity {
     EditText nameInput, emailInput, passwordInput2, cpasswordInput;
     String name, email, password, cpassword;
     Button loginpage_btn, register_btn;
-    private static final String URL_REGISTER = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/api/register";
+    private static final String URL_REGISTER = "https://dcard-analysis-laravel-fdqsyjapma-de.a.run.app/api/register";
     SharedPreferences mPreferences;
     String sharedprofFile = "com.protocoderspoint.registration_login";
     SharedPreferences.Editor preferencesEditor;

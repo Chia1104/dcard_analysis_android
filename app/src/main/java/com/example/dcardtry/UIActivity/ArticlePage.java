@@ -38,8 +38,8 @@ public class ArticlePage extends AppCompatActivity {
     private  List<Dcard> dcardList;
     RecyclerView ArticleRecyclerview;
     Adapter adapter;
-    private static final String DCARD_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/api/dcard?limit=30";
-    private static final String UPDATE_DCARD_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/api/dcardBefore";
+    private static final String DCARD_URL = "https://dcard-analysis-laravel-fdqsyjapma-de.a.run.app/api/dcard?limit=30";
+    private static final String UPDATE_DCARD_URL = "https://dcard-analysis-laravel-fdqsyjapma-de.a.run.app/api/dcardBefore";
     private DrawerLayout drawerLayout;
     String rvitemId, pname;//接收帳號相關資料
     TextView DM_Tilte;//側邊選單標題 : 姓名+職稱

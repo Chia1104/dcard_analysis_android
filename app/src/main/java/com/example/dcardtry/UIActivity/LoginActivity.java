@@ -27,7 +27,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText accountInput, passwordInput;
     Button login_btn, registerpage_btn;
     String email, password;
-    private static final String URL_LOGIN = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/api/login";
+    private static final String URL_LOGIN = "https://dcard-analysis-laravel-fdqsyjapma-de.a.run.app/api/login";
     SharedPreferences mPreferences;
     String sharedprofFile = "com.protocoderspoint.registration_login";
     SharedPreferences.Editor preferencesEditor;

@@ -60,10 +60,10 @@ public class HomePage extends AppCompatActivity {
     ViewPager2 pager2;
     PieChart pieChart;
     String DCARD_URL;
-    private static final String TODAY_DCARD_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/api/date/today";
-    private static final String MONTH_DCARD_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/api/date/month";
-    private static final String WEEK_DCARD_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/api/date/week";
-    private static final String BARCHART_URL = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/api/GBChart4Data";
+    private static final String TODAY_DCARD_URL = "https://dcard-analysis-laravel-fdqsyjapma-de.a.run.app/api/date/today";
+    private static final String MONTH_DCARD_URL = "https://dcard-analysis-laravel-fdqsyjapma-de.a.run.app/api/date/month";
+    private static final String WEEK_DCARD_URL = "https://dcard-analysis-laravel-fdqsyjapma-de.a.run.app/api/date/week";
+    private static final String BARCHART_URL = "https://dcard-analysis-laravel-fdqsyjapma-de.a.run.app/api/GBChart4Data";
     private static final String elementToFound_pos = "Positive";
     private static final String elementToFound_neu = "Neutral";
     private static final String elementToFound_neg = "Negative";
@@ -89,7 +89,7 @@ public class HomePage extends AppCompatActivity {
     LinearLayout HomePage_ArticleSummary;
     SharedPreferences mPreferences;
     String sharedprofFile = "com.protocoderspoint.registration_login";
-    private static final String URL_DETAILS = "https://dcardanalysislaravel-sedok4caqq-de.a.run.app/api/details";
+    private static final String URL_DETAILS = "https://dcard-analysis-laravel-fdqsyjapma-de.a.run.app/api/details";
     static SharedPreferences.Editor preferencesEditor;
 
 
